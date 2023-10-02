@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>create variant</title>
+</head>
+<body>
+<div th:replace="fragments/header:: header"></div>
+
+<div class="container">
+
+
+    <div class="container">
+        <h2 class="mt-4">Create Variant</h2>
+        <form th:action="@{/admin/variant/save}" method="post" th:object="${variant}">
+            <div class="form-group">
+                <label for="name">Product Name:</label>
+                <p id="name" class="form-control-plaintext" name="name" th:text="${productName}"></p>
+            </div>
+            <div class="form-group">
+                <label for="variantName">Variant Name:</label>
+                <input type="text" id="variantName" name="variantName" th:field="*{variantName}" class="form-control" required>
+                <span class="text-danger" th:if="${#fields.hasErrors('variantName')}" th:errors="*{variantName}"></span>
+            </div>
+            <div class="form-group">
+                <label for="stock">Stock:</label>
+                <input type="number" id="stock" name="stock" th:field="*{stock}" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="price">Wholesale Price:</label>
+                <input type="number" id="wholesalePrice" name="wholesalePrice" step="0.01" min="0" th:field="*{wholesalePrice}" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="price">Price:</label>
+                <input type="number" id="price" name="price" step="0.01" min="0" th:field="*{price}" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="price">Offer Price:</label>
+                <input type="number" id="offerPrice" name="offerPrice" step="0.01" min="0" th:field="*{offerPrice}" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" th:field="*{description}" class="form-control" required></textarea>
+            </div>
+            <input type="hidden" id="id" th:value="${productId}" name="productId">
+            <div class="form-group">
+                <button type="submit" class="btn btn-create">Create</button>
+            </div>
+        </form>
+
+    </div>
+
+    <div th:replace="fragments/footer:: footer"></div>
+
+
+
+
+
+</div>
+</body>
+</html>

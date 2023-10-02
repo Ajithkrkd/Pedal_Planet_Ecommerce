@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>Product List</title>
+
+    <style>
+        .maintable tr:hover{
+        background-color:rgb(180, 189, 203);
+        transition: 1s;
+
+
+        }
+
+        .maintable{
+            font-size: 14px;
+        }
+
+
+
+
+        .pagination .page-item.active .page-link {
+        background-color: rgb(0,123,255);
+        color: white;
+        border-color: #3498db;
+}
+
+    </style>
+</head>
+
+<body>
+
+<div th:replace="fragments/AdminHeader :: AdminHeader"></div>
+
+<div class="container-fluid">
+    <div style="text-align: center;">
+        <h4 class="mt-5"><a href="/admin/variant">Add variant </a></h4>
+        <form class="form-inline mt-3" th:action="@{/admin/variant/pages/0/search-result}" method="get">
+            <div class="col-md-12 col-lg-12 col-xl-12">
+                <input style="max-width: 300px;" id="search"name="keyword" required class="form-control" placeholder="Enter username here">
+                <button class="btn btn-primary btn-success " type="submit" >Search</button>
+            </div>
+        </form>
+    </div>
+    <div class="table-responsive  mt-5">
+        <table class="table table-bordered maintable">
+            <thead class="thead-light">
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">Product Name</th>
+                <th scope="col">Category</th>
+                <th scope="col">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="product: ${products}">
+
+                <td th:text="${product.id}">Product Name</td>
+                <td th:text="${product.name}">Product Name</td>
+                <td th:text="${product.category != null ? product.category.name : ''}">Category Not Available
+                </td>
+                <td>
+
+                    <a th:href="@{/admin/variant/{id}(id=${product.id})}"
+                       class="btn btn-warning"> <i class="fas fa-pencil-alt"></i>edit</a>
+
+
+
+                </td>
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- <div class="text-center my-5" >
+         <a th:href="@{/admin/variant/create}" class="btn btn-primary mt-4">Add Variant</a>
+     </div>-->
+
+</div>
+<nav class="my-5" aria-label="Page navigation example">
+
+    <div class="col-sm-2 page-item" th:if="${totalPages != null}">
+        Total Products : [[${totalItems}]]
+    </div>
+
+    <ul class="pagination justify-content-center">
+        <!--when the user try to press previous button  after reaching 0 then button will disabled-->
+        <li  class="page-item " th:classappend="${currentPage > 0} ? '' : 'disabled'">
+            <a class="page-link"  th:href="@{'/admin/variant/pages/' + ${currentPage - 1}}">Previous</a>
+        </li>
+        <!--to get 1 , 2 , 3-->
+        <span th:each="i : ${#numbers.sequence(1,totalPages)}">
+
+		    	<li class="page-item" th:classappend="${currentPage == i-1} ? 'active' : ''">
+				<a class="page-link"   th:href="@{'/admin/variant/pages/' +${i-1}}">[[${i}]]</a>
+				</li>
+			</span>
+        <!--when the user try to press next button  after reaching total page count then button will disabled-->
+        <li class="page-item" th:classappend="${currentPage < totalPages-1} ? '' : 'disabled'">
+            <a class="page-link" th:href="@{'/admin/variant/pages/' + ${currentPage + 1}}">Next</a>
+        </li>
+    </ul>
+</nav>
+
+<div th:replace="fragments/footer::footer"></div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Variant Management</title>
+    <link rel="stylesheet" th:href="@{/css/admin/admin.css}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<div th:replace="fragments/AdminHeader::AdminHeader"></div>
+<div class="container-xl mt-4">
+    <div class="table-responsive">
+        <div class="table-wrapper">
+            <div class="table-title">
+                <div class="row">
+                    <div class="col-6">
+                        <h2>Variant <b>Management</b></h2>
+                     <span>PRODUCT NAME : </span>   <h6 th:text="${productName}"></h6>
+                    </div>
+                    <div class="col-6 text-right">
+                        <a th:href="@{/admin/variant/create/{id}(id=${productId})}" class="btn btn-primary"><i class="fa fa-plus"></i> Add New Variant</a>
+                        <a th:href="@{/admin/products}" class="btn btn-secondary"><i class="fa fa-shopping-cart"></i> Product</a>
+                    </div>
+                </div>
+            </div>
+
+             <!--User Table -->
+            <div th:if="${error}" class="alert alert-danger mt-3">
+                <span th:text="${error}"></span>
+            </div>
+
+            <div id="flashMessage" class="alert" style="display: none;">
+                <div class="alert alert-success mt-3">
+                    <span id="flashMessageText"></span>
+                </div>
+            </div>
+
+            </div>
+            <table id="userTable" class="table table-striped table-hover mt-3">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Variant ID</th>
+                    <th>Variant Name</th>
+                    <th>Stock</th>
+                    <th>Price</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr th:each="variant, rowIndex: ${variants}">
+                    <td th:text="${rowIndex.count}"></td>
+                    <td th:text="${variant.id}"></td>
+                    <td th:text="${variant.variantName}"></td>
+                    <td th:text="${variant.stock}"></td>
+                    <td th:text="${variant.price}"></td>
+                    <td th:text="${variant.description}"></td>
+                    <td>
+                        <a th:href="@{/admin/variant/edit/{id}(id=${variant.id})}" class="btn btn-sm btn-warning" title="Edit" data-toggle="tooltip"><i class="fa fa-pencil"></i></a>
+                        <a th:href="@{/admin/variants/toggle-list/{productId}/{id}(productId=${productId}, id=${variant.id})}"
+                           th:classappend="${variant.isAvailable} ? 'btn btn-sm btn-success' : 'btn btn-sm btn-danger'"
+                           th:title="${variant.isAvailable} ? 'Make Unavailable' : 'Make Available'"
+                           onclick="return confirmToggleAvailability(this)">
+                            <i th:class="${variant.isAvailable} ? 'fa fa-check' : 'fa fa-trash'"></i>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script>
+    function confirmToggleAvailability(link) {
+     const confirmMessage = link.getAttribute('data-confirm-message');
+
+     if (confirm(confirmMessage)) {
+         $.ajax({
+             type: "GET",
+             url: $(link).attr("href"),
+             success: function(data) {
+                 // Show the success message in the <span>
+                 const flashMessageText = document.getElementById("flashMessageText");
+                 flashMessageText.innerText = data.message;
+
+                 // Display the "flashMessage" div
+                 const flashMessage = document.getElementById("flashMessage");
+                 flashMessage.classList.remove("alert-danger");
+                 flashMessage.classList.add("alert-success");
+                 flashMessage.style.display = "block";
+
+                 // Hide the success message after 3 seconds (adjust as needed)
+                 setTimeout(function() {
+                     flashMessage.style.display = "none";
+                 }, 3000);
+
+                 // You can also update the button's appearance here
+                 if (data.success) {
+                     // Update the icon and tooltip for the button
+                     if (data.isAvailable) {
+                         $(link).find('i').removeClass('fa-trash').addClass('fa-check');
+                         $(link).attr('title', 'Make Unavailable');
+                     } else {
+                         $(link).find('i').removeClass('fa-check').addClass('fa-trash');
+                         $(link).attr('title', 'Make Available');
+                     }
+                     // Toggle the availability status
+                     data.isAvailable = !data.isAvailable;
+                 }
+             },
+             error: function() {
+                 alert("An error occurred while toggling the variant's availability.");
+             }
+         });
+     }
+     return false;
+ }
+
+</script>
+</body>
+</html>

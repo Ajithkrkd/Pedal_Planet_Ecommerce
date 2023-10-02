@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Ashion Template">
+    <meta name="keywords" content="Ashion, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>shop cart</title>
+
+
+    <style>
+        .product_count {
+            display: flex; /* Make the child elements flex items */
+            align-items: center; /* Vertically center align items */
+        }
+
+        .product_count button {
+            margin-left: 10px; /* Add some spacing between buttons */
+        }
+
+
+
+        .cart_added {
+             position: fixed;
+             left: 50%;
+             transform: translateX(-50%);
+             width: auto;
+             border-radius: 10px;
+             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+             padding-top: 10px;
+             padding-bottom: 10px;
+             padding-left: 30px;
+             padding-right: 30px;
+             background-color: #fff;
+             color:black;
+             font-size: 18px;
+             font-family: Arial, sans-serif;
+             z-index : 10;
+
+}
+#inputId{
+    width: 172px;
+    border-radius: 9px;
+    text-align: center;
+    border: 1px solid;
+    font-size: 14px;
+    margin-top: 16px;
+
+        }
+
+    </style>
+
+</head>
+<div th:replace="fragments/header::header"></div>
+<body>
+<!-- Page Preloder -->
+<div id="preloder">
+    <div class="loader"></div>
+</div>
+
+
+<div class="alert-success cart_added my-3" id="cart_decreased" th:if="${param.decrease}">
+    📦 Your item quantity has decreased! 📦
+</div>
+
+<div class="alert-success cart_added my-3" id="cart_increase" th:if="${param.increase}">
+    📦 Your item quantity has increased! 📦
+</div>
+<div class="alert-danger cart_added my-3" id="cart_deleted" th:if="${param.deleted}">
+    📦 Your item has deleted! 📦
+</div>
+<!-- Shop Cart Section Begin -->
+<section class="shop-cart spad">
+    <div class="container">
+
+        <div class="border border-dark my-4 shadow " >
+            <div class="row-1 orderItem py-2 d-flex my-3 flex-md-row flex-column justify-content-around align-items-center" th:each="cartItem : ${cart}"}>
+
+                <div class="col-12 col-md-3">
+                    <img th:src="@{/images/product/{imagePath}(imagePath=${cartItem.variant.product.images[0].imagePath})}" alt="/assets/img/cart.jpg" class="img-fluid" style="width:15rem">
+                </div>
+
+                <div class="m-0 col-12 col-md-3">
+                    <p class="product_name" th:text="${#strings.abbreviate(cartItem.variant.product.name, 30)}" style="font-size: 22px; font-weight: 800; color: #111111;">Product Name</p>
+                    <p class="variant_name" style="font-size:20px;" th:text="${cartItem.variant.VariantName}">Variant Name</p>
+                    <div>
+                        <span style="font-size:31px;">'₹' <span  th:id="'priceTagOriginal-' + ${cartItem.variant.id}"  style="font-size: 31px; margin-bottom: 40px;font-weight: 700;font-family: sans-serif;" class="price-text strikethrough" th:text="${ cartItem.variant.offerPrice * cartItem.quantity}">2799</span></span>
+
+                        <span style="font-size:24px;">'₹' <span th:id="'actualPrice-' + ${cartItem.variant.id}" style="font-size: 24px;margin-bottom: 21px;text-decoration-line: line-through;" class="price-text strikethrough" th:text="${ cartItem.variant.price * cartItem.quantity}">2799</span></span>
+
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="d-flex align-items-center">
+                        <button onclick="sendCartItem(this.getAttribute('data-variant-id'))" th:data-variant-id="${cartItem.variant.id}" class="increase items-count px-3 py-2 m-0 " type="button" style="border-radius: 5px; border: 1px solid;" >
+                            <i class="fa fa-plus"></i>
+                        </button>
+                        <p th:data-variant-id="${cartItem.quantity}" type="text" name="qty" th:id="'inputId-' + ${cartItem.variant.id}"  th:text="${cartItem.quantity}"  class="qty py-2 mx-1" style="border-radius: 9px; text-align: center; border: 1px solid; font-size: 26px;     width: 178px;margin-top: 15px;" ></p>
+                        <button onclick="sendCartItemDecr(this.getAttribute('data-variant-id'))" th:data-variant-id="${cartItem.variant.id}" class="reduced items-count px-3 py-2 m-0" type="button" style="border-radius: 5px; border: 1px solid;">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+
+                    <p style=" color:rgb(233,30,99); font-weight: 700; font-size: 19px;"  th:id="'bagLimitText-' + ${cartItem.variant.id}" ></p>
+
+
+
+                </div>
+                <div class="d-flex align-items-center">
+                    <div class="col-12 col-md-1">
+                        <button onclick="deleteCartItem(this.getAttribute('data-variant-id'), this.getAttribute('data-quantity'))" th:data-variant-id="${cartItem.variant.id}" th:data-quantity="${cartItem.quantity}" class="btn btn-primary" type="button">Remove</button>
+                    </div>
+                    <div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="cart__btn">
+                    <a href="/shop">Continue Shopping</a>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="cart__btn update__btn">
+                    <a href="/shop"><span class="icon_loading"></span> Update cart</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="discount__content">
+                    <h6>Discount codes</h6>
+                    <form id="coupon_add_form" style="display:block;" class="my-2">
+                        <input type="text" id="couponCodeInput" placeholder="Enter your coupon code">
+                        <button type="button" id="applyButton" onclick="applyCoupon()" style="background-color:rgb(56,142,60)"  class="site-btn">Apply</button>
+                    </form>
+                    <form style="display:none;" id="coupon_close_form" th:action="@{/cart/delete_coupon}" method="post">
+                        <input  id="closeCouponId" placeholder="Coupon applied successfully" readonly >
+                        <button type="submit" id="closeButton"  class="site-btn">remove</button>
+                    </form>
+                    <div  style=" color: rgb(97,183,46); font-weight: 700; font-size: 19px;" id="successMessage"></div>
+                    <div  style=" color:rgb(233,30,99); font-weight: 700; font-size: 19px;" id="errorMessage"></div>
+
+               <div class="col p-2 border" style="height: 24rem;">
+                   <div class="p-2 border">
+
+                       <div class="" style="height: 20rem; overflow: auto;">
+                           <div th:each="coupon : ${availableGeneralCoupon}" class="border border-secondary my-1 p-2" style="background-color: rgb(234, 242, 243);">
+                               <div>
+                                   <h6  class="fw-bold" th:text="${coupon.code}">FREEDOM250</h6>
+                               </div >
+<!--                               <span>Max Discount</span><span style="font-size: 16px; margin-top : 4px;" class="fw-bold " th:text="${coupon.maximumDiscountAmount}">Save ₹250</span>-->
+                               <span></span><span style="font-size: 16px; line-height: 12px;"   >🎉 Celebrate Our Success with a Special Coupon! 🎉</span>
+                               <span>Expired Date </span><span style="font-size: 14px; line-height: 12px;" th:text="${coupon.expirationPeriod}">Expires on Aug 16, 2023</span>
+                           </div>
+                       </div>
+                   </div>
+
+               </div>
+
+
+                </div>
+            </div>
+            <div class="col-lg-4 offset-lg-2">
+                <div class="cart__total__procced">
+                    <h6>Cart total</h6>
+                    <ul>
+                        <li>PRICE <span id="priceTotal" style="text-decoration:line-through;" th:text="${total_price }"></span><span>Rs .</span></li>
+                        <li> OFFER PRICE<span id="offerPriceTotal" th:text="${total_Offer_price}"></span><span>Rs .</span></li>
+                        <li> DICOUNTED AMOUNT<span id="discount_amount"></span><span>Rs. -</span></li>
+                        <li> TOTAL PRICE<span id="price_after_discount" th:text="${total_Offer_price}" ><span>Rs.</span></span></li>
+                    </ul>
+                    <a th:href="@{/placeOrder}" class="primary-btn">Proceed to checkout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</section>
+<!-- Shop Cart Section End -->
+
+
+<!-- Search Begin -->
+<div class="search-model">
+    <div class="h-100 d-flex align-items-center justify-content-center">
+        <div class="search-close-switch">+</div>
+        <form class="search-model-form">
+            <input type="text" id="search-input" placeholder="Search here.....">
+        </form>
+    </div>
+</div>
+
+<div th:replace="fragments/footer::footer"></div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    function hideCartErrorDiv(){
+    var cartErrorDiv = document.getElementById("cart_decreased");
+    if(cartErrorDiv){
+    cartErrorDiv = style.display = 'none';
+    }
+
+    }
+    setTimeout(hideCartErrorDiv,4000);
+</script>
+<script src="/js/cart.js"></script>
+
+
+</body>
+
+</html>

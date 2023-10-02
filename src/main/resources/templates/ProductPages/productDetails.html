@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>Product List</title>
+</head>
+
+<body>
+<div th:replace="fragments/AdminHeader :: AdminHeader"></div>
+
+<div class="container mt-5">
+    <div class="row">
+
+        <div class="col-md-6">
+            <div class="border p-4">
+                <!-- Display product details -->
+                <div class="mb-3">
+                    <h4><span th:text="${product.name}">Product Name</span></h4>
+                    <h6>Product Short description</h6>
+                    <div class="mb-3 border p-3">
+
+                        <p th:text="${product.shortDescription}"></p>
+                    </div>
+                    <h6>Product Long description</h6>
+                    <div class="mb-3 border p-3">
+
+                        <p th:text="${product.longDescription}"></p>
+                    </div>
+                    <div class="mb-3 border p-3">
+
+                        <p th:text="${product.price}"></p>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <small>Category Name:</small>
+                    <strong><span
+                            th:text="${product.category != null ? product.category.name : 'Category Not Available'}">Category</span></strong>
+                </div>
+
+                <div class="mb-3">
+                    <small>Product Status:</small>
+                    <strong> <span th:classappend="${product.isAvailable}? btn-success : btn-danger"
+                                   class="btn btn-sm"
+                                   th:text="${product.isAvailable ? 'Available' : 'Not Available'}">Availability</span></strong>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+
+            <!-- Inside the section where you display product details -->
+            <div class="col-md-6">
+                <!-- Bootstrap Carousel for product images -->
+                <div id="productCarousel" class="carousel slide mb-4" data-ride="carousel">
+                    <div class="carousel-inner">
+                        <!-- Iterate through product images -->
+                        <div th:each="image, imageIndex : ${product.images}"
+                             class="carousel-item"
+                             th:classappend="${imageIndex.index == 0}? 'active'">
+                            <img th:src="@{${'/Images/product/' + image.imagePath}}" alt="Product Image">
+                        </div>
+                    </div>
+                    <!-- Carousel controls -->
+                    <a class="carousel-control-prev" href="#productCarousel" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#productCarousel" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
+
+<div th:replace="fragments/footer::footer"></div>
+
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+<style>
+    /* Style for carousel images */
+    #productCarousel img {
+        max-height: 600px;
+        width:600px;
+        object-fit: cover;
+    }
+</style>
+</body>
+
+</html>

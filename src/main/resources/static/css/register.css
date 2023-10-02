@@ -1,0 +1,15 @@
+.invalid-feedback{
+	font-size: 14px;
+	font-weight: 600;
+	font-family: Arial, Helvetica, sans-serif;
+	text-align: left;
+}
+
+
+#registerHead {
+        text-align: center; /* Center the text horizontally */
+        font-size:24px;
+        font-weight:bold;
+        padding:4px;
+        margin-top: 8px;
+    }

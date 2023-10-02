@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Verification</title>
+    <style>
+        .commonbody {
+
+            font-family: Arial, sans-serif;
+            border: 1px solid #ccc;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 70vh;
+            width: auto;
+            margin: 0;
+            gap: 10px;
+        }
+
+
+
+
+
+
+        #maintext {
+            font-size: 30px;
+            color: #333;
+        }
+
+        .subtext {
+            color: #777;
+
+        }
+
+        .input {
+            padding: 10px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 25px;
+
+        }
+
+        .button {
+            background-color: #007bff;
+            border: none;
+            border-radius: 14PX;
+            color: #fff;
+            cursor: pointer;
+            padding: 10px 10px;
+            margin-top: 10px;
+            margin-right: 20px;
+
+
+
+
+
+        }
+
+        .button:hover {
+            color: black;
+            background-color: #90e0ef;
+            transition: 0.55s;
+
+        }
+
+        #resultMessage {
+            color: #ff6b6b;
+            margin-top: 10px;
+        }
+        .message{
+            text-transform: lowercase;
+            font-size: 15px;
+            font-family: sans-serif;
+        }
+        @import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900&display=swap');
+
+button:focus,
+input:focus{
+  outline: none;
+  box-shadow: none;
+}
+a,
+a:hover{
+  text-decoration: none;
+}
+
+body{
+  font-family: 'Roboto', sans-serif;
+}
+
+/*------------------  */
+.otp-countdown{
+  display: inline-block;
+  margin: 0 auto;
+  padding: 8px 30px;
+  background-color: #333;
+  border-radius: 50px;
+  color: #fff;
+
+}
+    </style>
+</head>
+
+<body>
+<div th:replace="fragments/header::header"></div>
+<div class="container maindiv">
+    <div class="commonbody">
+        <h1 id="maintext">OTP Verification</h1>
+        <p class="subtext">Please enter the OTP sent to your email </p>
+
+
+        <div th:if=${error==invalid} class=" message  alert alert-danger">
+            OTP is invalid please enter correct OTP
+        </div>
+        <div th:if="${error==resend}" class=" message alert alert-success">
+            your OTP is Re-sent successfully check your email !!
+        </div>
+        <div th:if="${param.success}" class=" message alert alert-success">
+            Enter the OTP to complete your Registration ! check your email !!
+        </div>
+
+
+        <div class="otp-countdown" id="countdown"></div>
+      		  <p class="subtext"> OTP valid upto 4 minutes </p>
+        <form th:action="@{/otpSubmit}" method="post" id="otpForm">
+
+			<div class="row">
+				<div class="col-12 mb-2">
+					<input class="input" type="text" id="enteredOtp" name="enteredOtp" placeholder="Enter OTP" required>
+				</div>
+				<div class="col-12 mb-2">
+					<button class="button w-100 mb-1"   type="submit" >Verify OTP</button>
+					<a type="button" class="btn btn-success w-100 mb-1" id="resendButton" hidden href="/reSendOtp">Re-Send</a>
+				</div>
+			</div>
+
+
+		</form>
+
+    </div>
+</div>
+<script>
+	function startCountdown(duration, display, resendButton) {
+    let timer = duration;
+    const interval = setInterval(function () {
+      const minutes = Math.floor(timer / 60);
+      const seconds = timer % 60;
+      display.textContent = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+
+      if (timer <= 0) {
+        clearInterval(interval);
+        display.style.display = "none";
+        resendButton.removeAttribute("hidden");
+      }
+
+
+      timer--;
+    }, 1000);
+  }
+
+  window.onload = function () {
+    const countdownDisplay = document.getElementById("countdown");
+    const resendButton = document.getElementById("resendButton");
+    const totalSeconds = 59;
+
+    startCountdown(totalSeconds, countdownDisplay, resendButton);
+  };
+
+</script>
+</body>
+
+</html>

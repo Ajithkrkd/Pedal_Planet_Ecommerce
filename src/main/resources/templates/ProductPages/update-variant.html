@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Edit Variant</title>
+    <!-- Include Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div th:replace="fragments/AdminHeader :: AdminHeader"></div>
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title">Variant Details</h5>
+        </div>
+        <div class="card-body">
+            <form th:action="@{/admin/variant/update}" method="post" th:object="${variant}" class="needs-validation" novalidate>
+                <div class="form-group">
+                    <label for="productName">Product Name:</label>
+                    <p id="productName" class="form-control-plaintext" th:text="${productName}"></p>
+                </div>
+                <div class="form-group">
+                    <label for="variantName">Variant Name:</label>
+                    <input type="text" id="variantName" name="variantName" th:field="*{variantName}" class="form-control" required>
+                    <div class="invalid-feedback">Please enter a variant name.</div>
+                </div>
+                <div class="form-group">
+                    <label for="stock">Stock:</label>
+                    <input type="number" id="stock" name="stock" th:field="*{stock}" class="form-control" required>
+                    <div class="invalid-feedback">Please enter the stock.</div>
+                </div>
+                <div class="form-group">
+                    <label for="wholesalePrice">Wholesale Price:</label>
+                    <input type="number" id="wholesalePrice" name="wholesalePrice" step="0.01" min="0" th:field="*{wholesalePrice}" class="form-control" required>
+                    <div class="invalid-feedback">Please enter a valid wholesale price.</div>
+                </div>
+                <div class="form-group">
+                    <label for="price">Price:</label>
+                    <input type="number" id="price" name="price" step="0.01" min="0" th:field="*{price}" class="form-control" required>
+                    <div class="invalid-feedback">Please enter a valid price.</div>
+                </div>
+                <div class="form-group">
+                    <label for="offerPrice">Offer Price:</label>
+                    <input type="number" id="offerPrice" name="offerPrice" step="0.01" min="0" th:field="*{offerPrice}" class="form-control" required>
+                    <div class="invalid-feedback">Please enter a valid offer price.</div>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <textarea id="description" name="description" th:field="*{description}" class="form-control" required></textarea>
+                    <div class="invalid-feedback">Please enter a description.</div>
+                </div>
+                <input type="hidden" id="productId" th:value="${productId}" name="productId">
+                <input type="hidden" id="variantId" th:value="${variantId}" name="id">
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-warning">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Include Bootstrap JS and jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

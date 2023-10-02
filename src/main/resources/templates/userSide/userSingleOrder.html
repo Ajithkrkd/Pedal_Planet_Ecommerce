@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="/css/userSingleOrder.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Using the Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3&display=swap" rel="stylesheet">
+    <title>orderInformation</title>
+</head>
+<body>
+<div th:replace="/fragments/header::header"></div>
+
+    <div class="container">
+        <div class="border border-dark mt-4">
+            <div class=" row saved-address py-2 px-2  d-flex  flex-md-row flex-column justify-content-around align-items-center " th:each="address : ${orderAddress}">
+                    <div class="address-details d-flex flex-column col-12 col-md-6">
+                        <h3 class="">Delivery Address</h3>
+                        <p class="address-title" th:text="${address.customer.fullName}">Customer Name</p>
+                        <div class="">
+                            <span class="address-content" th:text="${address.houseName + ' ,'}"></span>
+
+                            <span class="address-content" th:text="${address.town + ' ,'}"></span>
+
+                            <span class="address-content" th:text="${address.area + ' ,'}"> </span>
+
+                            <span class="address-content" th:text="${address.city}"></span>
+
+                        </div>
+                        <div class="">
+                            <span class="address-content" th:text="${address.landMark + ' ,'}"></span>
+                            <span class="address-content" th:text="${address.state + ' ,'}"></span>
+                            <span class="address-content" th:text="${address.pin_code + ' ,'}"> </span>
+                        </div>
+                        <div class="">
+                            <span class="phone_number"> Secondary Phone Number : </span>
+                            <span class="address-content" th:text="${address.secondary_number }">
+                        </span>
+                        </div>
+                        <div class="">
+                            <span class="phone_number" > Phone Number : </span>
+                            <span class="address-content" th:text="${address.customer.phoneNumber}">
+                        </span>
+                        </div>
+                    </div>
+
+                <div class="coupon-applied col-12 col-md-3" >
+                        <div class="">
+                            <p class="coupon-applied">CoupCoupons Used</p>
+                        </div>
+                        <div class="">
+                            <p>No coupons applied</p>
+                        </div>
+                        <div class="">
+                            <p class="coupon-text">Wallet amount used ₹0</p>
+                        </div>
+                </div>
+                <div class="d-flex flex-column col-12 col-md-3">
+                    <p class="coupon-text">more action</p>
+                    <p>
+                        <i class="fa-solid fa-file-invoice" style="color: #677472"></i>
+                        downlod invoice
+                    </p>
+                </div>
+                <div class="col-12 col-md-3">
+                    <a th:href="@{/invoice/{orderId}(orderId = ${orderId})}" class="btn btn-dark"> <i class="fas fa-download"></i> invoice</a>
+                    <a th:href="@{/invoice/generatePdf/{orderId}(orderId = ${orderId})}" class="btn btn-dark"> <i class="fas fa-download"></i> download</a>
+
+                </div>
+            </div>
+        </div>
+
+        <div class=" border border-dark mt-4">
+            <div class=" row-1  orderItem py-2  d-flex  flex-md-row    flex-column justify-content-around align-items-center " th:each="orderItem : ${orderItems}">
+
+
+                <div class="col-12 col-md-3">
+                    <img  th:src="@{/images/product/{imagePath}(imagePath=${orderItem.variant.product.images[0].imagePath})}"
+                         alt="/assets/img/cart.jpg" class=" img-fluid" style="height:10rem"  >
+                </div>
+
+                <div class="m-0 col-12 col-md-3">
+                    <P class="product_name" th:text="${#strings.abbreviate(orderItem.variant.product.name, 30)}">Product Name</P>
+                    <P class=" variant_name " th:text="${orderItem.variant.VariantName}">Variant Name</P>
+                    <div>
+                        <span class="Quantity-text">Quantity </span><span class="Quantity" th:text="${orderItem.quantity}">Quantity</span>
+                    </div>
+                    <div>
+                        <span>RS </span><span class="price-text" th:text="${orderItem.variant.offerPrice}"> 2799</span>
+                    </div>
+                </div>
+
+
+                </div>
+
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12  hh-grayBox pt45 pb20" th:if="${status == T(com.ajith.pedal_planet.Enums.Status).PENDING}">
+                            <div class="row justify-content-between">
+                                <div class="order-tracking completed">
+                                    <span class="is-complete"></span>
+                                    <p>Pending<br><span th:text="${orderedDate}">Mon, June 24</span></p>
+                                </div>
+                                <div class="order-tracking ">
+                                    <span class="is-complete"></span>
+                                    <p>confirm<br><span th:text="${orderedDate}">Mon, June 24</span></p>
+                                </div>
+                                <div class="order-tracking ">
+                                    <span class="is-complete"></span>
+                                    <p>Shipped<br><span th:text="${shippedDate}">Tue, June 25</span></p>
+                                </div>
+                                <div class="order-tracking">
+                                    <span class="is-complete"></span>
+                                    <p>out for delivery<br><span th:text="${shippedDate}">Fri, June 28</span></p>
+                                </div>
+                                <div class="order-tracking">
+                                    <span class="is-complete"></span>
+                                    <p>Delivered<br><span th:text="${deliveredDate}">Fri, June 28</span></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12  hh-grayBox pt45 pb20" th:if="${status == T(com.ajith.pedal_planet.Enums.Status).CONFIRMED}">
+                            <div class="row justify-content-between">
+                                <div class="order-tracking completed">
+                                    <span class="is-complete"></span>
+                                    <p>pending<br><span th:text="${orderedDate}">Mon, June 24</span></p>
+                                </div>
+                                <div class="order-tracking completed">
+                                    <span class="is-complete"></span>
+                                    <p>confirm<br><span th:text="${orderedDate}">Mon, June 24</span></p>
+                                </div>
+                                <div class="order-tracking ">
+                                    <span class="is-complete"></span>
+                                    <p>Shipped<br><span th:text="${shippedDate}">Tue, June 25</span></p>
+                                </div>
+                                <div class="order-tracking">
+                                    <span class="is-complete"></span>
+                                    <p>out for delivery<br><span th:text="${shippedDate}">Fri, June 28</span></p>
+                                </div>
+                                <div class="order-tracking">
+                                    <span class="is-complete"></span>
+                                    <p>Delivered<br><span th:text="${deliveredDate}">Fri, June 28</span></p>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-12  hh-grayBox pt45 pb20" th:if="${status == T(com.ajith.pedal_planet.Enums.Status).SHIPPING}">
+                            <div class="row justify-content-between">
+                                <div class="order-tracking completed">
+                                    <span class="is-complete"></span>
+                                    <p>pending<br><span th:text="${orderedDate}">Mon, June 24</span></p>
+                                </div>
+                                <div class="order-tracking completed">
+                                    <span class="is-complete"></span>
+                                    <p>confirm<br><span th:text="${orderedDate}">Mon, June 24</span></p>
+                                </div>
+                                <div class="order-tracking completed ">
+                                    <span class="is-complete"></span>
+                                    <p>Shipped<br><span th:text="${shippedDate}">Tue, June 25</span></p>
+                                </div>
+                                <div class="order-tracking">
+                                    <span class="is-complete" th:text="${shippedDate}"></span>
+                                    <p>out for delivery<br><span>Fri, June 28</span></p>
+                                </div>
+                                <div class="order-tracking">
+                                    <span class="is-complete"></span>
+                                    <p>Delivered<br><span th:text="${deliveredDate}">Fri, June 28</span></p>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-12  hh-grayBox pt45 pb20" th:if="${status == T(com.ajith.pedal_planet.Enums.Status).OUT_FOR_DELIVERY}">
+                            <div class="row justify-content-between">
+                                <div class="order-tracking completed">
+                                    <span class="is-complete"></span>
+                                    <p>pending<br><span th:text="${orderedDate}">Mon, June 24</span></p>
+                                </div>
+                                <div class="order-tracking completed">
+                                    <span class="is-complete" ></span>
+                                    <p>confirm<br><span th:text="${orderedDate}" >Mon, June 24</span></p>
+                                </div>
+                                <div class="order-tracking completed ">
+                                    <span class="is-complete"></span>
+                                    <p>Shipped<br><span th:text="${shippedDate}">Tue, June 25</span></p>
+                                </div>
+                                <div class="order-tracking completed">
+                                    <span class="is-complete"></span>
+                                    <p>out for delivery<br><span th:text="${shippedDate}">Fri, June 28</span></p>
+                                </div>
+                                <div class="order-tracking">
+                                    <span class="is-complete"></span>
+                                    <p>Delivered<br><span th:text="${deliveredDate}">Fri, June 28</span></p>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-12  hh-grayBox pt45 pb20" th:if="${status == T(com.ajith.pedal_planet.Enums.Status).DELIVERED}">
+                            <div class="row justify-content-between">
+                                <div class="order-tracking completed">
+                                    <span class="is-complete"></span>
+                                    <p>pending<br><span th:text="${orderedDate}">Mon, June 24</span></p>
+                                </div>
+                                <div class="order-tracking completed">
+                                    <span class="is-complete"></span>
+                                    <p>confirm<br><span th:text="${orderedDate}">Mon, June 24</span></p>
+                                </div>
+                                <div class="order-tracking completed ">
+                                    <span class="is-complete"></span>
+                                    <p>Shipped<br><span th:text="${shippedDate}">Tue, June 25</span></p>
+                                </div>
+                                <div class="order-tracking completed">
+                                    <span class="is-complete"></span>
+                                    <p>out for delivery<br><span th:text="${shippedDate}">Fri, June 28</span></p>
+                                </div>
+                                <div class="order-tracking completed">
+                                    <span class="is-complete"></span>
+                                    <p>Delivered<br><span th:text="${deliveredDate}">Fri, June 28</span></p>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+                        <div class="col-12  hh-grayBox pt45 pb20" th:if="${status == T(com.ajith.pedal_planet.Enums.Status).RETURNED}">
+                            <div class="row justify-content-between">
+
+                                <div class="order-tracking completed">
+                                    <span class="is-complete"></span>
+                                    <p>confirm<br><span th:text="${orderedDate}">Mon, June 24</span></p>
+                                </div>
+                                <div class="order-tracking completed ">
+                                    <span class="is-complete"></span>
+                                    <p>Shipped<br ><span th:text="${shippedDate}">Tue, June 25</span></p>
+                                </div>
+                                <div class="order-tracking completed">
+                                    <span class="is-complete"></span>
+                                    <p>out for delivery<br><span th:text="${shippedDate}">Fri, June 28</span></p>
+                                </div>
+                                <div class="order-tracking completed">
+                                    <span class="is-complete"></span>
+                                    <p>delivered<br><span th:text="${deliveredDate}">Mon, June 24</span></p>
+                                </div>
+                                <div class="order-tracking completed">
+                                    <span class="is-complete"></span>
+                                    <p>returned<br><span></span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+        <div class="col-12 col-md-12 w-100">
+            <p>Order Status</p>
+            <p th:class="'status-' + ${status}" th:text="${status}" style="margin:0px;"></p>
+
+
+        <div class="col-12 col-md-12 mt-4 px-2 mb-4  ">
+            <div th:class=" 'cancelbtn-' + ${status}"
+                 th:if="${status == T(com.ajith.pedal_planet.Enums.Status).PENDING || status == T(com.ajith.pedal_planet.Enums.Status).CONFIRMED  }"
+                 style="background-color: rgb(196,18,63);
+                                    text-align: center;
+                                    border: center;
+                                    border-radius: 6px;
+                                    padding: 5px;" >
+                <a data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"  style="color:#fff;" >cancel</a>
+                <div class="collapse" id="collapseExample">
+                    <div class="card card-body">
+                        <form th:action="@{/account/update_status_to_cancel/{orderId}(orderId = ${orderId})}" method="post">
+                            <div class="form-group">
+                                <label for="cancellationReason">Cancellation Reason:</label>
+                                <input type="text" class="form-control" id="cancellationReason" name="cancellationReason" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Confirm</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-12 col-md-12 mt-4 px-2 mb-4  ">
+                <div th:class=" 'cancelbtn-' + ${status}"
+                     th:if="${status == T(com.ajith.pedal_planet.Enums.Status).DELIVERED}"
+                     style="background-color: rgb(42,183,202);
+                                    text-align: center;
+                                    border: center;
+                                    border-radius: 6px;
+                                    padding: 5px;" >
+                    <a data-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample"  style="color:#fff;" >Return Order</a>
+                    <div class="collapse" id="collapseExample2">
+                        <div class="card card-body">
+                            <form th:action="@{/account/update_status_to_return/{orderId}(orderId = ${orderId})}" method="post">
+                                <div class="form-group">
+                                    <label for="cancellationReason">Return Reason:</label>
+                                    <input type="text" class="form-control"  name="cancellationReason" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Confirm</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+        </div>
+        </div>
+
+
+
+
+
+
+    </div>
+
+
+
+
+<div th:replace="/fragments/footer::footer"></div>
+
+</body>
+</html>

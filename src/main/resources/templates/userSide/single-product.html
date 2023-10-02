@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Ashion Template">
+    <meta name="keywords" content="Ashion, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" th:href="@{/css/singleProduct.css}">
+    <title >prduct details</title>
+
+</head>
+
+<body>
+<!-- Page Preloder -->
+<div id="preloder">
+    <div class="loader"></div>
+</div>
+
+<!-- Offcanvas Menu Begin -->
+<div class="offcanvas-menu-overlay"></div>
+<div class="offcanvas-menu-wrapper">
+    <div class="offcanvas__close">+</div>
+    <ul class="offcanvas__widget">
+        <li><span class="icon_search search-switch"></span></li>
+        <li><a href="#"><span class="icon_heart_alt"></span>
+            <div class="tip">2</div>
+        </a></li>
+        <li><a href="#"><span class="icon_bag_alt"></span>
+            <div class="tip">2</div>
+        </a></li>
+    </ul>
+
+    <div id="mobile-menu-wrap"></div>
+    <div class="offcanvas__auth">
+        <a href="#">Login</a>
+        <a href="#">Register</a>
+    </div>
+</div>
+<!-- Offcanvas Menu End -->
+
+<!-- Header Section End -->
+<div th:replace="fragments/header::header"></div>
+
+<div class="alert-success cart_added my-3" id="cart_added" th:if="${param.cart_added}">
+    "Great news! 🎉 Your item has been successfully added to your cart. Happy shopping!"
+</div>
+<div class="alert-danger cart_added my-3" id="no_stock"  th:if="${param.cart_no_stock}">
+    "Can't Add to the cart because there is no Stock"
+</div>
+
+
+
+<!-- Product Details Section Begin -->
+<section class="product-details">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="product__details__pic">
+                    <div th:each="product : ${product}" class="product__details__pic__left product__thumb nice-scroll">
+                        <a class="pt active" onclick="changeMainImage(0)">
+                            <img th:src="@{${'/Images/product/' + product.images[0].imagePath}}" alt="Product Image">
+                        </a>
+                        <a class="pt" onclick="changeMainImage(1)">
+                            <img th:src="@{${'/Images/product/' + product.images[1].imagePath}}" alt="Product Image">
+                        </a>
+                        <a class="pt" onclick="changeMainImage(2)">
+                            <img th:src="@{${'/Images/product/' + product.images[2].imagePath}}" alt="Product Image">
+                        </a>
+                        <a class="pt" onclick="changeMainImage(3)">
+                            <img th:src="@{${'/Images/product/' + product.images[3].imagePath}}" alt="Product Image">
+                        </a>
+                    </div>
+                    <div class="product__details__slider__content">
+                        <div id="mainImageContainer">
+                            <img id="mainImage" th:src="@{${'/Images/product/' + product.images[0].imagePath}}" onmousemove="zoomImage(event)" onmouseleave="hideZoomLens()">
+                            <div class="zoom-lens" id="zoomLens"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="col-lg-6">
+                <div class="product__details__text">
+                    <h2 th:text="${product.name}"><span>Brand: PEDAL PLANET</span></h2>
+                    <div class="rating">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <span>( 138 reviews )</span>
+                    </div>
+                    <input type="hidden" name="product_Id" id="product_Id" th:value="${product.id}">
+                    <div th:text="${product.shortDescription}"></div>
+                    <div class="product__details__price default-price" id="selectedVariantPrice"></div>
+
+                    <form id="addToCartForm" method="post" th:action="@{/cart/add}" th:object="${variants}">
+                        <div class=" row-1 product__details__button">
+                            <div class=" col-12 quantity" th:if="${variants != null}">
+                                <span>Select size</span>
+                                <select name="selectedVariant" id="selectedVariant" class="variant-select">
+                                    <div class="pro-qty">
+                                        <option th:each="variant ,iterStat: ${variants}" th:value="${variant.id}"
+                                                th:attr="data-variant-price=${variant.price}"
+                                                th:text="${variant.variantName}"
+                                                th:selected="${iterStat.index == 0}"></option>
+                                    </div>
+                                </select>
+
+                        </div>
+                            <div class="row justify-content-center text-center ">
+                                <div class="col">
+                                    <button type="submit" class="cart-btn"><span class="icon_bag_alt"></span> Add to cart</button>
+                                </div>
+                              <!--
+                               <div class="col" th:if="selected">
+                                    <a href="#" class="buy-btn" onclick="buyNow()"> &lt;!&ndash; Call the JavaScript function &ndash;&gt;
+                                        <span class="fas fa-bolt ml-1"></span> Buy Now
+                                    </a>
+                                </div>
+                               -->
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-lg-12">
+                <div class="product__details__tab">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab"
+                            >Description</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab">Specification</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab">Reviews ( 2 )</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tabs-1" role="tabpanel">
+                            <h6>Description</h6>
+                            <p th:text="${product.longDescription}"></p>
+
+                        </div>
+                        <div class="tab-pane" id="tabs-2" role="tabpanel">
+                            <h6>Specification</h6>
+                            <p th:text="${product.shortDescription}"></p>
+
+                        </div>
+                        <div class="tab-pane" id="tabs-3" role="tabpanel">
+                            <h6>Reviews ( 2 )</h6>
+                            <p></p>
+                            <p>No review Yet</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 text-center">
+            <div class="related__title">
+                <h5>RELATED PRODUCTS</h5>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6" th:each="item : ${relatedProducts}">
+            <div class="product__item" >
+                <div class="product__item__pic set-bg" data-setbg="">
+                    <a th:href="@{/shop/single-product/{id}(id=${item.id})}">
+                        <img th:src="@{${'/Images/product/' + item.images[0].imagePath}}"
+                             alt="Product Image">
+                    </a>
+
+                    <ul class="product__hover">
+                        <li><a href=""><span class="icon_heart_alt"></span></a></li>
+                        <li><a href="/cart"><span class="icon_bag_alt"></span></a></li>
+                    </ul>
+                </div>
+                <div class="product__item__text">
+                    <h6 th:text="${item.name}"><a href="#">Buttons tweed blazer</a></h6>
+                    <div class="rating">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                    </div>
+                    <div class="product__price" th:text="${item.price}">$ 59.0</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Product Details Section End -->
+
+
+<div th:replace="fragments/footer::footer"></div>
+
+<!-- Search Begin -->
+<div class="search-model">
+    <div class="h-100 d-flex align-items-center justify-content-center">
+        <div class="search-close-switch">+</div>
+        <form class="search-model-form">
+            <input type="text" id="search-input" placeholder="Search here.....">
+        </form>
+    </div>
+</div>
+
+<script>
+    function buyNow() {
+        var selectedVariantId = document.getElementById("selectedVariant").value;
+        var productId = document.getElementById("product_Id").value;
+
+
+        console.log(selectedVariantId,productId);
+        var buyNowUrl = "/buy_one_product/" + productId + "/" + selectedVariantId;
+
+
+        window.location.href = buyNowUrl;
+    }
+</script>
+<script src="/js/singleProduct.js"></script>
+<script src="/js/jquery-3.3.1.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.magnific-popup.min.js"></script>
+<script src="/js/jquery-ui.min.js"></script>
+<script src="/js/mixitup.min.js"></script>
+<script src="/js/jquery.countdown.min.js"></script>
+<script src="/js/jquery.slicknav.js"></script>
+<script src="/js/owl.carousel.min.js"></script>
+<script src="/js/jquery.nicescroll.min.js"></script>
+<script src="/js/main.js"></script>
+
+</body>
+
+</html>

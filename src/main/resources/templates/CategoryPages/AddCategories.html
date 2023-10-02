@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="//http:www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Add category</title>
+</head>
+<body>
+	<div th:replace="fragments/AdminHeader :: AdminHeader"></div>
+			
+	
+		<div class="container">
+			<h4>Add Categories</h4>
+		    <div class="row">
+		        <div class="col-sm-4">
+		            <form th:action="@{/admin/categories/add}" method="post" th:object="${category}">
+		                <input type="hidden" name="id"  th:field="*{id}">
+		                <div class="form-group">
+		                    <label for="name">Name</label>
+		                    <input type="text" class="form-control" minlength="6" maxlength="15"  required th:field="*{name}" name="name" id="name"  placeholder=" name">
+		
+		                </div>
+		                <div class="form-group">
+		                    <label for="name">Description</label>
+		                    <input type="text" class="form-control" minlength="16" maxlength="140" style="height: 100px;" required th:field="*{description}" name="name" id="description"  placeholder=" description">
+		
+		                </div>
+		                
+		
+		                <button type="submit" class="btn btn-primary">Submit</button>
+		            </form>
+		        </div>
+		    </div>
+		</div>
+<div th:replace="fragments/footer :: footer"></div>
+
+</body>
+</html>

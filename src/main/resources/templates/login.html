@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<link rel="stylesheet" href="/css/login.css">
+<head>
+
+
+</head>
+
+<body class="bg-gradient-primary">
+<div th:replace="fragments/header :: header"></div>
+
+<div id="cart_error1" th:if="${param.cart_error}" class=" alert-warning  cart_error py-3">
+    "Ready to add to your cart? Log in to make it happen! 🛒🔑"
+</div>
+<div id="cart_error" th:if="${param.cart_no_stock}" class=" alert-warning  cart_error py-3">
+    "Oops! 😔 This hot item is currently out of stock, but we're hustling to restock it just for you."
+</div>
+<div class="alert-success notLogged1 my-3" id="notLogged" th:if="${param.notLogged}">
+    🔐✨ Welcome back! To view your profile information, please login. Your personalized details await! 📌👤 #UnlockYourProfile
+</div>
+
+
+<div th:if="${error != null}" id="forgot_error" class="alert-danger forgot ">
+    <p class="text-danger">[[${error}]]</p>
+</div>
+<div th:if="${forgotmessage != null}" id="forgot_success" class="alert-success   forgot">
+    <p class="text-warning">[[${forgotmessage}]]</p>
+</div>
+
+
+
+<div class="container mt-5">
+    <!--modal for forgotten password start-->
+    <div class="modal fade" id="forgottenPasswordModal" tabindex="-1" role="dialog" aria-labelledby="forgottenPasswordModalLabel" aria-hidden="true">
+
+
+        <form th:action="@{/forgot_password}" method="post" th:object="${customer}">
+
+
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="forgottenPasswordModalLabel">Forgotten Password</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="form-label">We will be sending a reset password link to your email</p>
+                        <div class="form-group">
+                            <label for="forgotPasswordEmail">Email</label>
+                            <input type="email" class="form-control" id="forgotPasswordEmail" name="email" placeholder="Enter your email">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Sent Link</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!--modal for forgotten password end-->
+
+    <div class="row justify-content-center">
+
+        <div class="col-xl-10 col-lg-12 col-md-9">
+
+            <div class="card o-hidden border-0 shadow-lg my-5">
+
+                <div class="card-body p-4">
+                    <!-- Nested Row within Card Body -->
+                    <h4 id="loginhead">Login</h4>
+                    <div class="row">
+                        <div class="col-lg-6 d-none d-lg-block bg-login-image">
+                            <img src="/homeImages/th (1).jpeg" class="ml-5 p-3 mt-5"
+                                 style="width: auto; height: 300px;">
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="p-5">
+                                <div class="text-center">
+
+
+                                    <div th:if="${error==invalid}" class="alert alert-danger">
+                                        Invalid username & Password
+                                    </div>
+
+                                    <div th:if="${error==blocked}" class="alert alert-danger">
+                                        You are blocked
+                                    </div>
+
+                                    <div th:if="${param.logout}" class="alert alert-success">
+                                        Logout Sucessfully
+                                    </div>
+
+                                    <div th:if="${param.success}" class="alert alert-success">
+                                        OTP verified login here
+                                    </div>
+
+
+                                    <form th:action="@{/login}" method="post">
+                                        <div class="form-group">
+
+                                            <input type="email" name="email" class="form-control form-control-user"
+                                                   id="email" aria-describedby="emailHelp"
+
+                                                   placeholder="Enter Email Address...">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <input type="password" name="password" id="password"
+                                                   class="form-control form-control-user"
+                                                   placeholder="Password">
+
+
+                                        </div>
+                                        <button type="submit" class="btn btn-primary btn-user btn-block">
+                                            Login
+                                        </button>
+                                        <hr>
+                                    </form>
+                                    <hr>
+                                    <div class="text-center">
+                                        <a class="small"  href="#" data-toggle="modal" data-target="#forgottenPasswordModal">forgotten Password ?</a>
+                                        </a>
+                                    </div>
+                                    <div class="text-center">
+                                        <a class="small" th:href="@{/register}" href="register.html">Create an
+                                            Account!</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div th:replace="fragments/footer::footer"></div>
+
+
+<script>
+
+    function hideForgottpasswordMessageDiv() {
+        var message = document.getElementById('forgot_error');
+        if (message) {
+            message.style.display = 'none';
+        }
+    }
+    setTimeout(hideForgottpasswordMessageDiv, 4000);
+
+
+     function hideForgottpasswordMessageDiv() {
+        var message = document.getElementById('forgot_success');
+        if (message) {
+            message.style.display = 'none';
+        }
+    }
+    setTimeout(hideForgottpasswordMessageDiv, 4000);
+
+
+
+</script>
+
+</body>
+
+</html>

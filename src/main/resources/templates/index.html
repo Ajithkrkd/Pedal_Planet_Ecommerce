@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html  lang="en" xmlns:th = "https://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Ashion Template">
+    <meta name="keywords" content="Ashion, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>home</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <style>
+        /* Style the image container */
+        .image-container {
+            position: relative;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Style the images */
+        .image-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        /* Style the image text overlay */
+        .image-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.8);
+            color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            opacity: 0; /* Initially hide the text */
+            transition: opacity 0.3s ease;
+        }
+
+        /* Show the text overlay on hover */
+        .image-container:hover .image-text {
+            opacity: 2;
+        }
+
+        /* Style the title and description */
+        .image-text h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .image-text p {
+            font-size: 16px;
+        }
+
+    </style>
+</head>
+
+<body>
+   
+
+    <div th:replace="fragments/header::header"></div>
+    <!-- Categories Section Begin -->
+    <section class="categories">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-6 p-0">
+                    <div class="image-container">
+                        <img src="/homeImages/bannerPedal4.jpeg" alt="Image 1">
+                        <div class="image-text">
+                            <h3>
+                                "Eco-Friendly Commuting: Explore Electric Vehicles!"</h3>
+                            <p>"Charge into the Future: Discover Electric Mobility!"</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 p-0">
+                    <div class="image-container">
+                        <img src="/homeImages/bannerPedal3.jpeg" alt="Image 2">
+                        <div class="image-text">
+                            <h3>"Explore the Latest in Bicycles!"</h3>
+                            <p>Pedal into the future with our newest bicycle arrivals. </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Add similar code for other images -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section End -->
+<!-- Product Section Begin -->
+    <section class="product spade">
+        <style>
+            /* Define styles for the product cards */
+            .product__item {
+                display: flex; /* Use Flexbox to align items */
+                flex-direction: column; /* Stack child elements vertically */
+                height: 100%; /* Make each card take up the full height */
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+                background-color: white; /* Optional: Add a white background color to the cards */
+            }
+
+            /* Adjust styles for the inner elements */
+            .product__item__pic {
+                flex-grow: 1; /* Allow the image to grow and take up remaining space */
+            }
+
+            .product__item__text {
+                padding: 15px;
+            }
+        </style>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-4 col-sm-6 mix women card my-2 " th:each="product, iStat : ${availableproducts}">
+                    <div class="product__item">
+                        <div class="product__item__pic set-bg">
+                            <a th:href="@{/shop/single-product/{id}(id=${product.id})}">
+                                <th:block th:if="${not #lists.isEmpty(product.images)}">
+                                    <!-- Display the first image for the product -->
+                                    <img th:src="@{${'/Images/product/' + product.images[0].imagePath}}" alt="Product Image">
+                                </th:block>
+                            </a>
+                        </div>
+                        <div class="product__item__text">
+                            <!-- Apply styles for the product name and price -->
+                            <h6><a href="#" th:text="${product.name}" style="font-weight: bold;">Buttons tweed blazer</a></h6>
+                            <span style="font-size: 24px; font-weight: bold;">RS . <span style="font-size: 20px;" th:text="${product.price}"></span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Product Section End -->
+
+
+<!-- Services Section Begin -->
+<section class="services spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="services__item">
+                    <i class="fa fa-car"></i>
+                    <h6>Free Shipping</h6>
+                    <p>For all oder over $99</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="services__item">
+                    <i class="fa fa-money"></i>
+                    <h6>Money Back Guarantee</h6>
+                    <p>If good have Problems</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="services__item">
+                    <i class="fa fa-support"></i>
+                    <h6>Online Support 24/7</h6>
+                    <p>Dedicated support</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="services__item">
+                    <i class="fa fa-headphones"></i>
+                    <h6>Payment Secure</h6>
+                    <p>100% secure payment</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Services Section End -->
+<div th:replace="fragments/footer::footer"></div>
+
+
+<!-- Search Begin -->
+<div class="search-model">
+    <div class="h-100 d-flex align-items-center justify-content-center">
+        <div class="search-close-switch">+</div>
+        <form class="search-model-form">
+            <input type="text" id="search-input" placeholder="Search here.....">
+        </form>
+    </div>
+</div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            if (!sessionStorage.getItem('alertShown')) {
+        Swal.fire(
+            'Welcome!',
+            'Check your Wallet bonus added',
+            'success'
+        );
+
+
+        sessionStorage.setItem('alertShown', 'true');
+    }
+});
+    </script>
+</body>
+
+</html>

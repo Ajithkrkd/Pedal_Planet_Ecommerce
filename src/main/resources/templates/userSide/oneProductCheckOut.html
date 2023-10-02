@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Ashion Template">
+    <meta name="keywords" content="Ashion, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>checkout</title>
+    <style>
+
+        .custom-div {
+            background-color: #f0f0f0;
+            border: 2px solid #ccc;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            width: 200px; /* Adjust the width as needed */
+            text-align: center;
+        }
+
+
+        .custom-select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            outline: none;
+        }
+
+
+        .space {
+        margin-right: 140px;
+    }
+
+
+    </style>
+
+</head>
+<div th:replace="/fragments/header::header"></div>
+<body>
+<!-- Page Preloder -->
+<div id="preloder">
+    <div class="loader"></div>
+</div>
+
+
+
+<!-- Breadcrumb Begin -->
+<div class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__links">
+                    <a href="/"><i class="fa fa-home"></i> Home</a>
+                    <span>checkout</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+<!-- Checkout Section Begin -->
+<section class="checkout spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h6 class="coupon__link"><span class="icon_tag_alt"></span> <a href="#">Have a coupon?</a> Click here to enter your code.</h6>
+            </div>
+        </div>
+
+
+
+
+        <p>
+            <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                add address
+            </a>
+        <div class="collapse" id="collapseExample">
+            <div class="card card-body">
+
+                <form th:action="@{/add_address_checkout}" method="post">
+                    <div class="card-body pb-2">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">House Name</label>
+                                    <input type="text" class="form-control" name="houseName"
+                                           placeholder="Enter your house name here" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Area</label>
+                                    <input type="text" class="form-control" name="area" t
+                                           placeholder="Enter your area here" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Town</label>
+                                    <input type="text" class="form-control" name="town"
+                                           placeholder="Enter your town here" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">City</label>
+                                    <input type="text" class="form-control" name="city"
+                                           placeholder="Enter your city here" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">State</label>
+                                    <input type="text" class="form-control" name="state"
+                                           placeholder="Enter your state here" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Pin Code</label>
+                                    <input type="text" class="form-control" name="pin_code"
+                                           placeholder="Enter your pin code here" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Landmark</label>
+                                    <input type="text" class="form-control" name="landMark"
+                                           placeholder="Enter your landmark here" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="border-light m-0">
+                    <div class="card-body pb-2">
+                        <h6 class="mb-4">Contacts</h6>
+                        <div class="form-group">
+                            <label class="form-label">Phone</label>
+                            <input type="text" class="form-control" name="secondary_number"
+                                   placeholder="secondary number" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">save</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+
+
+
+
+        <form th:action="@{/placeOrder}" method="post" class="checkout__form">
+            <div class="row">
+                <div class="col-lg-12 py-5 px-5">
+                    <label>Select Address here</label>
+                    <select id="selectedAddress"  class="form-select" aria-label="Default select example" style="width: 100%; padding: 40px;">
+
+                        <th:block th:each="address, addressIndex : ${customerAddress}">
+
+                            <option th:value="${address.id}">
+
+                                <div class="address-option">
+
+                                    <strong>Flat:</strong> <p th:text="${address.houseName != null ? address.houseName : '-'}"></p><br>
+                                    <strong>Area:</strong> <p th:text="${address.area != null ? address.area : '-'}"></p><br>
+                                    <strong>Town:</strong> <p th:text="${address.town != null ? address.town : '-'}"></p>
+                                    <strong>City:</strong> <p th:text="${address.city != null ? address.city : '-'}"></p><br>
+                                    <strong>State:</strong> <p th:text="${address.state != null ? address.state : '-'}"></p><br>
+                                    <strong>Landmark:</strong> <p th:text="${address.landMark != null ? address.landMark : '-'}"></p><br>
+                                    <strong>Pin:</strong> <p th:text="${address.pin_code != null ? address.pin_code : '-'}"></p>
+
+                                </div>
+                            </option>
+                        </th:block>
+
+                    </select>
+
+                </div>
+
+
+                <input type="hidden" name="ordered_address" id="address_id">
+                <div class="col-lg-12">
+                    <div class="checkout__order">
+                        <h5>Your order</h5>
+                        <div class="row-1 orderItem py-2 d-flex my-3 flex-md-row flex-column justify-content-around align-items-center" th:each="product : ${product}">
+
+                            <div class="col-12 col-md-3">
+                                <img th:src="@{/images/product/{imagePath}(imagePath=${variant.product.images[0].imagePath})}" alt="/assets/img/cart.jpg" class="img-fluid" style="height:10rem">
+                            </div>
+
+                            <div class="m-0 col-12 col-md-3">
+                                <p class="product_name" th:text="${#strings.abbreviate(product.name, 30)}" style="font-size: 22px; font-weight: 800; color: #111111;">Product Name</p>
+                                <p class="variant_name" th:text="${variant.VariantName}">Variant Name</p>
+                                <span class="Quantity-text">Quantity </span><span style=" font-size: 24px; margin-left: 11px; font-weight: 800;" class="Quantity" th:text="${product.quantity}">Quantity</span>
+                                <div>
+
+                                    <span>RS</span>
+                                    <span style="font-size: 24px; margin-bottom: 21px; font-weight: 800;" class="price-text" th:text="${'$' + (variant.price)}">2799</span>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <div class="d-flex align-items-center">
+                                    <button onclick="sendCartItem(this.getAttribute('data-variant-id'))" th:data-variant-id="${variant.id}" class="increase items-count p-2" type="button" style="border-radius: 5px; border: 1px solid;">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                    <input type="text" name="qty" th:value="${product.quantity}" title="Quantity:" class="input-text qty p-2 mx-3" readonly style="border-radius: 9px; text-align: center; border: 1px solid; font-size: 14px;">
+                                    <button onclick="sendCartItemDecr(this.getAttribute('data-variant-id'))" th:data-variant-id="${variant.id}" class="reduced items-count p-2" type="button" style="border-radius: 5px; border: 1px solid;">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <div class="col-12 col-md-1">
+                                    <button onclick="deleteCartItem(this.getAttribute('data-variant-id'), this.getAttribute('data-quantity'))" th:data-variant-id="${variant.id}" th:data-quantity="${product.quantity}" class="btn btn-primary" type="button">Remove</button>
+                                </div>
+                                <div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="checkout__order__total">
+                            <ul>
+                                <li>Total <span th:text="${total_Offer_price}"></span><span>Rs .</span></li>
+                            </ul>
+                        </div>
+                        <div class="checkout__order__widget">
+                            <label for="paymentMethod">Payment method:</label>
+                            <select id="paymentMethod" name="paymentMethod" class="custom-select mb-5">
+                                <option th:each="payment : ${T(com.ajith.pedal_planet.Enums.Payment).values()}"
+                                        th:text="${payment}">
+
+                                </option>
+                            </select>
+                        </div>
+                        <button type="submit" class="site-btn">Place order</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+<!-- Checkout Section End -->
+
+
+
+
+<!-- Search Begin -->
+<div class="search-model">
+    <div class="h-100 d-flex align-items-center justify-content-center">
+        <div class="search-close-switch">+</div>
+        <form class="search-model-form">
+            <input type="text" id="search-input" placeholder="Search here.....">
+        </form>
+    </div>
+</div>
+<!-- Search End -->
+<div th:replace="/fragments/footer::footer"></div>
+<!-- Js Plugins -->
+<script>
+    function sendPaymentMethod() {
+        var selectedPaymentMethod = document.getElementById("paymentMethod").value;
+        document.getElementById("paymentMethodValue").value = selectedPaymentMethod;
+    }
+</script>
+<script>
+
+    var selectAddress = document.getElementById("selectedAddress");
+    var addressIdInput = document.getElementById("address_id");
+    selectAddress.addEventListener("change", function() {
+        var selectedValue = selectAddress.value;
+        addressIdInput.value = selectedValue;
+    });
+</script>
+
+
+</body>
+
+</html>

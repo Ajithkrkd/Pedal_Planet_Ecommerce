@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>Category Management</title>
+    <link rel="stylesheet" href="/css/categories.css">
+</head>
+<body>
+<div th:replace="fragments/AdminHeader :: AdminHeader"></div>
+
+<a class="status-badge btn px-4 py-2 mt-3 mx-3 btn-primary" href="/admin/coupon/create">Add Coupons</a>
+
+<div class="container-fluid">
+    <center>
+        <h4 class="mt-5"><a style="text-decoration: none;" href="/admin/coupon/listCoupon">Manage Coupons Here</a></h4>
+        <form class="form-inline mt-3" th:action="@{/admin/searchCategories}" method="get">
+            <div class="col-md-12 col-lg-12 col-xl-12">
+                <input style="max-width: 300px;" id="name" type="text" name="name" th:value="*{name}" required class="form-control" placeholder="Enter username here">
+                <input class="btn btn-primary btn-success " type="submit" name="search" value="Search"></input>
+            </div>
+        </form>
+    </center>
+
+
+    <table class="table custom-table">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th >Status</th>
+            <th>Code</th>
+            <th> Coupon Type</th>
+            <th>Applicable Amount</th>
+            <th>Expiry</th>
+            <th>Remaining</th>
+            <th>Actions</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="coupon, rowIndex : ${coupons}" th:field="${coupon}"
+            th:class="${coupon.isDeleted ? 'table-danger' : 'table-default'}"
+        >
+            <td th:text="${rowIndex.count}"></td>
+            <td>
+               <span th:text="${coupon.isExpired()? 'Expired' :  coupon.isDeleted == false ? 'Enabled' : 'Disabled'}"
+                 th:class="${coupon.isExpired()? 'badge bg-danger me-1' :  coupon.isDeleted == false ? 'badge bg-success me-1' :
+                      'badge bg-warning me-1'}">
+                </span>
+
+            </td>
+            <td th:text="${coupon.code}"></td>
+            <td>
+                <span th:if="${coupon.type.name == 'GENERAL'}"><i class="fas fa-cog"></i> General</span>
+                <span th:if="${coupon.type.name == 'PRODUCT'}"><i class="fas fa-box"></i> <span th:text="${coupon.product.id}"></span></span>
+                <span th:if="${coupon.type.name == 'CATEGORY'}"><i class="fas fa-tags"></i> <span th:text="${coupon.category.name}"></span></span>
+                <span th:if="${coupon.type.name == 'USER'}"><i class="fas fa-user"></i> User</span>
+            </td>
+            <td th:text="${coupon.maximumDiscountAmount}"></td>
+            <td th:text="${coupon.expirationPeriod}"></td>
+            <td th:text="${coupon.couponStock}"></td>
+            <td>
+                <a  th:attr="data-target='#edit-coupon-modal-' + ${coupon.id}"  class="edit" title="Edit" data-toggle="modal"><i class="fa fa-3x fa-edit me-1"></i></a>
+                <a class="delete-link" data-toggle="modal" th:attr="data-target='#delete-confirm-modal-' + ${coupon.id}"><i class="fa  fa-3x fa-trash me-1"></i></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div th:each="coupon : ${coupons}">
+        <form th:action="@{/admin/coupon/delete/{id}(id=${coupon.id})}" method="post"
+              th:object="${coupons}">
+<!--modal-content for disable and enable is started-->
+            <div class="modal fade" th:id="'delete-confirm-modal-' + ${coupon.id}" tabindex="-1" role="dialog" aria-labelledby="delete-confirm-modal-label" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="delete-confirm-modal-label">Confirm deletion</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div th:if="${!coupon.isDeleted}" class="modal-body" style="font-size: 20px;font-weight: 800;">
+                            Are you sure you want to DISABLE this item?
+                        </div>
+                        <div th:unless="${!coupon.isDeleted}" class="modal-body" style="font-size: 20px;font-weight: 800;">
+                            Are you sure you want to ENABLE this item?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn" th:classappend="${coupon.isDeleted ? 'btn-success' : 'btn-danger'}" id="delete-confirm-btn">
+                                <span th:text="${coupon.isDeleted ? 'Enable' : 'Disable'}"></span>
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div th:each="coupon : ${coupons}">
+
+            <!--modal-content for disable and enable is started-->
+            <div class="modal fade" th:id="'edit-coupon-modal-' + ${coupon.id}" tabindex="-1" role="dialog" aria-labelledby="delete-confirm-modal-label" aria-hidden="true">
+                <div class="modal-dialog modal-lg " role="document">
+                    <div class="modal-content p-5">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="edit-coupon-modal-label">Confirm deletion</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+   <form th:action="@{/admin/coupon/update-coupon/{id}(id=${coupon.id})}" method="post"
+                              th:object="${coupons}">
+                        <div class="mb-3">
+                            <label for="code"><i class="fas fa-ticket-alt"></i> Coupon Code:</label>
+                            <input type="text" id="code" name="code" class="form-control" th:value="${coupon.code}" readonly>
+                        </div>
+
+                        <div id="productSection" th:if="${coupon.type == 'PRODUCT'}">
+                            <label for="product"><i class="fas fa-box-open"></i> Product:</label>
+                            <input type="text" id="product" name="product" class="form-control" readonly th:value="${coupon.product.name}">
+                        </div>
+
+                        <div id="categorySection" th:if="${coupon.type == 'CATEGORY'}">
+                            <label for="category"><i class="fas fa-folder-open"></i> Category:</label>
+                            <input type="text" id="category" name="category" class="form-control" readonly th:value="${coupon.category.name}">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="discount"><i class="fas fa-percent"></i> Discount:</label>
+                            <input type="number" id="discount" name="discount" class="form-control" th:value="${coupon.discount}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="expirationPeriod"><i class="fas fa-calendar"></i> Expiration Period (days):</label>
+                            <input type="date" id="expirationPeriod" name="expirationPeriod" class="form-control" th:value="${coupon.expirationPeriod}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="couponStock"><i class="fas fa-boxes"></i> Coupon Stock:</label>
+                            <input type="number" id="couponStock" name="couponStock" class="form-control" th:value="${coupon.couponStock}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="maximumDiscountAmount"><i class="fas fa-money-bill"></i> Maximum Discount Amount:</label>
+                            <input type="number" id="maximumDiscountAmount" name="maximumDiscountAmount" class="form-control" th:value="${coupon.maximumDiscountAmount}" required>
+                        </div>
+
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn"  id="edit-coupon-modal-btn">save</button>
+                        </div>
+   </form>
+
+                    </div>
+                </div>
+            </div>
+
+    </div>
+</div>
+<!--modal-content for disable and enable is finished-->
+            <!--modal-content for disable and enable is finished--></div>
+<div th:replace="fragments/footer :: footer"></div>
+
+<script>
+
+    const associatedItemSelect = document.getElementById("associatedItem");
+    const productSection = document.getElementById("productSection");
+    const categorySection = document.getElementById("categorySection");
+
+    associatedItemSelect.addEventListener("change", function () {
+        const selectedOption = associatedItemSelect.value;
+
+
+        productSection.style.display = "none";
+        categorySection.style.display = "none";
+
+
+        if (selectedOption === "PRODUCT") {
+            productSection.style.display = "block";
+
+        } else if (selectedOption === "CATEGORY") {
+            categorySection.style.display = "block";
+
+        }
+    });
+</script>
+
+</body>
+</html>
+

@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="/css/userSingleOrder.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Using the Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3&display=swap" rel="stylesheet">
+    <title>orderInformation</title>
+    <link rel="stylesheet" href="/css/userSingleOrder.css">
+</head>
+<body>
+<div th:replace="/fragments/header::header"></div>
+
+<div class="container">
+    <div class=" border border-dark mt-4">
+        <form  method="post" th:action="@{/admin/change_order_status}">
+        <div class=" row-1  orderItem py-2  d-flex  flex-md-row    flex-column justify-content-around align-items-center " th:each="item : ${orderItems}">
+            <input type="hidden" name="order_id" th:value="${item.order.id}">
+
+            <div class="col-12 col-md-3">
+                <img  th:src="@{/images/product/{imagePath}(imagePath=${item.variant.product.images[0].imagePath})}"
+                      alt="/assets/img/cart.jpg" class=" img-fluid" style="height:10rem"  >
+            </div>
+
+            <div class="m-0 col-12 col-md-3">
+                <P class="product_name" th:text="${#strings.abbreviate(item.variant.product.name, 23)}">Product Name</P>
+                <P class=" variant_name " th:text="${item.variant.VariantName}">Variant Name</P>
+                <div>
+                    <span class="Quantity-text">Quantity </span><span class="Quantity" th:text="${item.quantity}">Quantity</span>
+                </div>
+                <div>
+                    <span>RS </span><span class="price-text" th:text="${item.variant.offerPrice}"> 2799</span>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-3">
+                <p>Order Status</p>
+                <p  th:class="'status-' + ${item.order.status}" th:text="${item.order.status}"></p>
+            </div>
+
+            <div th:if="${currentStatus == T(com.ajith.pedal_planet.Enums.Status).CANCEL_REQUEST_SENT}">
+                <p>
+                    <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                        view Reason
+                    </a>
+                </p>
+                <div class="collapse" id="collapseExample">
+                    <div class="card card-body">
+                        <p th:text="${cancellationReason}"></p>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div th:if="${currentStatus == T(com.ajith.pedal_planet.Enums.Status).RETURN_REQUEST_SENT}">
+                <p>
+                    <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample">
+                        view Reason
+                    </a>
+                </p>
+                <div class="collapse" id="collapseExample2">
+                    <div class="card card-body">
+                        <p th:text="${cancellationReason}"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+                <div class="form-group col-12 col-md-6 m-0 w-100">
+                  <div  th:if="${currentStatus == T(com.ajith.pedal_planet.Enums.Status).PENDING}">
+                      <select  name="status" class="custom-select mb-3" style="text-align:center;">
+                          <option th:value="${T(com.ajith.pedal_planet.Enums.Status).PENDING}" disabled selected >PENDING</option>
+                          <option th:value="${T(com.ajith.pedal_planet.Enums.Status).CONFIRMED}" >CONFIRMED</option>
+                          <option th:value="${T(com.ajith.pedal_planet.Enums.Status).SHIPPING}" >SHIPPING</option>
+                          <option th:value="${T(com.ajith.pedal_planet.Enums.Status).OUT_FOR_DELIVERY}" >OUT_FOR_DELIVERY</option>
+                          <option th:value="${T(com.ajith.pedal_planet.Enums.Status).DELIVERED}" >DELIVERED</option>
+                          <option th:value="${T(com.ajith.pedal_planet.Enums.Status).CANCEL_REQUEST_SENT}" >CANCEL_REQUEST_SENT</option>
+                          <option th:value="${T(com.ajith.pedal_planet.Enums.Status).CANCELLED}" >CANCELLED</option>
+                          <option th:value="${T(com.ajith.pedal_planet.Enums.Status).RETURN_REQUEST_SENT}" >RETURN_REQUEST_SENT</option>
+                          <option th:value="${T(com.ajith.pedal_planet.Enums.Status).RETURNED}" >RETURNED</option>
+                          <option th:value="${T(com.ajith.pedal_planet.Enums.Status).REFUNDED}" >REFUNDED</option>
+
+                      </select>
+                      <div class="col-12 col-md-6 w-100">
+                          <button type="submit" class="btn btn-primary mt-3 w-100">Submit</button>
+                      </div>
+                  </div>
+
+                    <div  th:if="${currentStatus != T(com.ajith.pedal_planet.Enums.Status).PENDING &&  currentStatus == T(com.ajith.pedal_planet.Enums.Status).CONFIRMED}"  >
+                        <select  name="status" class="custom-select mb-3" style="text-align:center;">
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).PENDING}" disabled selected >PENDING</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).CONFIRMED}" disabled selected >CONFIRMED</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).SHIPPING}" >SHIPPING</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).OUT_FOR_DELIVERY}" >OUT_FOR_DELIVERY</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).DELIVERED}" >DELIVERED</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).CANCELLED}" >CANCELLED</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).CANCEL_REQUEST_SENT}" >CANCEL_REQUEST_SENT</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).CANCELLED}" >CANCELLED</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).RETURNED}" >RETURNED</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).REFUNDED}" >REFUNDED</option>
+
+                        </select>
+                        <div class="col-12 col-md-6 w-100">
+                            <button type="submit" class="btn btn-primary mt-3 w-100">Submit</button>
+                        </div>
+                    </div>
+                    <div  th:if="${currentStatus != T(com.ajith.pedal_planet.Enums.Status).PENDING &&
+                    currentStatus != T(com.ajith.pedal_planet.Enums.Status).CONFIRMED &&
+                    currentStatus == T(com.ajith.pedal_planet.Enums.Status).SHIPPING}"  >
+                        <select  name="status" class="custom-select mb-3" style="text-align:center;">
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).PENDING}" disabled selected >PENDING</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).CONFIRMED}" disabled selected >CONFIRMED</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).SHIPPING}" >SHIPPING</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).OUT_FOR_DELIVERY}" >OUT_FOR_DELIVERY</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).DELIVERED}" >DELIVERED</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).CANCEL_REQUEST_SENT}" >CANCEL_REQUEST_SENT</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).CANCELLED}" >CANCELLED</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).RETURN_REQUEST_SENT}" >RETURN_REQUEST_SENT</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).RETURNED}" >RETURNED</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).REFUNDED}" >REFUNDED</option>
+                        </select>
+                        <div class="col-12 col-md-6 w-100">
+                            <button type="submit" class="btn btn-primary mt-3 w-100">Submit</button>
+                        </div>
+                    </div>
+                    <div  th:if="${currentStatus != T(com.ajith.pedal_planet.Enums.Status).PENDING &&
+                     currentStatus != T(com.ajith.pedal_planet.Enums.Status).CONFIRMED &&
+                     currentStatus != T(com.ajith.pedal_planet.Enums.Status).SHIPPING
+                    && currentStatus == T(com.ajith.pedal_planet.Enums.Status).OUT_FOR_DELIVERY}"  >
+                        <select  name="status" class="custom-select mb-3" style="text-align:center;">
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).PENDING}" disabled selected >PENDING</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).CONFIRMED}" disabled selected >CONFIRMED</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).SHIPPING}" disabled selected >SHIPPING</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).OUT_FOR_DELIVERY}"   >OUT_FOR_DELIVERY</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).DELIVERED}" >DELIVERED</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).CANCEL_REQUEST_SENT}" >CANCEL_REQUEST_SENT</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).CANCELLED}" >CANCELLED</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).RETURN_REQUEST_SENT}" >RETURN_REQUEST_SENT</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).RETURNED}" >RETURNED</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).REFUNDED}" >REFUNDED</option>
+                        </select>
+                        <div class="col-12 col-md-6 w-100">
+                            <button type="submit" class="btn btn-primary mt-3 w-100">Submit</button>
+                        </div>
+                    </div>
+
+                    <div  th:if="${currentStatus != T(com.ajith.pedal_planet.Enums.Status).PENDING &&
+                     currentStatus != T(com.ajith.pedal_planet.Enums.Status).CONFIRMED &&
+                      currentStatus != T(com.ajith.pedal_planet.Enums.Status).SHIPPING
+                    && currentStatus != T(com.ajith.pedal_planet.Enums.Status).OUT_FOR_DELIVERY &&
+                     currentStatus == T(com.ajith.pedal_planet.Enums.Status).DELIVERED }"  >
+                        <select  name="status" class="custom-select mb-3" style="text-align:center;">
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).PENDING}" disabled selected >PENDING</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).CONFIRMED}" disabled selected >CONFIRMED</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).SHIPPING}" disabled selected >SHIPPING</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).OUT_FOR_DELIVERY}" disabled selected >OUT_FOR_DELIVERY</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).DELIVERED}" >DELIVERED</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).CANCELLED}" >CANCELLED</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).CANCEL_REQUEST_SENT}" >CANCEL_REQUEST_SENT</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).RETURN_REQUEST_SENT}" >RETURN_REQUEST_SENT</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).RETURNED}" >RETURNED</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).REFUNDED}" >REFUNDED</option>
+                        </select>
+                        <div class="col-12 col-md-6 w-100">
+                            <button type="submit" class="btn btn-primary mt-3 w-100">Submit</button>
+                        </div>
+                    </div>
+
+                    <div  th:if="${currentStatus != T(com.ajith.pedal_planet.Enums.Status).PENDING &&  currentStatus != T(com.ajith.pedal_planet.Enums.Status).CONFIRMED && currentStatus != T(com.ajith.pedal_planet.Enums.Status).SHIPPING
+                    && currentStatus != T(com.ajith.pedal_planet.Enums.Status).OUT_FOR_DELIVERY && currentStatus != T(com.ajith.pedal_planet.Enums.Status).DELIVERED
+                    && currentStatus == T(com.ajith.pedal_planet.Enums.Status).CANCEL_REQUEST_SENT}"  >
+                        <select  name="status" class="custom-select mb-3" style="text-align:center;">
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).PENDING}" disabled selected >PENDING</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).CONFIRMED}" disabled selected >CONFIRMED</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).SHIPPING}" >SHIPPING</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).OUT_FOR_DELIVERY}" disabled selected >OUT_FOR_DELIVERY</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).DELIVERED}" disabled selected >DELIVERED</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).CANCEL_REQUEST_SENT}" >CANCEL_REQUEST_SENT</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).CANCELLED}" >CANCELLED</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).RETURN_REQUEST_SENT}" >RETURN_REQUEST_SENT</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).REFUNDED}" >REFUNDED</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).RETURNED}" >RETURNED</option>
+                        </select>
+                        <div class="col-12 col-md-6 w-100">
+                            <button type="submit" class="btn btn-primary mt-3 w-100">Submit</button>
+                        </div>
+                    </div>
+
+                    <div  th:if="${currentStatus != T(com.ajith.pedal_planet.Enums.Status).PENDING &&  currentStatus != T(com.ajith.pedal_planet.Enums.Status).CONFIRMED && currentStatus != T(com.ajith.pedal_planet.Enums.Status).SHIPPING
+                    && currentStatus != T(com.ajith.pedal_planet.Enums.Status).OUT_FOR_DELIVERY && currentStatus != T(com.ajith.pedal_planet.Enums.Status).DELIVERED
+                    && currentStatus != T(com.ajith.pedal_planet.Enums.Status).CANCEL_REQUEST_SENT &&
+                    currentStatus == T(com.ajith.pedal_planet.Enums.Status).CANCELLED}"
+                          >
+                        <select  name="status" class="custom-select mb-3" style="text-align:center;">
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).PENDING}" disabled selected >PENDING</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).CONFIRMED}" disabled selected >CONFIRMED</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).SHIPPING}" >SHIPPING</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).OUT_FOR_DELIVERY}" disabled selected >OUT_FOR_DELIVERY</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).DELIVERED}" disabled selected >DELIVERED</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).CANCEL_REQUEST_SENT}" disabled selected >CANCEL_REQUEST_SENT</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).CANCELLED}" >CANCELLED</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).RETURN_REQUEST_SENT}" >RETURN_REQUEST_SENT</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).RETURNED}" >RETURNED</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).REFUNDED}" >REFUNDED</option>
+
+                        </select>
+                        <div class="col-12 col-md-6 w-100">
+                            <button type="submit" class="btn btn-primary mt-3 w-100">Submit</button>
+                        </div>
+                    </div>
+
+                    <div  th:if="${currentStatus != T(com.ajith.pedal_planet.Enums.Status).PENDING &&  currentStatus != T(com.ajith.pedal_planet.Enums.Status).CONFIRMED && currentStatus != T(com.ajith.pedal_planet.Enums.Status).SHIPPING
+                    && currentStatus != T(com.ajith.pedal_planet.Enums.Status).OUT_FOR_DELIVERY && currentStatus != T(com.ajith.pedal_planet.Enums.Status).DELIVERED
+                    && currentStatus != T(com.ajith.pedal_planet.Enums.Status).CANCELLED &&
+                     currentStatus != T(com.ajith.pedal_planet.Enums.Status).CANCEL_REQUEST_SENT
+                    && currentStatus == T(com.ajith.pedal_planet.Enums.Status).RETURN_REQUEST_SENT
+                         }">
+                        <select  name="status" class="custom-select mb-3" style="text-align:center;">
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).PENDING}" disabled selected >PENDING</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).CONFIRMED}" disabled selected >CONFIRMED</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).SHIPPING}" >SHIPPING</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).OUT_FOR_DELIVERY}" disabled selected >OUT_FOR_DELIVERY</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).DELIVERED}" disabled selected >DELIVERED</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).CANCEL_REQUEST_SENT}" disabled selected >CANCEL_REQUEST_SENT</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).CANCEL_REQUEST_SENT}" disabled selected >CANCEL_REQUEST_SENT</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).CANCELLED}" >CANCELLED</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).RETURNED}" >RETURNED</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).REFUNDED}" >REFUNDED</option>
+
+                        </select>
+                        <div class="col-12 col-md-6 w-100">
+                            <button type="submit" class="btn btn-primary mt-3 w-100">Submit</button>
+                        </div>
+                    </div>
+
+                    <div  th:if="${currentStatus != T(com.ajith.pedal_planet.Enums.Status).PENDING &&  currentStatus != T(com.ajith.pedal_planet.Enums.Status).CONFIRMED && currentStatus != T(com.ajith.pedal_planet.Enums.Status).SHIPPING
+                    && currentStatus != T(com.ajith.pedal_planet.Enums.Status).OUT_FOR_DELIVERY && currentStatus != T(com.ajith.pedal_planet.Enums.Status).DELIVERED
+                    && currentStatus != T(com.ajith.pedal_planet.Enums.Status).CANCELLED && currentStatus != T(com.ajith.pedal_planet.Enums.Status).CANCEL_REQUEST_SENT
+                    && currentStatus != T(com.ajith.pedal_planet.Enums.Status).RETURN_REQUEST_SENT
+                          && currentStatus == T(com.ajith.pedal_planet.Enums.Status).RETURNED}">
+                        <select  name="status" class="custom-select mb-3" style="text-align:center;">
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).PENDING}" disabled selected >PENDING</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).CONFIRMED}" disabled selected >CONFIRMED</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).SHIPPING}" >SHIPPING</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).OUT_FOR_DELIVERY}" disabled selected >OUT_FOR_DELIVERY</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).DELIVERED}" disabled selected >DELIVERED</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).CANCEL_REQUEST_SENT}" disabled selected  >CANCEL_REQUEST_SENT</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).CANCELLED}" disabled selected  >CANCELLED</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).RETURN_REQUEST_SENT}" disabled selected  >RETURN_REQUEST_SENT</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).RETURNED}" >RETURNED</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).REFUNDED}" >REFUNDED</option>
+
+                        </select>
+                        <div class="col-12 col-md-6 w-100">
+                            <button type="submit" class="btn btn-primary mt-3 w-100">Submit</button>
+                        </div>
+                    </div>
+                    <div  th:if="${currentStatus != T(com.ajith.pedal_planet.Enums.Status).PENDING &&  currentStatus != T(com.ajith.pedal_planet.Enums.Status).CONFIRMED && currentStatus != T(com.ajith.pedal_planet.Enums.Status).SHIPPING
+                    && currentStatus != T(com.ajith.pedal_planet.Enums.Status).OUT_FOR_DELIVERY && currentStatus != T(com.ajith.pedal_planet.Enums.Status).DELIVERED
+                    && currentStatus != T(com.ajith.pedal_planet.Enums.Status).CANCELLED && currentStatus != T(com.ajith.pedal_planet.Enums.Status).CANCEL_REQUEST_SENT
+                    && currentStatus != T(com.ajith.pedal_planet.Enums.Status).RETURN_REQUEST_SENT
+                          && currentStatus != T(com.ajith.pedal_planet.Enums.Status).RETURNED
+                         && currentStatus == T(com.ajith.pedal_planet.Enums.Status).REFUNDED }">
+                        <select  name="status" class="custom-select mb-3" style="text-align:center;">
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).PENDING}" disabled selected >PENDING</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).CONFIRMED}" disabled selected >CONFIRMED</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).SHIPPING}" disabled selected  >SHIPPING</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).OUT_FOR_DELIVERY}" disabled selected  >OUT_FOR_DELIVERY</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).DELIVERED}" disabled selected  >DELIVERED</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).CANCEL_REQUEST_SENT}" disabled selected  >CANCEL_REQUEST_SENT</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).CANCELLED}"disabled selected  >CANCELLED</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).RETURN_REQUEST_SENT}" disabled selected  >RETURN_REQUEST_SENT</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).RETURNED}" disabled selected  >RETURNED</option>
+                            <option th:value="${T(com.ajith.pedal_planet.Enums.Status).REFUNDED}" >REFUNDED</option>
+
+                        </select>
+
+
+                        <div class="col-12 col-md-12 w-100 mb-4">
+                            <button type="submit" class="btn btn-primary mt-3 w-100 mb-4">Submit</button>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+
+        </form>
+    </div>
+</div>
+
+
+
+<div th:replace="/fragments/footer::footer"></div>
+
+</body>
+</html>
+
+
+

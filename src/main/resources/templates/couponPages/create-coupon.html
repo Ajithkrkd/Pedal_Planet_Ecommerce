@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="//http:www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Add category</title>
+</head>
+<body>
+<div th:replace="fragments/AdminHeader :: AdminHeader"></div>
+
+
+<div class="container">
+    <div th:if="${error}" class="alert alert-danger">
+        <strong th:text="${'Coupon ' + couponCode + ' already exist!'}">Danger!</strong>
+    </div>
+
+    <h2 class="mt-2">Create Coupon</h2>
+
+
+    <div class="row">
+        <div class="col-12  justify-content-center align-item-center mt-5">
+            <form th:action="@{/admin/coupon/save}" method="post" th:object="${coupon}">
+                <input type="hidden" name="id"  th:field="*{id}">
+
+                <div class="mb-3">
+                    <label for="coupon"><i class="fas fa-ticket-alt"></i> Coupon Code:</label>
+                    <input type="text" id="coupon" name="code" class="form-control" required>
+                    <span class="text-danger" th:if="${#fields.hasErrors('code')}" th:errors="*{code}"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label for="associatedItem"><i class="fas fa-link"></i> Associated Item:</label>
+                    <select id="associatedItem" name="type" class="form-select">
+                        <option value="GENERAL" id="generalOption"><i class="fas fa-cog"></i> General</option>
+                        <option value="PRODUCT"><i class="fas fa-box"></i> Product</option>
+                        <option value="CATEGORY"><i class="fas fa-tags"></i> Category</option>
+                    </select>
+                </div>
+
+                <div id="productSection" style="display: none; margin-top:2rem; margin-bottom:1rem;">
+                    <label for="product"><i class="fas fa-box-open"></i> Product:</label>
+                    <select id="product" name="product" class="form-select">
+                        <option th:each="product : ${productList}" th:text="${product.name}" th:value="${product.id}"></option>
+                    </select>
+                </div>
+
+                <div id="categorySection" style="display: none; margin-top:2rem; margin-bottom:1rem;">
+                    <label for="category"><i class="fas fa-folder-open"></i> Category:</label>
+                    <select id="category" name="category" class="form-select">
+                        <option th:each="category : ${categoryList}" th:text="${category.name}" th:value="${category.id}"></option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="discount"><i class="fas fa-percent"></i> Discount:</label>
+                    <input type="number" id="discount" name="discount" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="expirationPeriod"><i class="fas fa-calendar"></i> Expiration Period:</label>
+                    <input type="date" id="expirationPeriod" name="expirationPeriod" class="form-control"  required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="couponStock"><i class="fas fa-boxes"></i> Coupon Stock:</label>
+                    <input type="number" id="couponStock" name="couponStock" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="maximumDiscountAmount"><i class="fas fa-money-bill"></i> Maximum Discount Amount:</label>
+                    <input type="number" id="maximumDiscountAmount" name="maximumDiscountAmount" class="form-control" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> Create</button>
+            </form>
+        </div>
+    </div>
+</div>
+<div th:replace="fragments/footer :: footer"></div>
+<script>
+
+    const associatedItemSelect = document.getElementById("associatedItem");
+    const productSection = document.getElementById("productSection");
+    const categorySection = document.getElementById("categorySection");
+
+    associatedItemSelect.addEventListener("change", function () {
+        const selectedOption = associatedItemSelect.value;
+
+
+        productSection.style.display = "none";
+        categorySection.style.display = "none";
+
+
+        if (selectedOption === "PRODUCT") {
+            productSection.style.display = "block";
+
+        } else if (selectedOption === "CATEGORY") {
+            categorySection.style.display = "block";
+
+        }
+    });
+</script>
+
+
+
+
+
+
+</body>
+</html>

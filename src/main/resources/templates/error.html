@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found</title>
+
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+
+
+ .page_404 {
+   margin-top:15px;
+   background: #fff;
+   font-family: "Arvo", serif;
+ }
+
+ .page_404 img {
+   width: 100%;
+ }
+
+ .four_zero_four_bg {
+   background-image: url(https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif);
+   height: 400px;
+   background-position: center;
+ }
+
+ .four_zero_four_bg h1 {
+   font-size: 80px;
+ }
+
+ .four_zero_four_bg h3 {
+   font-size: 80px;
+ }
+
+ .link_404 {
+   color: #fff !important;
+   background: #39ac31;
+   margin: 20px 0;
+   display: inline-block;
+ }
+ .contant_box_404 {
+   margin-top: -50px;
+ }
+    </style>
+</head>
+<body>
+<div th:replace="/fragments/header :: header"></div>
+
+<section class="page_404 center-404 text-center"> <!-- Added center-404 and text-center classes -->
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="col col-sm-offset-1 d-flex flex-column justify-content-center align-content-center">
+                    <div class="four_zero_four_bg">
+                        <h1 class="text-center">404</h1>
+                    </div>
+
+                    <div class="contant_box_404">
+                        <h3 class="h2">
+                            Look like you're lost
+                        </h3>
+
+                        <p>the page you are looking for not available!</p>
+
+                        <a href="/" class="link_404">Go to Home</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div th:replace="fragments/footer::footer"></div>
+</body>
+</html>

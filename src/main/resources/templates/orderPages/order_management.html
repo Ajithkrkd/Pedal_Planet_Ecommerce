@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<div th:replace="/fragments/header::header"></div>
+<div class="table-responsive py-4 my-5">
+    <table class="table ">
+        <thead class="thead-light">
+        <tr>
+            <th scope="col">customer email</th>
+            <th scope="col">order Id</th>
+            <th scope="col">ordered date</th>
+            <th>Payment method</th>
+            <th>payment status</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order : ${orders}">
+            <td th:text="${order.customer.email}">Email</td>
+            <td th:text="${order.id}">order id</td>
+            <td th:text="${order.ordered_date}">ordered date</td>
+            <td th:text="${order.payment}"></td>
+            <td th:text="${order.status}"></td>
+            <td>
+                <a class="btn btn-sm btn-primary " th:href="@{/admin/order_details/{order_id}(order_id = ${order.id})}">check</a>
+            </td>
+
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div th:replace="/fragments/footer::footer"></div>
+
+</body>
+</html>

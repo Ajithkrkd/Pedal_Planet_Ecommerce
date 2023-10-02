@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>my orders</title>
+    <link rel="stylesheet" href="/css/userOrders.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+
+</head>
+            <body>
+            <div th:replace="/fragments/header::header"></div>
+
+
+            <div th:if="${message}">
+                <div class="alert alert-success " id="success_password" th:text="${message}"></div>
+            </div>
+            <div th:if="${error}">
+                <div class="alert alert-warning error" id="error_password" th:text="${error}"></div>
+            </div>
+
+            <!--order design start-->
+            <div class="container-fluid">
+                <h3 class="order_head" >ORDER LIST</h3>
+                <div class="row">
+
+
+                    <div class="col-md-3 d-flex flex-column">
+                        <h3 class="filter_Head">Filter</h3>
+
+                        <!-- Order Status Filter -->
+                        <h5 class="filter_subHeads" filter_subHeads>ORDER STATUS:</h5>
+                        <a th:href="@{/filter/SHIPPING}"> On the way</a>
+                        <a th:href="@{/filter/DELIVERED}"> Delivered</a>
+                        <a th:href="@{/filter/CANCEL_REQUEST_SENT}"> Cancel requested</a>
+                        <a th:href="@{/filter/CANCELLED}"> Cancelled</a>
+                        <a th:href="@{/filter/RETURN_REQUEST_SENT}"> Return requested</a>
+                        <a th:href="@{/filter/RETURNED}"> Returned</a>
+
+                        <!-- Order Time Filter -->
+                        <h5 class="filter_subHeads">ORDER TIME:</h5>
+                        <a>Last 30 days</a>
+                        <a>Last Week</a>
+                        <a>Last Month</a>
+                        <a>Last Year</a>
+                    </div>
+
+                    <!-- Order Listing (right side) -->
+                    <div class="col-md-9">
+
+
+                <div class="justify-content-center align-content-center">
+                    <!-- Loop through orders and orderItems -->
+                    <div class="row justify-content-between align-content-center" th:each="order : ${orders}" data-order-id="${order.id}">
+                        <div class="col-md-2 text-center d-flex flex-column justify-content-center align-content-center">
+                             <span th:each="orderItem : ${order.orderItems}">
+                                <img th:src="@{/images/product/{imagePath}(imagePath=${orderItem.variant.product.images[0].imagePath})}"
+                                     alt="/assets/img/cart.jpg" class="cart-item-image">
+                             </span>
+                        </div>
+                        <div class="col-md-3 d-flex flex-column  text-center justify-content-center align-content-center"> <!-- Adjust the column width (col-md-*) as needed -->
+                            <span th:each="orderItem : ${order.orderItems}" class="order-details">
+                                <p class="product_name" th:text="${#strings.abbreviate(orderItem.variant.product.name, 30)}">DOMS Hexagonal Colour Pencil Hexagonal S...</p>
+                                      <div class="d-flex my-3">
+                                              <p>size :</p>
+                                              <p class="variant_name mx-1" th:text="${orderItem.variant.VariantName}">Color: Multicolor</p>
+                                      </div>
+                            </span>
+
+                        </div>
+                        <div class="col-md-1 d-flex flex-column  text-center justify-content-center align-content-center ">
+                            <span  th:each="orderItem : ${order.orderItems}" >
+                                <p class="order_price my-4" th:text="${orderItem.variant.offerPrice}"></p>
+                            </span>
+                        </div>
+
+                        <div class="col-md-3 d-flex flex-column  text-center justify-content-center align-content-center fs-4">
+                            <label th:class="'status-' + ${order.status}" th:text="${order.status}"></label>
+                        </div>
+
+                        <div class="col-md-2 d-flex flex-column  text-center justify-content-center align-content-center "> <!-- Adjust the column width (col-md-*) as needed -->
+                            <a class="btn action-button" th:href="@{/account/view_order/{id}(id = ${order.id})}">view</a>
+                        </div>
+                    </div>
+                </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+<!-- order design end-->
+
+
+            <p class="no-more-results">No More Results To Display</p>
+
+            <div th:replace="/fragments/footer:: footer"></div>
+            <script>
+                function sendPaymentMethod() {
+                    var selectedPaymentMethod = document.getElementById("paymentMethod").value;
+                    document.getElementById("paymentMethodValue").value = selectedPaymentMethod;
+                }
+            </script>
+
+            <script>
+                const statusCheckboxes = document.querySelectorAll('input[name="status"]');
+                const timeCheckboxes = document.querySelectorAll('input[name="time"]');
+
+                // Add event listeners to checkboxes to handle filtering
+                statusCheckboxes.forEach(checkbox => {
+                    checkbox.addEventListener('change', filterOrders);
+                });
+
+                timeCheckboxes.forEach(checkbox => {
+                    checkbox.addEventListener('change', filterOrders);
+                });
+
+                function filterOrders() {
+                    // Code to filter orders based on selected checkboxes
+                    // You would need to implement the filtering logic here
+                    // For simplicity, I'm not providing the complete filtering code.
+                }
+            </script>
+
+            </body>
+        </html>
