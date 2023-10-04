@@ -35,5 +35,6 @@ public interface VariantService {
 
     Page<Product> searchProduct(int pageNumber, String keyword);
 
+    List< Variant> getProductVariants (Long productId);
 }
 

@@ -1,5 +1,6 @@
 package com.ajith.pedal_planet.service;
 
+import com.ajith.pedal_planet.DTO.FilterRequest;
 import com.ajith.pedal_planet.models.CartItem;
 import com.ajith.pedal_planet.models.Customer;
 import com.ajith.pedal_planet.models.Order;
@@ -13,4 +14,10 @@ public interface OrderService {
 
 
     Optional < Order > getCurrentOrderUsingOrderId (Long orderId);
+
+    void changeStatusToReturned (Long orderId);
+
+    List< Order> getAllOrders ( );
+
+    List< Order> filterOrders (List< Order> allOrders, FilterRequest filterRequest);
 }

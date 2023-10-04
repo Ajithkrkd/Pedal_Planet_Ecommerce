@@ -362,31 +362,30 @@ table.responsive-table tbody tr:nth-child(even) {
                         <!-- Address Card 1 -->
 <div>
     <div class="saved-address  my-2" th:each="address : ${savedAddress}">
-        <div class="address-card">
-            <h5 class="address-title" th:text="${customer.fullName}">Home</h5>
+        <div class="address-card  border border-dark p-3">
+
             <div class="address-details">
+                <h5 class="address-title" style="font-size:19px;" th:text="${customer.fullName}">Name</h5>
+
+                <span class="address-line">House Name: <span class="address-data" th:text="${address.houseName}"></span></span>
+                <span class="address-line">Town: <span class="address-data"  th:text="${address.town}"></span></span>
+                <span class="address-line">Area: <span class="address-data"  th:text="${address.area}"></span></span>
+                <span class="address-line">City: <span class="address-data"  th:text="${address.city}"></span></span>
+                <span class="address-line">Landmark: <span class="address-data" th:text="${address.landMark}"></span></span>
+
+                <span class="address-line">Pin Code: <span class="address-data" th:text="${address.pin_code}"></span></span>
+
+                <span class="address-line">State: <span class="address-data"  th:text="${address.state}"></span></span>
+                <span class="address-line">Secondary Number: <span class="address-data" th:text="${address.secondary_number}"></span></span>
+
+                <span class="address-line">First Number: <span class="address-data" th:text="${customer.phoneNumber}"></span></span>
 
 
-                <span class="address-line">House Name: <span th:text="${address.houseName}"></span></span>
-                <span class="address-line">Town: <span th:text="${address.town}"></span></span>
-                <span class="address-line">Area: <span th:text="${address.area}"></span></span>
-                <span class="address-line">City: <span th:text="${address.city}"></span></span>
-                <span class="address-line">Landmark: <span
-                        th:text="${address.landMark}"></span></span>
-                <span class="address-line">Pin Code: <span
-                        th:text="${address.pin_code}"></span></span>
-                <span class="address-line">State: <span th:text="${address.state}"></span></span>
-                <span class="address-line">Secondary Number: <span
-                        th:text="${address.secondary_number}"></span></span>
-                <span class="address-line">First Number: <span
-                        th:text="${customer.phoneNumber}"></span></span>
-
-               <div class=" col-6">
-                   <input type="radio" name="defaultAddress" th:id="${address.id}"
-                          th:checked="${address.id}" th:value="${address.id}" />
-
-                   <label>Set as Default</label>
-               </div>
+                <div class="col-6">
+                    <input type="radio" name="defaultAddress" th:id="'defaultAddress-' + ${address.id}"
+                           th:value="${address.id}" th:checked="${address.isDefault}"  onchange="setDefaultAddress(this)" />
+                    <label>Set as Default</label>
+                </div>
             </div>
 
             <a class="edit-button btn btn-primary" data-toggle="modal"

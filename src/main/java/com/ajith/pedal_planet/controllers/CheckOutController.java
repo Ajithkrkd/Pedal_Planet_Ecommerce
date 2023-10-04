@@ -27,7 +27,7 @@ public class CheckOutController {
     private CustomerService customerService;
 
     @Autowired
-    private CustomerAccountController customerAccountController;
+    private BasicServices basicServices;
 
     @Autowired
     private CartItemService cartItemService;
@@ -45,10 +45,10 @@ public class CheckOutController {
     private OrderItemService orderItemService;
 
     @Autowired
-    private  VariantService variantService;
+    private VariantService variantService;
 
     @Autowired
-    private  PaymentService paymentService;
+    private PaymentService paymentService;
 
 
     @Autowired
@@ -67,27 +67,33 @@ public class CheckOutController {
 
 
     @Autowired
-    private  CouponService couponService;
+    private CouponService couponService;
 
-    @GetMapping("/placeOrder")
-    public String getCheckOutPage( Model model) {
+    @Autowired
+    private WalletService walletService;
+
+    @GetMapping ( "/placeOrder" )
+    public String getCheckOutPage (Model model) {
 
 
+        Optional < Customer > customer = customerService.findByUsername ( basicServices.getCurrentUsername ( ) );
+        if ( customer.isPresent ( ) ) {
+            Customer existingCustomer = customer.get ( );
+            Cart cart = customer.get ( ).getCart ( );
+            List < CartItem > cartItems = cart.getCartItems ( );
+            String total_price_price = String.valueOf ( cartservice.getTotalOfferPrice ( cartItems ) );
+             List<Address> customerAddress =  customerService.getNonDeltedAddressList(existingCustomer.getId ());
+             Address defualtAddress = addressService.getDefualtAddressByCustomer_Id(existingCustomer.getId ());
 
-        Optional<Customer> customer = customerService.findByUsername(customerAccountController.getCurrentUsername());
-        if (customer.isPresent()) {
-            Customer existingCustomer = customer.get();
-            Cart cart = customer.get().getCart();
-            List<CartItem> cartItems = cart.getCartItems();
-            String total_price_price = String.valueOf(cartservice.getTotalOfferPrice(cartItems));
-            List<Address> customerAddress = addressService.getCustomerAllAddress(existingCustomer);
-            model.addAttribute("cartItems" , cartItems);
-            model.addAttribute("customerAddress", customerAddress);
-            model.addAttribute("total_Offer_price",total_price_price );
-            if(cart.getCoupon () != null){
-                model.addAttribute("couponName", cart.getCoupon ().getCode ());
-                model.addAttribute("total_amount_AfterDiscount", cart.getTotal_amount_AfterDiscount ());
-                model.addAttribute("discount", cart.getCoupon_discount_amount ());
+            model.addAttribute ( "cartItems", cartItems );
+            model.addAttribute ( "customerAddress", customerAddress );
+            model.addAttribute ( "customerName" , existingCustomer.getFullName ());
+            model.addAttribute ( "defaultAddress", defualtAddress );
+            model.addAttribute ( "total_Offer_price", total_price_price );
+            if ( cart.getCoupon ( ) != null ) {
+                model.addAttribute ( "couponName", cart.getCoupon ( ).getCode ( ) );
+                model.addAttribute ( "total_amount_AfterDiscount", cart.getTotal_amount_AfterDiscount ( ) );
+                model.addAttribute ( "discount", cart.getCoupon_discount_amount ( ) );
             }
 
             return "/userside/checkOutPage";
@@ -96,32 +102,31 @@ public class CheckOutController {
         return "/userSide/checkOutPage";
     }
 
-    @PostMapping("/showConfirmation")
-    public String processOrder(@RequestParam("paymentMethod") String payment,
-                               @RequestParam("ordered_address") Long address_id,
-                               RedirectAttributes redirectAttributes,Model model, HttpSession session) {
+    @PostMapping ( "/showConfirmation" )
+    public String processOrder (@RequestParam ( "paymentMethod" ) String payment,
+                                @RequestParam ( "ordered_address" ) Long address_id,
+                                RedirectAttributes redirectAttributes, Model model, HttpSession session) {
 
-        Optional<Customer> customer = customerService.findByUsername(customerAccountController.getCurrentUsername());
-        if (customer.isPresent()) {
+        Optional < Customer > customer = customerService.findByUsername ( basicServices.getCurrentUsername ( ) );
+        if ( customer.isPresent ( ) ) {
             Customer existingCustomer = customer.get ( );
             Cart cart = existingCustomer.getCart ( );
-            boolean isApplied = customerCouponService.findCouponIsUsedOrNot ( Optional.ofNullable ( cart.getCoupon ( ) ),existingCustomer );
-            System.out.println (isApplied + "hello world" );
-            String total_price_price = String.valueOf(cartservice.getTotalOfferPrice(cart.getCartItems ()));
-            model.addAttribute("total_Offer_price",total_price_price );
-            model.addAttribute("total_amount_AfterDiscount", cart.getTotal_amount_AfterDiscount ());
-            model.addAttribute("discount", cart.getCoupon_discount_amount ());
-            model.addAttribute ( "orderItems" ,cart.getCartItems () );
-                model.addAttribute ( "couponApplied" , isApplied);
+            boolean isApplied = customerCouponService.findCouponIsUsedOrNot ( Optional.ofNullable ( cart.getCoupon ( ) ), existingCustomer );
+            System.out.println ( isApplied + "hello world" );
+            String total_price_price = String.valueOf ( cartservice.getTotalOfferPrice ( cart.getCartItems ( ) ) );
+            model.addAttribute ( "total_Offer_price", total_price_price );
+            model.addAttribute ( "total_amount_AfterDiscount", cart.getTotal_amount_AfterDiscount ( ) );
+            model.addAttribute ( "discount", cart.getCoupon_discount_amount ( ) );
+            model.addAttribute ( "orderItems", cart.getCartItems ( ) );
+            model.addAttribute ( "couponApplied", isApplied );
 
-            if(cart.getCoupon () != null){
-                model.addAttribute ( "couponName", cart.getCoupon ().getCode () );
-                model.addAttribute ( "total_amount_AfterDiscount" , cart.getTotal_amount_AfterDiscount () );
-                model.addAttribute ( "discount", cart.getCoupon_discount_amount () );
+            if ( cart.getCoupon ( ) != null ) {
+                model.addAttribute ( "couponName", cart.getCoupon ( ).getCode ( ) );
+                model.addAttribute ( "total_amount_AfterDiscount", cart.getTotal_amount_AfterDiscount ( ) );
+                model.addAttribute ( "discount", cart.getCoupon_discount_amount ( ) );
 
 
             }
-
 
 
             Optional < Address > customerAddress = addressRepository.findById ( address_id );
@@ -130,68 +135,107 @@ public class CheckOutController {
                 model.addAttribute ( "orderAddress", customerAddress.get ( ) );
                 model.addAttribute ( "paymentMethod", payment );
             }
-            System.out.println ("reached show confirm" );
+            System.out.println ( "reached show confirm" );
             return "/userSide/confirmationPage";
 
-        }else{
+        } else {
             return "error";
         }
 
     }
 
-    @PostMapping("/saveOrder")
+    @PostMapping ( "/saveOrder" )
     @ResponseBody
-    public ResponseEntity < String > saveOrder(@RequestBody OrderData orderData , HttpSession session) {
-        System.out.println (orderData);
-        String paymentStatus = orderData.getPaymentStatus();
-        Long addressId = orderData.getAddressId();
-        Optional<Customer> customer = customerService.findByUsername(customerAccountController.getCurrentUsername());
-        if (customer.isPresent()) {
+    public ResponseEntity < String > saveOrder (@RequestBody OrderData orderData, HttpSession session) {
+        System.out.println ( orderData );
+        String paymentStatus = orderData.getPaymentStatus ( );
+        Long addressId = orderData.getAddressId ( );
+        Optional < Customer > customer = customerService.findByUsername ( basicServices.getCurrentUsername ( ) );
+        if ( customer.isPresent ( ) ) {
             Customer existingCustomer = customer.get ( );
             Cart cart = existingCustomer.getCart ( );
+            List < CartItem > cartItemList = cart.getCartItems ( );
 
-            List<CartItem> cartItemList = cart.getCartItems ();
+            Order order = orderService.saveOrder ( paymentStatus, addressId, cartItemList, existingCustomer, session );
 
-            Order order =   orderService.saveOrder(paymentStatus, addressId, cartItemList,existingCustomer,session);
-
-            return ResponseEntity.ok("order");
+            return ResponseEntity.ok ( "order" );
         }
 
-        return new ResponseEntity<> (HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity <> ( HttpStatus.INTERNAL_SERVER_ERROR );
     }
 
 
-        @GetMapping("/orderSuccess")
+    @GetMapping ( "/orderSuccess" )
 
-    public String getOrderSuccessPage() {
+    public String getOrderSuccessPage ( ) {
         return "/userSide/orderSuccess";
     }
 
-    @PostMapping("/cancelOrder")
-    public String cancelOrder(RedirectAttributes redirectAttributes) {
-       Optional<Customer> customer = customerService.findByUsername (customerAccountController.getCurrentUsername () );
-        if(customer.isPresent ()) {
+    @PostMapping ( "/cancelOrder" )
+    public String cancelOrder (RedirectAttributes redirectAttributes) {
+        Optional < Customer > customer = customerService.findByUsername ( basicServices.getCurrentUsername ( ) );
+        if ( customer.isPresent ( ) ) {
             Customer existingCustomer = customer.get ( );
             Cart cart = existingCustomer.getCart ( );
-            couponService.removeCouponFromCustomer (  existingCustomer ,cart.getCoupon () );
-            cart.setTotal_amount_AfterDiscount ( null );
-            cart.setCoupon_discount_amount ( null );
-            cart.setCoupon ( null );
-            cart.setTotal_amount_AfterDiscount ( null );
-            cartRepository.save (cart);
-            customerRepository.save (existingCustomer);
+           if(existingCustomer.getCart ().getCoupon () != null){
+               couponService.removeCouponFromCustomer ( existingCustomer, cart.getCoupon ( ) );
+               cart.setTotal_amount_AfterDiscount ( null );
+               cart.setCoupon_discount_amount ( null );
+               cart.setCoupon ( null );
+               cart.setTotal_amount_AfterDiscount ( null );
+               cartRepository.save ( cart );
+           }
+            customerRepository.save ( existingCustomer );
         }
-        redirectAttributes.addFlashAttribute("message", "Order Cancelled");
+        redirectAttributes.addFlashAttribute ( "message", "Order Cancelled" );
 
         return "redirect:/account/orders";
     }
 
 
-    @PostMapping("/process_refund")
-    public String proccessRefund(@RequestParam ("paymentMethod") RefundChoice payment ){
-        System.out.println(payment);
-        System.out.println("hai");
-        return "redirect:/account/orders";
+    @PostMapping ( "/walletPayment" )
+    @ResponseBody
+    public ResponseEntity < String > walletPayment (@RequestBody OrderData orderData, HttpSession session) {
+
+
+        String paymentStatus = orderData.getPaymentStatus ( );
+        Long addressId = orderData.getAddressId ( );
+        Optional < Customer > customer = customerService.findByUsername ( basicServices.getCurrentUsername ( ) );
+        if ( customer.isPresent ( ) ) {
+            Customer existingCustomer = customer.get ( );
+            Cart cart = existingCustomer.getCart ( );
+            List < CartItem > cartItemList = cart.getCartItems ( );
+
+
+            float total;
+            if ( cart.getCoupon ( ) != null ) {
+                total = Float.parseFloat ( cart.getTotal_amount_AfterDiscount ( ) );
+                if ( existingCustomer.getWallet ( ).getBalance ( ) < total ) {
+                    return ResponseEntity.badRequest ( ).body ( "Insufficient Balance");
+                }
+            } else {
+                total = cartservice.getTotalOfferPrice ( cartItemList );
+                if ( existingCustomer.getWallet ( ).getBalance ( ) < total ) {
+                    return ResponseEntity.badRequest ( ).body ( "Insufficient Balance");
+                }
+
+
+                Order order = orderService.saveOrder ( paymentStatus, addressId, cartItemList, existingCustomer, session );
+
+
+                Optional < Coupon > coupon = Optional.ofNullable ( cart.getCoupon ( ) );
+                if ( coupon.isPresent ( ) ) {
+                    total = Float.parseFloat ( cart.getTotal_amount_AfterDiscount ( ) );
+                } else {
+                    total = (cartservice.getTotalOfferPrice ( cartItemList ));
+                }
+
+                walletService.reduceAmountFromWalletAndSaveHistory ( existingCustomer, total );
+
+                return ResponseEntity.ok ( "payment Successful" );
+            }
+        }
+        return new ResponseEntity <> ( HttpStatus.INTERNAL_SERVER_ERROR );
     }
 
 }

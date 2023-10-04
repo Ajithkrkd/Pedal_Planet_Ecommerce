@@ -55,22 +55,31 @@
 
                 <div class="coupon-applied col-12 col-md-3" >
                         <div class="">
-                            <p class="coupon-applied">CoupCoupons Used</p>
+                            <p class="coupon-applied">Coupons Used</p>
                         </div>
-                        <div class="">
-                            <p>No coupons applied</p>
+                        <div class="" th:if="${isCoupon}">
+                            <p th:text="${couponName}" style="color: #b96969;font-size:16px;font-weight:700;">No coupons applied</p>
                         </div>
-                        <div class="">
-                            <p class="coupon-text">Wallet amount used ₹0</p>
+                        <div class="" th:if="${!isCoupon}">
+                            <p >No coupons applied</p>
                         </div>
+                    <div class="">
+                        <p class="coupon-applied">Wallet amount used </p>
+                    </div>
+                    <div th:if="${isWallet}" >
+                        <p class="coupon-text" th:text="${walletAmount}">Wallet amount used </p>
+                    </div>
+                    <div th:if="${!isWallet}" >
+                        <p class="coupon-text">Wallet amount used ₹0</p>
+                    </div>
+
                 </div>
-                <div class="d-flex flex-column col-12 col-md-3">
-                    <p class="coupon-text">more action</p>
-                    <p>
-                        <i class="fa-solid fa-file-invoice" style="color: #677472"></i>
-                        downlod invoice
-                    </p>
-                </div>
+
+                    <div class="col-12 col-md-3  text-center">
+                        <p style="font-size: 19px;font-weight: 400;">Payment method</p>
+                        <p class="" id="" th:text="${paymentMethod}" style="font-size: 23px;font-weight: 800;"></p>
+                    </div>
+
                 <div class="col-12 col-md-3">
                     <a th:href="@{/invoice/{orderId}(orderId = ${orderId})}" class="btn btn-dark"> <i class="fas fa-download"></i> invoice</a>
                     <a th:href="@{/invoice/generatePdf/{orderId}(orderId = ${orderId})}" class="btn btn-dark"> <i class="fas fa-download"></i> download</a>
@@ -94,8 +103,11 @@
                     <div>
                         <span class="Quantity-text">Quantity </span><span class="Quantity" th:text="${orderItem.quantity}">Quantity</span>
                     </div>
-                    <div>
+                    <div th:if="${!isCoupon}">
                         <span>RS </span><span class="price-text" th:text="${orderItem.variant.offerPrice}"> 2799</span>
+                    </div>
+                    <div th:if="${isCoupon}">
+                        <span>RS </span><span class="price-text" th:text="${price_after_coupon}"> 2799</span>
                     </div>
                 </div>
 

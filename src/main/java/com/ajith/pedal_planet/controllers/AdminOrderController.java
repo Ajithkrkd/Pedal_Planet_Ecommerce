@@ -7,8 +7,12 @@ import com.ajith.pedal_planet.Repository.PaymentRepository;
 import com.ajith.pedal_planet.models.Order;
 import com.ajith.pedal_planet.models.OrderItem;
 import com.ajith.pedal_planet.service.AddressService;
+import com.ajith.pedal_planet.service.OrderService;
 import com.ajith.pedal_planet.service.PaymentService;
+import com.ajith.pedal_planet.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -32,13 +36,16 @@ public class AdminOrderController {
     private OrderItemRepository orderItemRepository;
 
     @Autowired
-    CustomerAccountController customerAccountController;
+    private WalletService walletService;
 
     @Autowired
     private AddressService addressService;
 
     @Autowired
     private PaymentRepository paymentRepository;
+
+    @Autowired
+    private OrderService orderService;
 
     @GetMapping("/orders")
     public String getOrderList(Model model) {
@@ -87,6 +94,23 @@ public class AdminOrderController {
         } else {
             redirectAttributes.addFlashAttribute("message", "user not fount");
             return "redirect:/admin/orders";
+        }
+
+
+    }
+
+    @PostMapping("/approve_return_request/{orderId}")
+    @ResponseBody
+    public ResponseEntity<?> approveReturnRequest(@PathVariable("orderId") Long orderId,
+                                               RedirectAttributes redirectAttributes) {
+        try{
+            System.out.println ("approveReturnRequest"  + orderId);
+            walletService.refundTheamountToWallet(orderId);
+            orderService.changeStatusToReturned(orderId);
+            return ResponseEntity.ok ( "success");
+        }
+        catch (Exception e){
+            return ResponseEntity.status( HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
         }
 
     }

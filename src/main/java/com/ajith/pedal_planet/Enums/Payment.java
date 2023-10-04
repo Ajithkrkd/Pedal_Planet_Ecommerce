@@ -6,5 +6,6 @@ import lombok.Getter;
 
 public enum Payment {
     COD,
-    ONLINE
+    ONLINE,
+    WALLET;
 }

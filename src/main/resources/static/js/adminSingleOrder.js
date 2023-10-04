@@ -20,3 +20,31 @@ function updateStatus(button) {
         }
     });
 }
+
+
+
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const approveButtons = document.querySelectorAll('.approve-button');
+
+        approveButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const orderId = this.getAttribute('data-order-id');
+                const url = `/admin/approve_return_request/${orderId}`;
+
+                fetch(url, {
+                    method: 'POST',
+
+                })
+                .then(response => {
+                   console.log(response)
+                   window.location.reload();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+        });
+    });
+

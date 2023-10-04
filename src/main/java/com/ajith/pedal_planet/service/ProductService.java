@@ -2,6 +2,7 @@ package com.ajith.pedal_planet.service;
 
 import com.ajith.pedal_planet.models.Category;
 import com.ajith.pedal_planet.models.Product;
+import com.ajith.pedal_planet.models.Variant;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -42,4 +43,6 @@ public interface ProductService {
 
 
     List<Product> findAll();
+
+
 }

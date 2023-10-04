@@ -26,7 +26,9 @@ public class WalletHistoryServiceImpl implements WalletHistoryService {
     private WalletRepository walletRepository;
     @Transactional
     public void saveWalletHistory(Wallet wallet, Customer customer, Wallet_Method method) {
+
         try {
+
             WalletHistory walletHistory = new WalletHistory();
             walletHistory.setWalletMethod(method);
             walletHistory.setWallet(wallet);
@@ -62,5 +64,40 @@ public class WalletHistoryServiceImpl implements WalletHistoryService {
     @Override
     public List<WalletHistory> getWalletHistoryByCustomerId(Long customerId) {
         return walletHistoryRepository.findByWallet_Customer_Id(customerId);
+    }
+
+    @Override
+    public void saveWalletHistoryForRefund (Wallet existingWallet, Customer customer, Wallet_Method walletMethod ,float total) {
+        try {
+            WalletHistory walletHistory = new WalletHistory();
+            walletHistory.setWalletMethod(walletMethod);
+            walletHistory.setWallet(customer.getWallet ());
+            walletHistory.setTransaction_date(LocalDate.now());
+            walletHistory.setTransaction(Transaction.CREDIT);
+            walletHistory.setAmount( String.valueOf ( total ) );
+            walletHistoryRepository.save ( walletHistory );
+
+        }
+        catch (Exception e) {
+            throw new RuntimeException("Error saving wallet history while refunding ", e);
+        }
+    }
+
+    @Override
+    public void saveWalletHistoryForPurchase (Wallet wallet, Customer existingCustomer, Wallet_Method walletMethod,float total) {
+        try {
+            WalletHistory walletHistory = new WalletHistory();
+            walletHistory.setWalletMethod(walletMethod);
+            walletHistory.setWallet(existingCustomer.getWallet ());
+            walletHistory.setTransaction_date(LocalDate.now());
+            walletHistory.setTransaction(Transaction.DEBIT);
+            walletHistory.setAmount( String.valueOf ( total ) );
+            walletHistoryRepository.save ( walletHistory );
+
+        }
+        catch (Exception e) {
+            throw new RuntimeException("Error saving wallet history while refunding ", e);
+        }
+
     }
 }

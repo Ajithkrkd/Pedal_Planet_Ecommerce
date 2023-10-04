@@ -4,6 +4,7 @@ import com.ajith.pedal_planet.Repository.AddressRepository;
 import com.ajith.pedal_planet.models.Address;
 import com.ajith.pedal_planet.models.Customer;
 import com.ajith.pedal_planet.service.AddressService;
+import com.ajith.pedal_planet.service.BasicServices;
 import com.ajith.pedal_planet.service.CustomerService;
 import com.ajith.pedal_planet.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,7 @@ public class addressController {
     private CustomerService customerService;
 
     @Autowired
-    CustomerAccountController customerAccountController;
-
+    private BasicServices basicServices;
     @Autowired
     private AddressService addressService;
 
@@ -37,7 +37,7 @@ public class addressController {
     public String addCustomerAddress(@ModelAttribute Address address,
                                      Model model, RedirectAttributes redirectAttributes) {
 
-        Optional<Customer> customer = customerService.findByUsername(customerAccountController.getCurrentUsername());
+        Optional<Customer> customer = customerService.findByUsername(basicServices.getCurrentUsername());
         if (customer.isPresent()) {
             Customer existingCustomer = customer.get();
             address.setCustomer(existingCustomer);
@@ -54,7 +54,7 @@ public class addressController {
     public String addCustomerAddress_from_checkout(@ModelAttribute Address address,
                                                    Model model, RedirectAttributes redirectAttributes) {
 
-        Optional<Customer> customer = customerService.findByUsername(customerAccountController.getCurrentUsername());
+        Optional<Customer> customer = customerService.findByUsername(basicServices.getCurrentUsername());
         if (customer.isPresent()) {
             Customer existingCustomer = customer.get();
             address.setCustomer(existingCustomer);
@@ -75,7 +75,7 @@ public class addressController {
                                      RedirectAttributes redirectAttributes) {
         System.out.println(address_id);
 
-        Optional<Customer> customer = customerService.findByUsername(customerAccountController.getCurrentUsername());
+        Optional<Customer> customer = customerService.findByUsername(basicServices.getCurrentUsername());
         if (customer.isPresent()) {
             Customer existingCustomer = customer.get();
             System.out.println(newAddress);

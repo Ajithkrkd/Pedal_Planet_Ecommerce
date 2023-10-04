@@ -18,3 +18,24 @@ function hideCartErrorDiv()
         }
     }
     setTimeout(passwordMessageDiv,6000);
+
+
+
+        function setDefaultAddress(radioInput) {
+
+            var addressId = $(radioInput).val();
+
+
+            $.ajax({
+                url: '/account/set_default_address/' + addressId,
+                type: 'POST',
+                success: function(data) {
+
+                    console.log('Default address updated successfully');
+                },
+                error: function(error) {
+
+                    console.error('Error updating default address: ' + error);
+                }
+            });
+        }

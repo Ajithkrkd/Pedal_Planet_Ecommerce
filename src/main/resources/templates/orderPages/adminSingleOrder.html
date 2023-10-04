@@ -74,7 +74,15 @@
                         <p th:text="${cancellationReason}"></p>
                     </div>
                 </div>
+               <th:block th:if="${currentStatus == T(com.ajith.pedal_planet.Enums.Status).RETURN_REQUEST_SENT}">
+
+
+                   <button class="btn btn-success approve-button" th:data-order-id="${item.order.id}" type="button">Approve</button>
+
+
+               </th:block>
             </div>
+
         </div>
 
 
@@ -305,7 +313,7 @@
 </div>
 
 
-
+<script src="/js/adminSingleOrder.js"></script>
 <div th:replace="/fragments/footer::footer"></div>
 
 </body>

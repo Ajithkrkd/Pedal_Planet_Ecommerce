@@ -50,6 +50,14 @@ public class Product {
 
 	private int quantity;
 
+	private boolean inWishList;
+
+	 public boolean getInWishList() {
+		 return inWishList;
+	 }
+	 public void setInWishList(boolean inWishList){
+		 this.inWishList = inWishList;
+	 }
 	public boolean getIsAvailable() {
 		return isAvailable;
 	}

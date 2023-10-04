@@ -8,6 +8,8 @@
     <meta name="keywords" content="Ashion, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/checkout.css">
+
     <title>checkout</title>
 
     <style>
@@ -74,7 +76,7 @@
 
 
         <p>
-            <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+            <a class="btn site-btn  w-100" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" style="color:#fff;">
                 add address
             </a>
         <div class="collapse" id="collapseExample">
@@ -161,31 +163,39 @@
 
         <form th:action="@{/showConfirmation}" method="post" class="checkout__form" id="paymentForm">
             <div class="row">
-                <div class="col-lg-12 py-5 px-5">
-                    <label>Select Address here</label>
-                    <select id="selectedAddress"  class="form-select" aria-label="Default select example" style="width: 100%; padding: 40px;">
 
-                        <th:block th:each="address, addressIndex : ${customerAddress}">
+                <div class="col-lg-12">
+                    <label style="font-size: 21px; font-weight: 700;">Select Address here</label>
 
-                            <option th:value="${address.id}">
+                    <div class="address-card border border-dark p-3 m-2" th:each="address, addressIndex : ${customerAddress}" >
+                        <h5 class="address-title" th:text="${customerName}">Name</h5>
+                        <div class="address-details">
 
-                                <div class="address-option">
 
-                                    <strong>Flat:</strong> <p th:text="${address.houseName != null ? address.houseName : '-'}"></p><br>
-                                    <strong>Area:</strong> <p th:text="${address.area != null ? address.area : '-'}"></p><br>
-                                    <strong>Town:</strong> <p th:text="${address.town != null ? address.town : '-'}"></p>
-                                    <strong>City:</strong> <p th:text="${address.city != null ? address.city : '-'}"></p><br>
-                                    <strong>State:</strong> <p th:text="${address.state != null ? address.state : '-'}"></p><br>
-                                    <strong>Landmark:</strong> <p th:text="${address.landMark != null ? address.landMark : '-'}"></p><br>
-                                    <strong>Pin:</strong> <p th:text="${address.pin_code != null ? address.pin_code : '-'}"></p>
+                            <span class="address-line">House Name: <span class="address-data"  th:text="${address.houseName}"></span></span>
+                            <span class="address-line">Town: <span class="address-data"  th:text="${address.town}"></span></span>
+                            <span class="address-line">Area: <span class="address-data"  th:text="${address.area}"></span></span>
+                            <span class="address-line">City: <span class="address-data"  th:text="${address.city}"></span></span>
+                            <span class="address-line">Landmark: <span class="address-data"
+                                                                       th:text="${address.landMark}"></span></span>
+                            <span class="address-line">Pin Code: <span class="address-data"
+                                                                       th:text="${address.pin_code}"></span></span>
+                            <span class="address-line">State: <span class="address-data"  th:text="${address.state}"></span></span>
+                            <span class="address-line">Secondary Number: <span class="address-data"
+                                                                               th:text="${address.secondary_number}"></span></span>
+                            <span class="address-line">First Number: <span class="address-data"
+                                                                           th:text="${address.customer.phoneNumber}"></span></span>
 
-                                </div>
-                            </option>
-                        </th:block>
-
-                    </select>
-
+                            <div class="col-6">
+                                <input type="radio" name="ordered_address" th:id="'ordered_address-' + ${address.id}"
+                                       th:value="${address.id}" th:checked="${address.isDefault}"  />
+                                <label>Use Address</label>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
                 </div>
+
 
 
                 <input type="hidden" name="ordered_address" id="address_id">
@@ -242,15 +252,31 @@
                                 <li th:unless="${total_amount_AfterDiscount}">Total <span th:text="${total_Offer_price}"></span><span>₹ </span></li>
                             </ul>
                         </div>
-                        <div class="checkout__order__widget">
-                            <label for="paymentMethod">Payment method:</label>
-                            <select id="paymentMethod" name="paymentMethod" class="custom-select mb-5">
-                                <option th:each="payment : ${T(com.ajith.pedal_planet.Enums.Payment).values()}"
-                                        th:text="${payment}">
-                                </option>
-                            </select>
+                        <div class="">
+                            <label>Payment method:</label>
+                            <div>
+                                <label for="creditCard">
+                                    <input type="radio" id="creditCard" name="paymentMethod" value="COD">
+                                    Cash On Delivery
+                                </label>
+                            </div>
+                            <div>
+                                <label for="paymentMethod">
+                                    <input type="radio" id="paymentMethod" name="paymentMethod" value="ONLINE">
+                                    Online Payment
+                                </label>
+                            </div>
+                            <div>
+                                <label for="wallet">
+                                    <input type="radio" id="wallet" name="paymentMethod" value="WALLET">
+                                    wallet
+                                </label>
+                            </div>
+
+
                         </div>
-                        <button type="submit"  class="site-btn">Place order</button>
+                        <button type="submit" class="site-btn " id="buy">Place order</button>
+
                     </div>
                 </div>
             </div>

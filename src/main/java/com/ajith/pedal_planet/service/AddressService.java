@@ -16,4 +16,9 @@ public interface AddressService {
     Optional<Address> findById(Long addressId);
 
     List<Address> getCustomerAllAddress(Customer existingCustomer);
+
+    void customerAddressWantToMakeDefaultAddress (Long addressId,Customer customer);
+
+
+ Address getDefualtAddressByCustomer_Id (Long id);
 }

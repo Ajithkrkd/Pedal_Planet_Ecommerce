@@ -1,6 +1,8 @@
 package com.ajith.pedal_planet.serviceImpl;
 
 import com.ajith.pedal_planet.service.BasicServices;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -15,5 +17,11 @@ public class BasicServiceImpl implements BasicServices {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E, MMMM d", Locale.ENGLISH);
         String formattedDate = currentDate.format(formatter);
         return formattedDate;
+    }
+
+    public String getCurrentUsername() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(authentication.getName());
+        return authentication.getName();
     }
 }

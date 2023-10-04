@@ -3,9 +3,11 @@ package com.ajith.pedal_planet.serviceImpl;
 import com.ajith.pedal_planet.DTO.Utility;
 import com.ajith.pedal_planet.Enums.Wallet_Method;
 import com.ajith.pedal_planet.Repository.CustomerRepository;
+import com.ajith.pedal_planet.Repository.OrderRepository;
 import com.ajith.pedal_planet.Repository.WalletHistoryRepository;
 import com.ajith.pedal_planet.Repository.WalletRepository;
 import com.ajith.pedal_planet.models.Customer;
+import com.ajith.pedal_planet.models.Order;
 import com.ajith.pedal_planet.models.Wallet;
 import com.ajith.pedal_planet.models.WalletHistory;
 import com.ajith.pedal_planet.service.WalletHistoryService;
@@ -20,6 +22,8 @@ import java.util.Optional;
 @Service
 public class WalletServiceImpl implements WalletService {
 
+    @Autowired
+    private OrderRepository orderRepository;
 
     @Autowired
     private WalletRepository walletRepository;
@@ -51,11 +55,28 @@ public class WalletServiceImpl implements WalletService {
         walletRepository.save(existingWallet);
     }
 
+    @Override
+    public void refundTheamountToWallet (Long orderId) {
+        System.out.println ("hellow this is refund amount wallet method from wallet service" );
+        Optional< Order > order = orderRepository.findById(orderId);
+        if (order.isPresent()) {
+            Order existingOrder = order.get();
+            Customer customer = existingOrder.getCustomer ();
+            Wallet existingWallet = customer.getWallet ();
+            existingWallet.setBalance (existingWallet.getBalance () + existingOrder.getTotal () );
+            float total = existingOrder.getTotal();
+            walletHistoryService.saveWalletHistoryForRefund(existingWallet,customer, Wallet_Method.FROM_REFUND ,total);
+            walletRepository.save(existingWallet);
+        }
+    }
 
-
-
-
-
+    @Override
+    public void reduceAmountFromWalletAndSaveHistory (Customer existingCustomer , float total) {
+        Wallet wallet = existingCustomer.getWallet ();
+        wallet.setBalance ( wallet.getBalance () - total );
+        walletHistoryService.saveWalletHistoryForPurchase(wallet, existingCustomer, Wallet_Method.FROM_PURCHASE, total);
+        walletRepository.save ( wallet );
+    }
 
 
 }

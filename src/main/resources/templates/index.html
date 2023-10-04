@@ -7,12 +7,15 @@
     <meta name="keywords" content="Ashion, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+
     <title>home</title>
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
     rel="stylesheet">
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <style>
         /* Style the image container */
@@ -72,6 +75,7 @@
    
 
     <div th:replace="fragments/header::header"></div>
+
     <!-- Categories Section Begin -->
     <section class="categories">
         <div class="container-fluid">
@@ -104,7 +108,7 @@
 <!-- Product Section Begin -->
     <section class="product spade">
         <style>
-            /* Define styles for the product cards */
+
             .product__item {
                 display: flex; /* Use Flexbox to align items */
                 flex-direction: column; /* Stack child elements vertically */
@@ -138,6 +142,18 @@
                             <!-- Apply styles for the product name and price -->
                             <h6><a href="#" th:text="${product.name}" style="font-weight: bold;">Buttons tweed blazer</a></h6>
                             <span style="font-size: 24px; font-weight: bold;">RS . <span style="font-size: 20px;" th:text="${product.price}"></span></span>
+
+                        </div>
+                        <div class="col text-center px-2 py-2 ">
+
+                            <div class="col text-center px-2 py-2">
+                                <th:block th:if="${product.inWishList}">
+                                    <span class="btn btn-success w-100">WISHLISTED</span>
+                                </th:block>
+                                <th:block th:unless="${product.inWishList}">
+                                    <button class="btn btn-secondary w-100" th:data-product-id="${product.id}">WISHLIST</button>
+                                </th:block>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -213,6 +229,8 @@
     }
 });
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+<script type="text/javascript" src="/js/wishlist.js"></script>
 </body>
 
 </html>

@@ -10,5 +10,10 @@ import java.util.List;
 public interface WalletHistoryService {
     public void saveWalletHistory(Wallet wallet , Customer customer , Wallet_Method method);
 
+
     List<WalletHistory> getWalletHistoryByCustomerId(Long id);
+
+    void saveWalletHistoryForRefund (Wallet existingWallet, Customer customer, Wallet_Method walletMethod ,float total);
+
+    void saveWalletHistoryForPurchase (Wallet wallet, Customer existingCustomer, Wallet_Method walletMethod,float total);
 }

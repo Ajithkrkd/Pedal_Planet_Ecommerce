@@ -20,8 +20,6 @@ public class AddressServiceImpl implements AddressService {
     @Autowired
     CustomerService customerService;
 
-    @Autowired
-    CustomerAccountController customerAccountController;
 
 
 
@@ -54,4 +52,28 @@ public class AddressServiceImpl implements AddressService {
         System.out.println("reached --------------- "+ customer_id);
         return addressList;
     }
+
+    @Override
+    public void customerAddressWantToMakeDefaultAddress (Long addressId,Customer existingCustomer) {
+
+        List<Address> addressList = existingCustomer.getAddresses ();
+        for(Address address1 : addressList ){
+            address1.setIsDefault ( false );
+            addressRepository.save ( address1 );
+        }
+
+        Optional < Address > address = addressRepository.findById ( addressId );
+        if (address.isPresent ()) {
+            Address existingAddress = address.get ();
+            existingAddress.setIsDefault ( true );
+            addressRepository.save ( existingAddress );
+        }
+    }
+
+    @Override
+    public Address getDefualtAddressByCustomer_Id (Long id) {
+       return addressRepository.findDefaultAddressByCustomerId ( id );
+    }
+
+
 }

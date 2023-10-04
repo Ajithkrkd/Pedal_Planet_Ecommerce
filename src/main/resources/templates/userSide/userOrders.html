@@ -24,28 +24,41 @@
 
             <!--order design start-->
             <div class="container-fluid">
-                <h3 class="order_head" >ORDER LIST</h3>
+                <h5 class="order_head" >ORDER LIST</h5>
                 <div class="row">
 
 
-                    <div class="col-md-3 d-flex flex-column">
-                        <h3 class="filter_Head">Filter</h3>
+                    <div class="col-md-2 d-flex flex-column mr-2">
+                        <div class="filters d-flex flex-md-column " style="
+                                    font-size: 16px;
+                                    font-weight: 600;">
 
-                        <!-- Order Status Filter -->
-                        <h5 class="filter_subHeads" filter_subHeads>ORDER STATUS:</h5>
-                        <a th:href="@{/filter/SHIPPING}"> On the way</a>
-                        <a th:href="@{/filter/DELIVERED}"> Delivered</a>
-                        <a th:href="@{/filter/CANCEL_REQUEST_SENT}"> Cancel requested</a>
-                        <a th:href="@{/filter/CANCELLED}"> Cancelled</a>
-                        <a th:href="@{/filter/RETURN_REQUEST_SENT}"> Return requested</a>
-                        <a th:href="@{/filter/RETURNED}"> Returned</a>
+                            <h4 class="text-center p-2 " style="
+                                font-weight: 700;
+                                /* border: darkblue; */
+                            ">ORDER STATUS:</h4>
+                            <label><input type="checkbox" name="status" value="PENDING"> pending</label>
+                            <label><input type="checkbox" name="status" value="CONFIRMED"> Confirmed</label>
+                            <label><input type="checkbox" name="status" value="SHIPPING"> Shipped</label>
+                            <label><input type="checkbox" name="status" value="OUT_FOR_DELIVERY"> out for delivery</label>
+                            <label><input type="checkbox" name="status" value="DELIVERED"> delivered</label>
+                            <label><input type="checkbox" name="status" value="CANCELLED"> Cancelled</label>
+                            <label><input type="checkbox" name="status" value="RETURNED"> Returned</label>
+                            <label><input type="checkbox" name="status" value="CANCEL_REQUEST_SENT"> Cancel request sent</label>
+                            <label><input type="checkbox" name="status" value="RETURN_REQUEST_SENT"> return request sent</label>
+                            <label><input type="checkbox" name="status" value="REFUNDED">Refunded </label>
 
-                        <!-- Order Time Filter -->
-                        <h5 class="filter_subHeads">ORDER TIME:</h5>
-                        <a>Last 30 days</a>
-                        <a>Last Week</a>
-                        <a>Last Month</a>
-                        <a>Last Year</a>
+
+                            <h4 class="text-center p-2 " style="
+                                font-weight: 700;
+                                /* border: darkblue; */
+                            ">ORDER DATE:</h4>
+                            <label><input type="checkbox" name="time" value="Last 30 days"> Last 30 days</label>
+                            <label><input type="checkbox" name="time" value="Last Week"> Last Week</label>
+                            <label><input type="checkbox" name="time" value="Last Month"> Last Month</label>
+                            <label><input type="checkbox" name="time" value="Last Year"> Last Year</label>
+                        </div>
+
                     </div>
 
                     <!-- Order Listing (right side) -->
@@ -73,8 +86,10 @@
                         </div>
                         <div class="col-md-1 d-flex flex-column  text-center justify-content-center align-content-center ">
                             <span  th:each="orderItem : ${order.orderItems}" >
-                                <p class="order_price my-4" th:text="${orderItem.variant.offerPrice}"></p>
+
+                                <p class="order_price my-4" th:text="${order.total}"></p>
                             </span>
+
                         </div>
 
                         <div class="col-md-3 d-flex flex-column  text-center justify-content-center align-content-center fs-4">
@@ -124,6 +139,9 @@
                     // For simplicity, I'm not providing the complete filtering code.
                 }
             </script>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script src="/js/userOrders.js"></script>
+
 
             </body>
         </html>

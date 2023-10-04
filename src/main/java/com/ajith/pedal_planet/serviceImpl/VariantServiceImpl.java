@@ -118,6 +118,10 @@ public class VariantServiceImpl implements VariantService {
         return products;
     }
 
+    @Override
+    public List < Variant > getProductVariants (Long productId) {
+        return variantRepository.findAllVariantByProduct_IdAndIsAvailableTrue ( productId );
+    }
 
 
 }

@@ -27,21 +27,4 @@ import java.util.Optional;
 @Controller
 public class WalletController {
 
-    @Autowired
-    private OtpService otpService;
-
-    @Autowired
-    private CustomerService customerService;
-
-
-    @Autowired
-    CustomerRepository customerRepository;
-
-
-//while a user try to log in with a referral link I want to give 500 to each
-
-
-
-
-
 }

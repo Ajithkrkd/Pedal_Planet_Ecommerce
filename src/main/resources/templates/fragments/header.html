@@ -31,21 +31,24 @@
         <div class="offcanvas__close">+</div>
         <ul class="offcanvas__widget">
             <li><span th:text="${session.name}"></span></li>
-            <li><span class="icon_search search-switch"></span></li>
-            <li><a href="#"><span class="icon_heart_alt"></span>
-                <div class="tip">2</div>
-            </a></li>
-            <li><a href="#"><span class="icon_bag_alt"></span>
-                <div class="tip">2</div>
-            </a></li>
+
+            <li><a type="button" class="btn btn-outline-secondary p-0" href="/cart" style="width: 96px;">Cart</a></li>
+            <li><a type="button" class="btn btn-outline-secondary p-0" href="/wishList" style="width:85px;">WishList</a></li>
         </ul>
         <div class="offcanvas__logo">
             <a href="/"> <img  src="/img/logo.png" alt="logo"  style="width: 100px; height: 40px;"></a>
         </div>
         <div id="mobile-menu-wrap"></div>
+
         <div class="offcanvas__auth">
-            <a href="/signin">Login</a>
-            <a href="/register">Register</a>
+            <span th:text="${session.name}"></span>
+            <div th:if="${session.auth}">
+                <a href="/logout">Logout</a>
+            </div>
+            <div th:unless="${session.auth}">
+                <a href="/signin">Login</a>
+                <a href="/register">Register</a>
+            </div>
         </div>
     </div>
     <!-- Offcanvas Menu End -->
@@ -93,14 +96,11 @@
 							</div>
                         </div>
                         <ul class="header__right__widget">
-                            <li><span class="icon_search search-switch"></span></li>
-                            <li><a href="#"><span class="icon_heart_alt"></span>
-                                <div class="tip">2</div>
-                            </a></li>
-                            <li><a th:href="@{/cart}"><span class="icon_bag_alt"></span>
-                                <div class="tip">2</div>
-                            </a>
-                            </li>
+
+                            <li><a type="button" class="btn btn-outline-secondary p-0" href="/cart" style="width: 96px;">Cart</a></li>
+
+
+                            <li><a type="button" class="btn btn-outline-secondary p-0" href="/wishList" style="width:85px;">WishList</a></li>
                         </ul>
                     </div>
                 </div>

@@ -48,5 +48,11 @@ public class Address {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
+    public void setIsDefault ( boolean isDefault) {
+         this.isDefault = isDefault;
+    }
 
+    public boolean getIsDefault ( ) {
+        return isDefault;
+    }
 }

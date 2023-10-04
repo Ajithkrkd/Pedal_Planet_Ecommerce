@@ -37,17 +37,24 @@ function saveOrder() {
 const buy = document.querySelector("#buy");
 
 const total_amount_AfterDiscount = document.getElementById("priceAfterDiscount").textContent;
+
 const offerPrice = document.getElementById("offerPrice").textContent;
-if(total_amount_AfterDiscount != null){
-    var total = total_amount_AfterDiscount;
+
+var total = 0;
+
+if(total_amount_AfterDiscount != ""){
+     total = total_amount_AfterDiscount;
+
 }
 else{
-    var total = offerPrice;
+     total = offerPrice;
+
 }
 
 
 buy.addEventListener("click", () => {
-  console.log(total + " " +" from here")
+
+
   const paymentStatus = document.getElementById("paymentMethod").textContent;
   console.log(paymentStatus + " hello")
   if (paymentStatus === "ONLINE") {
@@ -106,5 +113,47 @@ buy.addEventListener("click", () => {
   } else if (paymentStatus === "COD") {
     saveOrder();
     console.log("payment cash on delivery order")
+  }else if (paymentStatus === "WALLET"){
+  console.log("payment wallet order")
+   walletPayment();
   }
 });
+
+function walletPayment() {
+    var paymentStatus = document.getElementById("paymentMethod").textContent;
+    var addressId = document.getElementById("addressId").textContent;
+    console.log("addressId=" + addressId);
+
+    const data = {
+        paymentStatus: paymentStatus,
+        addressId: addressId
+    };
+
+    $.ajax({
+        type: "POST",
+        url: "/walletPayment",
+        data: JSON.stringify(data),
+        contentType: "application/json",
+        success: function (response) {
+            if (response === "Payment Successful") {
+                // Payment was successful, redirect to order success page
+                window.location.href = "/orderSuccess";
+            } else {
+                // Handle any other success scenario here
+                console.log("Order was not saved successfully.");
+            }
+        },
+        error: function (xhr, status, error) {
+            console.log("Error occurred while saving the order:", error);
+
+            // Display SweetAlert for Insufficient Balance
+            if (xhr.status === 400 && xhr.responseText === "Insufficient Balance") {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Insufficient Balance',
+                    text: 'Your wallet balance is too low to complete this order.',
+                });
+            }
+        }
+    });
+}

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th = "https://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>wishList</title>
+    <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+</head>
+<body>
+<div th:replace="/fragments/header::header"></div>
+<div id="message-container"></div>
+<section class="product spade">
+<style>
+
+    .product__item {
+        display: flex; /* Use Flexbox to align items */
+        flex-direction: column; /* Stack child elements vertically */
+        height: 100%; /* Make each card take up the full height */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        background-color: white; /* Optional: Add a white background color to the cards */
+    }
+
+    /* Adjust styles for the inner elements */
+    .product__item__pic {
+        flex-grow: 1; /* Allow the image to grow and take up remaining space */
+    }
+
+    .product__item__text {
+        padding: 15px;
+    }
+</style>
+<div class="container">
+    <div id="wishlist-container">
+        <p id="empty-wishlist-message" style="
+         font-size: 27px;
+         font-weight: 600;
+         text-align: center;
+         font-style: italic;
+         letter-spacing: 1px;"
+         th:if="${#lists.isEmpty(wishListItems)}">😞 There are no products in your wishlist.</p>
+    </div>
+    <div class="row">
+        <div class="col-lg-3 col-md-4 col-sm-6 mix women card my-2 productElement" th:each="item, iStat : ${wishListItems}">
+
+
+            <div class="product__item">
+                <div class="product__item__pic set-bg">
+                    <a th:href="@{/shop/single-product/{id}(id=${item.product.id})}">
+                        <th:block th:if="${not #lists.isEmpty(item.product.images)}">
+                            <!-- Display the first image for the product -->
+                            <img th:src="@{${'/Images/product/' + item.product.images[0].imagePath}}" alt="Product Image">
+                        </th:block>
+                    </a>
+                </div>
+                <div class="product__item__text">
+                    <!-- Apply styles for the product name and price -->
+                    <h6><a href="#" th:text="${item.product.name}" style="font-weight: bold;">Buttons tweed blazer</a></h6>
+                    <span style="font-size: 24px; font-weight: bold;">RS . <span style="font-size: 20px;" th:text="${item.product.price}"></span></span>
+
+                </div>
+                <div class="col text-center px-2 py-2 ">
+                    <div class="col text-center px-2 py-2">
+                        <th:block >
+                            <span class="btn btn-primary w-100 add-to-cart" th:data-product-id="${item.product.id}">MOVE TO CART</span>
+                        </th:block>
+                    </div>
+                    <div class="col text-center px-2 py-2">
+                        <th:block >
+                            <button class="btn btn-dark w-100 remove-button" th:data-product-id2="${item.product.id}">REMOVE</button>
+                        </th:block>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+</section>
+
+
+
+
+<div th:replace="/fragments/footer::footer"></div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+<script type="text/javascript" src="/js/wishlist.js"></script>
+</body>
+</html>

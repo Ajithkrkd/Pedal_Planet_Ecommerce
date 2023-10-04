@@ -1,5 +1,6 @@
 package com.ajith.pedal_planet.serviceImpl;
 
+import com.ajith.pedal_planet.DTO.FilterRequest;
 import com.ajith.pedal_planet.Enums.Payment;
 import com.ajith.pedal_planet.Enums.Status;
 import com.ajith.pedal_planet.Repository.CartRepository;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,7 +29,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private CartService cartService;
-@Autowired
+    @Autowired
     OrderItemRepository orderItemRepository;
     @Autowired
     private OrderRepository orderRepository;
@@ -101,6 +103,34 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Optional < Order > getCurrentOrderUsingOrderId (Long orderId) {
         return orderRepository.findById (orderId);
+    }
+
+    @Override
+    public void changeStatusToReturned (Long orderId) {
+        Optional<Order> order = orderRepository.findById(orderId);
+        order.get().setStatus(Status.RETURNED);
+        orderRepository.save(order.get());
+    }
+
+    @Override
+    public List < Order > getAllOrders ( ) {
+        return orderRepository.findAll ();
+    }
+
+    @Override
+    public List<Order> filterOrders(List<Order> orders, FilterRequest filterRequest) {
+        List<Order> filteredOrders = new ArrayList<>();
+
+        for (Order order : orders) {
+            System.out.println ("Filtering order in loop" );
+            if (filterRequest.getStatusFilters().contains(order.getStatus())) {
+
+                    filteredOrders.add(order);
+                System.out.println ("if " );
+            }
+        }
+
+        return filteredOrders;
     }
 
 

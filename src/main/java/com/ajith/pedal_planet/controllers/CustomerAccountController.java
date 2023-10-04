@@ -1,7 +1,7 @@
 package com.ajith.pedal_planet.controllers;
 
+import com.ajith.pedal_planet.Enums.Payment;
 import com.ajith.pedal_planet.Enums.Status;
-import com.ajith.pedal_planet.Repository.AddressRepository;
 import com.ajith.pedal_planet.Repository.CustomerRepository;
 import com.ajith.pedal_planet.Repository.OrderItemRepository;
 import com.ajith.pedal_planet.Repository.OrderRepository;
@@ -9,9 +9,6 @@ import com.ajith.pedal_planet.models.*;
 import com.ajith.pedal_planet.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -47,8 +44,7 @@ public class CustomerAccountController {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
-    @Autowired
-    private CartItemService cartItemService;
+
 
     @Autowired
     private VariantService variantService;
@@ -62,11 +58,10 @@ public class CustomerAccountController {
     @Autowired
     private BasicServices basicServices;
 
-    public String getCurrentUsername() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(authentication.getName());
-        return authentication.getName();
-    }
+    @Autowired
+    private AddressService addressService;
+
+
 
     @GetMapping("")
     public String listCustomerDetails(Principal principal, Model model , HttpServletRequest request) {
@@ -76,7 +71,7 @@ public class CustomerAccountController {
         } else {
 
         }
-        Optional<Customer> customer = customerService.findByUsername(getCurrentUsername());
+        Optional<Customer> customer = customerService.findByUsername(basicServices.getCurrentUsername());
         if (customer.isPresent()) {
             Customer LoggedCustomer = customer.get();
             List<Address> addressList =  customerService.getNonDeltedAddressList(LoggedCustomer.getId ());
@@ -90,6 +85,7 @@ public class CustomerAccountController {
                 List<WalletHistory> history = walletHistoryService .getWalletHistoryByCustomerId(customer.get().getId());
                 System.out.println(history);
                 model.addAttribute("walletHistory",history);
+
             LocalDate originalDate = LocalDate.now();
             model.addAttribute("link",walletService.referralLinkToshowInTheFrontEnd(request,customer));
             model.addAttribute("currentDate" ,originalDate);
@@ -117,7 +113,7 @@ public class CustomerAccountController {
                                     @RequestParam("confirmPassword") String confirmPassword,
                                     RedirectAttributes redirectAttributes) {
 
-        Optional<Customer> customer = customerService.findByUsername(getCurrentUsername());
+        Optional<Customer> customer = customerService.findByUsername(basicServices.getCurrentUsername());
         if (customer.isPresent()) {
             Customer loggedInCustomer = customer.get();
 
@@ -149,10 +145,11 @@ public class CustomerAccountController {
             return "redirect:/signin";
 
         }else{
-            Optional<Customer> customer = customerService.findByUsername(getCurrentUsername());
+            Optional<Customer> customer = customerService.findByUsername(basicServices.getCurrentUsername());
             if(customer.isPresent()){
                 Customer existingCustomer = customer.get();
                 List<Order> orders = existingCustomer.getOrders();
+
                 model.addAttribute("orders" , orders);
                 return "userSide/userOrders";
             }
@@ -173,7 +170,27 @@ public class CustomerAccountController {
            Order existingOrder = order.get();
            List<OrderItem> orderItems = orderItemRepository.findAllByOrder_Id(order_Id);
            System.out.println (orderItems );
+           Optional<Coupon> coupon = Optional.ofNullable ( order.get ( ).getCoupon ( ) );
+           if(coupon.isPresent ()){
+               Coupon coupon1 = coupon.get ();
+
+               model.addAttribute ( "isCoupon" , true );
+               model.addAttribute ( "couponName" , coupon1.getCode () );
+               model.addAttribute ( "price_after_coupon" ,order.get ( ).getTotal () );
+           }
+           else{
+               model.addAttribute ( "isCoupon" , false );
+           }
+           if(order.get ( ).getPayment () == Payment.WALLET){
+               model.addAttribute ( "isWallet" , true);
+               model.addAttribute ( "walletAmount" , order.get ( ).getTotal ());
+           }else{
+               model.addAttribute ( "isWallet" , false);
+           }
+
+
            Address orderAddress = existingOrder.getAddress();
+           model.addAttribute ( "paymentMethod" , order.get ( ).getPayment () );
            model.addAttribute("orderItems",orderItems);
            model.addAttribute("orderAddress",orderAddress);
            model.addAttribute("status",existingOrder.getStatus());
@@ -232,11 +249,15 @@ public class CustomerAccountController {
     }
 
 
-    @PostMapping("/make_default/{addressId}")
+    @PostMapping("/set_default_address/{addressId}")
     @ResponseBody
-    public ResponseEntity<String> updateDefaultAddress(@PathVariable Long addressId) {
+    public ResponseEntity<String> updateDefaultAddress(@PathVariable ("addressId") Long addressId) {
+        Optional < Customer > customer = customerService.findByUsername (basicServices.getCurrentUsername ());
+        if(customer.isPresent ()) {
+            Customer existingCustomer = customer.get ();
+            addressService.customerAddressWantToMakeDefaultAddress(addressId,existingCustomer);
+        }
 
-        System.out.println(addressId);
         return null;
     }
 }

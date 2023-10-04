@@ -15,5 +15,7 @@ public interface WalletService  {
     void addAmountToReferredCustomer(Customer customer);
 
 
+    void refundTheamountToWallet (Long orderId);
 
+    void reduceAmountFromWalletAndSaveHistory (Customer existingCustomer,float totalAmount);
 }

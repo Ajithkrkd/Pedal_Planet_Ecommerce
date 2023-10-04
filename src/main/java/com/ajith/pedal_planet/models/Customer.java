@@ -1,5 +1,7 @@
 package com.ajith.pedal_planet.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.ToString;
 
@@ -36,7 +38,7 @@ public class Customer  {
 
     private boolean isAvailable = true;
 
-
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "cart_id")
     @ToString.Exclude
@@ -49,23 +51,28 @@ public class Customer  {
     @Column(name = "referralLink")
     private String referralLink;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
     @ToString.Exclude
     private Wallet wallet;
 
+    @JsonIgnore
     @OneToMany(mappedBy ="customer" , cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<Address> addresses = new ArrayList<Address>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "customer")
     @ToString.Exclude
     private List<Order> orders = new ArrayList<>();
 
     public boolean getIsAvailable() {
+
         return isAvailable;
     }
 
     public void setAvailable(boolean isAvailable) {
+
         this.isAvailable = isAvailable;
     }
 
