@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -221,6 +222,7 @@ public class CheckOutController {
 
 
                 Order order = orderService.saveOrder ( paymentStatus, addressId, cartItemList, existingCustomer, session );
+
 
 
                 Optional < Coupon > coupon = Optional.ofNullable ( cart.getCoupon ( ) );

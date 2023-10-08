@@ -1,4 +1,4 @@
-package com.ajith.pedal_planet.controllers;
+package com.ajith.pedal_planet.admin.Controllers;
 
 import com.ajith.pedal_planet.Enums.Status;
 import com.ajith.pedal_planet.Repository.OrderItemRepository;
@@ -24,7 +24,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin")
-public class AdminOrderController {
+public class OrderController {
 
 
     @Autowired
@@ -52,7 +52,7 @@ public class AdminOrderController {
         List<Order> orders = orderRepository.findAll();
 
         model.addAttribute("orders", orders);
-        return "orderPages/order_management";
+        return "/orderPages/order_management";
     }
 
 
@@ -113,5 +113,19 @@ public class AdminOrderController {
             return ResponseEntity.status( HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
         }
 
+    }
+
+    @PostMapping("/approve_cancel_request/{orderId}")
+    @ResponseBody
+    public ResponseEntity<?> approveCancelRequest(@PathVariable("orderId") Long orderId,
+                                               RedirectAttributes redirectAttributes) {
+
+        try {
+            System.out.println ("aproveCancelRequest" );
+            orderService.changeStatusToCancel(orderId);
+            return ResponseEntity.ok ( "success");
+        }catch (Exception e) {
+            return ResponseEntity.status( HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+        }
     }
 }

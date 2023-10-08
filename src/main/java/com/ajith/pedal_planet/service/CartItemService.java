@@ -10,7 +10,8 @@ import java.util.Optional;
 public interface CartItemService {
 
 
-    List<CartItem> getCartItemByCart(Cart cartId);
+    List<CartItem> getCartItemByCart(Cart cart);
 
 
+    void removeCartItem (Cart cart);
 }

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"></meta>
+    <title>Sales Report</title>
+    <style>
+        /* Define styles for the table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="container pt-5">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <p class="text-center" style="font-weight:700; font-size:27px;">SALES REPORT</p>
+        </div>
+        <div class="col-md-12 text-center d-flex flex-md-row justify-content-center">
+            <p class="text-center" th:text="${startDate}" style="font-weight:700; font-size:18px;">2023-10-01</p>
+            <p class="text-center mx-3">To</p>
+            <p class="text-center" th:text="${endDate}" style="font-weight:700; font-size:18px;">2023-10-13</p>
+        </div>
+        <div>
+            <form action="/admin/generatePdf" method="post">
+                <input type="hidden" name="startDate" th:value="${startDate}"></input >
+                <input type="hidden" name="endDate" th:value="${endDate}"></input>
+                <button class="btn btn-dark" type="submit">download</button>
+            </form>
+        </div>
+        <div class="col-lg-12">
+            <table>
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>date</th>
+                    <th>Customer</th>
+                    <th>Order ID</th>
+                    <th>Payment Method</th>
+                    <th>Amount</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="order, num : ${allOrders}">
+                    <td th:text="${num.index + 1}"></td>
+                    <td th:text="${order.ordered_date}"></td>
+                    <td th:text="${order.customer.fullName}"></td>
+                    <td th:text="${order.id}"></td>
+                    <td th:text="${order.payment}"></td>
+                    <td th:text="${order.total}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -9,23 +9,18 @@
 <body class="bg-gradient-primary">
 <div th:replace="fragments/header :: header"></div>
 
-<div id="cart_error1" th:if="${param.cart_error}" class=" alert-warning  cart_error py-3">
+<div id="cart_error1" th:if="${param.cart_error}" class=" col-sm-12 col-lg-6 text-center alert-warning  cart_error py-3">
     "Ready to add to your cart? Log in to make it happen! 🛒🔑"
 </div>
-<div id="cart_error" th:if="${param.cart_no_stock}" class=" alert-warning  cart_error py-3">
+
+<div id="cart_error" th:if="${param.cart_no_stock}" class=" alert-warning col-md-12 col-lg-6 text-center  cart_error py-3">
     "Oops! 😔 This hot item is currently out of stock, but we're hustling to restock it just for you."
 </div>
-<div class="alert-success notLogged1 my-3" id="notLogged" th:if="${param.notLogged}">
+<div class="alert-success notLogged1 col-lg-6 col-sm-12 text-center my-3" id="notLogged"  th:if="${param.notLogged}">
     🔐✨ Welcome back! To view your profile information, please login. Your personalized details await! 📌👤 #UnlockYourProfile
 </div>
 
 
-<div th:if="${error != null}" id="forgot_error" class="alert-danger forgot ">
-    <p class="text-danger">[[${error}]]</p>
-</div>
-<div th:if="${forgotmessage != null}" id="forgot_success" class="alert-success   forgot">
-    <p class="text-warning">[[${forgotmessage}]]</p>
-</div>
 
 
 
@@ -78,7 +73,7 @@
                         </div>
 
                         <div class="col-lg-6">
-                            <div class="p-5">
+                            <div class="">
                                 <div class="text-center">
 
 

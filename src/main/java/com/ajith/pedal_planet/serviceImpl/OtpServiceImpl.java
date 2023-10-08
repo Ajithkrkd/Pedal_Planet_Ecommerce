@@ -33,11 +33,7 @@ public class OtpServiceImpl implements OtpService {
 	@Autowired
 	CustomerRepository customerRepository;
 	
-	
-	//HERE IS THE FUNCTION FOR GENERATING OTP I JUST SIMPLY GENERATE A RANDOM OTP
-	//THEN CREATED A OTP ENTITY HERE AND ADD THE OTP , EMAIL , CREATED TIME
-	//THEN I SAVED THE OTP IN DATA BASE , THE OTP DELETE AUTOMATICALLY FROM THE DB AFTER 4 MINITUS
-	//RETURN THE OTP
+
 	@Override
 	public int genrateOtp(CustomerDTO customerDto) {
 		Random random = new Random();

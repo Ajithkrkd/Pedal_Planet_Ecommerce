@@ -98,8 +98,7 @@ public class LoginController {
 		if (bindingResult.hasErrors()) {
 			return "register";
 		}
-			//IF ALL THE VALIDATION IS CORRECT THEN IAM NOT SAVING THE USER I SENT A OTP TO CONFIRM
-			//PASS THE CUSTOMER DETAILS THROUGH THE SESSION THEN ONLY I CAN SENT MAIL TO THAT EMAIL
+
 		
 		else {
 			String link = (String) session.getAttribute("link");

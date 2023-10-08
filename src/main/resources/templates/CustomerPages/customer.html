@@ -83,10 +83,10 @@
                 </li>
                 <!--to get 1, 2, 3-->
                 <span th:each="i : ${#numbers.sequence(1,totalPages)}">
-        <li class="page-item" th:classappend="${i == currentPage}? 'active' : ''">
-            <a class="page-link" th:href="@{/admin/customer/pages/{page}(page=${i}, size=${size})}">[[${i}]]</a>
-        </li>
-    </span>
+                    <li class="page-item" th:classappend="${i == currentPage}? 'active' : ''">
+                        <a class="page-link" th:href="@{/admin/customer/pages/{page}(page=${i}, size=${size})}">[[${i}]]</a>
+                    </li>
+             </span>
                 <!--when the user tries to press the next button after reaching the total page count, the button will be disabled-->
                 <li class="page-item" th:classappend="${currentPage < totalPages} ? '' : 'disabled'">
                     <a class="page-link" th:href="@{/admin/customer/pages/{page}(page=${currentPage + 1}, size=${size})}">Next</a>

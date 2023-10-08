@@ -5,7 +5,9 @@ import com.ajith.pedal_planet.models.Product;
 import com.ajith.pedal_planet.models.Variant;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,4 +47,5 @@ public interface ProductService {
     List<Product> findAll();
 
 
+    String handleFileUpload (MultipartFile image) throws IOException;
 }

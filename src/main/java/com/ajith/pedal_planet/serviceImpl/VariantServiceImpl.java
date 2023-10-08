@@ -7,7 +7,6 @@ import com.ajith.pedal_planet.models.OrderItem;
 import com.ajith.pedal_planet.models.Product;
 import com.ajith.pedal_planet.models.Variant;
 import com.ajith.pedal_planet.service.VariantService;
-import org.aspectj.weaver.ast.Var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -39,6 +38,16 @@ public class VariantServiceImpl implements VariantService {
            variantRepository.save(variant);
        }
     }
+
+    @Override
+    public void decreaseStock (List < OrderItem > orderItems) {
+        for(OrderItem x : orderItems){
+            Variant variant = x.getVariant();
+            variant.setStock(variant.getStock () - x.getQuantity());
+            variantRepository.save(variant);
+        }
+    }
+
 
     @Override
     public Optional<Variant> findByIdAndVariantName(Long id, String variantName) {
@@ -88,22 +97,7 @@ public class VariantServiceImpl implements VariantService {
 
     }
 
- /*   @Override
-    public void decreaseQuantity(Variant variant) {
-        variant.setStock(variant.getStock()-1);
-        variantRepository.save(variant);
-    }*/
 
-   /* @Override
-    public void addQuantity(Variant variant) {
-        variant.setStock(variant.getStock()+1);
-        variantRepository.save(variant);
-    }*/
-   /* @Override
-    public void addQuantity(Variant variant , int quantity) {
-        variant.setStock(variant.getStock() + quantity);
-        variantRepository.save(variant);
-    }*/
 
     @Override
     public Page<Product> getAllproductWithPagination(int pageNumber, int size) {
@@ -121,6 +115,16 @@ public class VariantServiceImpl implements VariantService {
     @Override
     public List < Variant > getProductVariants (Long productId) {
         return variantRepository.findAllVariantByProduct_IdAndIsAvailableTrue ( productId );
+    }
+
+    @Override
+    public List < Variant > getVariantsByProductId (Long productId) {
+      return   variantRepository.findAllVariantByProduct_IdAndIsAvailableTrue ( productId );
+    }
+
+    @Override
+    public Optional < Variant > getVariantById (Long variantId) {
+        return variantRepository.findById ( variantId );
     }
 
 

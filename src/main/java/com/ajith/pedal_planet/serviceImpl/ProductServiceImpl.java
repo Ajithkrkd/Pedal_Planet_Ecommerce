@@ -1,5 +1,11 @@
 package com.ajith.pedal_planet.serviceImpl;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +20,7 @@ import org.springframework.stereotype.Service;
 import com.ajith.pedal_planet.Repository.ProductRepository;
 import com.ajith.pedal_planet.service.ProductService;
 import com.ajith.pedal_planet.models.Product;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class ProductServiceImpl implements ProductService{
@@ -111,6 +118,30 @@ public class ProductServiceImpl implements ProductService{
 	@Override
 	public List<Product> findAll() {
 		return productRepository.findAll();
+	}
+
+	@Override
+	public String handleFileUpload(MultipartFile file) throws IOException {
+
+		// Define the directory to save the file in
+		String rootPath = System.getProperty("user.dir");
+		String uploadDir = rootPath + "/src/main/resources/static/Images/product";
+
+		// Create the directory if it doesn't exist
+		File dir = new File(uploadDir);
+		if (!dir.exists()) {
+			dir.mkdirs();
+		}
+		// Generate a unique file name for the uploaded file
+		String fileName = 		file.getOriginalFilename();
+		// Save the file to the upload directory
+		String filePath = uploadDir + "/" + fileName;
+		Path path = Paths.get(filePath);
+		Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+		System.gc();
+
+		// Return the file path
+		return fileName;
 	}
 
 

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +38,8 @@ public class Customer  {
     private String role;
 
     private boolean isAvailable = true;
+
+    private LocalDate joinDate;
 
     @JsonIgnore
     @OneToOne

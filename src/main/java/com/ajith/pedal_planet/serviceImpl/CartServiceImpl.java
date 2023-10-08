@@ -13,6 +13,7 @@ import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -166,11 +167,15 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void deleteCart(Cart cart) {
-        cartRepository.delete(cart);
+    public void deleteCart (Cart cart) {
+
     }
 
 
+    @Override
+    public void removeFromTheCartAfterOrder (CartItem cartItem) {
+        cartRepository.delete ( cartItem.getCart ( ) );
+    }
 
 
     // In this methode I'm trying to add an item into the cart list

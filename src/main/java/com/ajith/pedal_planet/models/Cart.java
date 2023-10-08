@@ -23,7 +23,7 @@ public class Cart {
     @JoinColumn(name="customer_id")
     private Customer customer;
 
-    @OneToMany(mappedBy = "cart" , cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "cart")
     @ToString.Exclude
     private List<CartItem> cartItems = new ArrayList<>();
 
@@ -34,5 +34,7 @@ public class Cart {
     private String coupon_discount_amount;
 
     private String total_amount_AfterDiscount;
+
+
 
 }

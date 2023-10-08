@@ -1,5 +1,6 @@
 package com.ajith.pedal_planet.serviceImpl;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -76,6 +77,7 @@ public class CustomerServiceImpl implements CustomerService {
 		Wallet wallet = new Wallet();
 		customer.setEmail(customerDTO.getEmail());
 		customer.setFullName(customerDTO.getFullName());
+		customer.setJoinDate ( LocalDate.now (  ) );
 		customer.setPhoneNumber(customerDTO.getPhoneNumber());
 		customer.setRole("ROLE_USER");
 		customer.setPassword(passwordEncoder.encode(customerDTO.getPassword()));
@@ -196,5 +198,22 @@ public class CustomerServiceImpl implements CustomerService {
 	@Override
 	public List < Address > getNonDeltedAddressList (Long id) {
 	return 	addressRepository. findByCustomer_IdAndIsDeleteFalse(id);
+	}
+
+	@Override
+	public Long getTotalNumberOfCustomer ( ) {
+		return customerRepository.countTotalCustomers ();
+	}
+
+	@Override
+	public Long getTotalNumberOfBlockedCustomer ( ) {
+		return customerRepository.countByIsAvailableFalse();
+	}
+
+	@Override
+	public Long getTotalNumberOfRecentCustomer ( ) {
+			LocalDate oneWeekAgo = LocalDate.now().minusWeeks(1);
+			return customerRepository.countCustomersJoinedWithinAWeek(oneWeekAgo);
+
 	}
 }

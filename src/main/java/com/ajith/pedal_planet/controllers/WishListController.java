@@ -1,28 +1,21 @@
 package com.ajith.pedal_planet.controllers;
 
 
-import com.ajith.pedal_planet.DTO.WIshListCartRequest;
 import com.ajith.pedal_planet.DTO.WishListResponse;
+import com.ajith.pedal_planet.DTO.WishListToCartResponse;
 import com.ajith.pedal_planet.Repository.WishListService;
-import com.ajith.pedal_planet.models.Product;
-import com.ajith.pedal_planet.models.Variant;
-import com.ajith.pedal_planet.models.Wishlist;
-import com.ajith.pedal_planet.service.BasicServices;
-import com.ajith.pedal_planet.service.CustomerService;
-import com.ajith.pedal_planet.service.ProductService;
-import com.ajith.pedal_planet.service.VariantService;
+import com.ajith.pedal_planet.models.*;
+import com.ajith.pedal_planet.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 @RequestMapping("/wishList")
@@ -41,6 +34,9 @@ public class WishListController {
 
     @Autowired
     private VariantService variantService;
+
+    @Autowired
+    private CartService cartService;
 
 
     @GetMapping ()
@@ -96,6 +92,55 @@ public class WishListController {
     }
 
 
+
+
+
+        @PostMapping("/findVariants")
+        @ResponseBody
+        public ResponseEntity < List < String > > getVariantsByProductId(@RequestParam Long productId) {
+            List<Variant> variants = variantService.getVariantsByProductId(productId);
+            List<String> result = new ArrayList <>();
+            for (Variant variant : variants) {
+                String variantIdAndName = variant.getId() + "," + variant.getVariantName();
+                result.add(variantIdAndName);
+            }
+            return ResponseEntity.ok(result);
+        }
+
+        @PostMapping("/getVariantAndAddProductToCart")
+        public String getVariantAndAddProductToCart(@RequestParam ("variantId") String variantId ,
+                                                    RedirectAttributes redirectAttributes, Principal principal) {
+
+        System.out.println (variantId );
+
+
+            if(principal == null){
+               return  "redirect:/signin?cart_error";
+
+            }else {
+                Optional< Variant > variant = variantService.getVariantById( Long.valueOf ( variantId ) );
+                if(variant.isPresent ()){
+                    Variant existingVariant = variant.get ();
+                    Optional< Customer > customer = (customerService.findByUsername(basicServices.getCurrentUsername()));
+                    Optional< Cart > customerCart = customer.map(cartService::getCart).orElse(null);
+                    if (existingVariant.getStock() > 0) {
+                        CartItem cartItem = new CartItem(existingVariant, 1, customerCart.get());
+                        cartService.addToCartList(cartItem);
+                        wishListService.removeProductFromWishlist (existingVariant.getProduct ().getId () );
+                        redirectAttributes.addFlashAttribute ( "success", "Product added to cart" );
+                        return "redirect:/wishList";
+                    }else{
+                            redirectAttributes.addFlashAttribute ( "error" , "Stock unavailable" );
+                        return "redirect:/wishList";
+
+                    }
+                }
+
+
+            }
+
+            return "/redirect:wishList";
+        }
 
 }
 

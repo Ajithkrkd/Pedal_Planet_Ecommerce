@@ -1,6 +1,7 @@
 package com.ajith.pedal_planet.Repository;
 
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,6 +38,11 @@ public interface CustomerRepository  extends JpaRepository<Customer, Long>{
 
 	Optional<Customer> findCustomerByReferralLink(String link);
 
+	@Query("SELECT COUNT(c) FROM Customer c")
+	 Long countTotalCustomers ( );
 
+	Long countByIsAvailableFalse ( );
 
+	@Query("SELECT COUNT(c) FROM Customer c WHERE c.joinDate >= :oneWeekAgo")
+	Long countCustomersJoinedWithinAWeek(LocalDate oneWeekAgo);
 }

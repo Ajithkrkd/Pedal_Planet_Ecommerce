@@ -54,4 +54,10 @@ public interface CustomerService {
     void deleteCart(Cart cart);
 
     List< Address> getNonDeltedAddressList (Long id);
+
+    Long getTotalNumberOfCustomer ( );
+
+	Long getTotalNumberOfBlockedCustomer ( );
+
+	Long getTotalNumberOfRecentCustomer ( );
 }

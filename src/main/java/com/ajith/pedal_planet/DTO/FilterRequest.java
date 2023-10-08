@@ -11,4 +11,6 @@ import java.util.List;
 public class FilterRequest {
     private List< Status > statusFilters;
     private String[] timeFilters;
+
+
 }

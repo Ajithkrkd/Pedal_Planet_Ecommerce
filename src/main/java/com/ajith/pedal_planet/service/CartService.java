@@ -30,4 +30,5 @@ public interface CartService {
     void deleteCart(Cart cart);
 
 
+    void removeFromTheCartAfterOrder (CartItem cartItem);
 }

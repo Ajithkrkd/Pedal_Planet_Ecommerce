@@ -41,13 +41,13 @@
 </head>
 <body>
 <div th:replace="fragments/AdminHeader :: AdminHeader"></div>
-<div class="container">
+<div class="container-fluid">
     <div class="row justify-content-center">
-        <div class="col-md-6">
+        <div class="col-md-12">
             <div class="card mt-5">
                 <div class="card-header d-flex justify-content-between">
-                    <h3>Update Product</h3>
-                    <a href="/admin/products" class="btn btn-primary">Back</a>
+                    <h3 style="font-weight:800; font-size:24px;">Update Product</h3>
+                    <a href="/admin/products" class="btn btn-primary h-100">Back</a>
                 </div>
                 <div class="card-body">
                     <form id="updateProductForm" th:action="@{/admin/products/update}" th:object="${product}" method="post" enctype="multipart/form-data">
@@ -87,10 +87,10 @@
                         <div class="form-group">
                             <label>Product Images:</label>
                             <div class="row">
-                                <div class="col">
-                                    <div th:each="image, imageIndex : *{images}" id="imageDiv${imageIndex.index}">
+                                <div class="col-md-12 d-flex flex-md-column">
+                                    <div class="col-sm-12" th:each="image, imageIndex : *{images}" id="imageDiv${imageIndex.index}">
                                         <img th:src="@{/Images/product/{imagePath}(imagePath=${image.imagePath})}" class="img-thumbnail" style="width: 200px;" id="image${imageIndex.index}">
-                                        <div>
+                                        <div class="">
                                             <button type="button" class="btn btn-danger delete-button" th:attr="data-image-id=${image.id}, data-image-index=${imageIndex.index}" onclick="deleteImage(this.getAttribute('data-image-id'), this.getAttribute('data-image-index'))">Delete</button>
                                         </div>
                                     </div>

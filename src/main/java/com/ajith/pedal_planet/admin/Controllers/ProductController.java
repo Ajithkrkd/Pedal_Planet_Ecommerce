@@ -1,7 +1,8 @@
-package com.ajith.pedal_planet.controllers;
+package com.ajith.pedal_planet.admin.Controllers;
 
 import com.ajith.pedal_planet.Repository.CategoryRepository;
 import com.ajith.pedal_planet.Repository.ProductRepository;
+import com.ajith.pedal_planet.controllers.PaginationController;
 import com.ajith.pedal_planet.models.Image;
 import com.ajith.pedal_planet.models.Product;
 import com.ajith.pedal_planet.service.ImageService;
@@ -87,7 +88,7 @@ public class ProductController {
         List<Image> images = new ArrayList<>();
         if(!imageFiles.get(0).getOriginalFilename().equals("")) {
             for (MultipartFile image : imageFiles) {
-                String fileLocation = handleFileUpload(image);
+                String fileLocation = productService.handleFileUpload(image);
                 Image imageEntity = new Image();
                 imageEntity.setImagePath(fileLocation); // SETTING THE IMAGE PATH TO THE IMAGE TABLE
                 imageEntity.setProduct(product); //SETTING THE PRODUCT ID INTO THE IMAGE TABLE
@@ -103,28 +104,7 @@ public class ProductController {
     }
 
 
-    private String handleFileUpload(MultipartFile file) throws IOException {
 
-        // Define the directory to save the file in
-        String rootPath = System.getProperty("user.dir");
-        String uploadDir = rootPath + "/src/main/resources/static/Images/product";
-
-        // Create the directory if it doesn't exist
-        File dir = new File(uploadDir);
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
-        // Generate a unique file name for the uploaded file
-        String fileName = 		file.getOriginalFilename();
-        // Save the file to the upload directory
-        String filePath = uploadDir + "/" + fileName;
-        Path path = Paths.get(filePath);
-        Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-        System.gc();
-
-        // Return the file path
-        return fileName;
-    }
 
     @GetMapping("/product/details/{id}")
     public String productDetails(@PathVariable ("id") Long id, Model model) {
@@ -191,7 +171,7 @@ public class ProductController {
         if(newImages != null && !newImages.isEmpty())
         {
             for(MultipartFile newImage : newImages){
-                String fileLocation = handleFileUpload(newImage);// SAVE NEW IMAGES AND GET  ITS FILE LOCATION
+                String fileLocation = productService.handleFileUpload(newImage);// SAVE NEW IMAGES AND GET  ITS FILE LOCATION
                 Image imageEntity = new Image();
                 imageEntity.setImagePath(fileLocation);
                 imageEntity.setProduct(product);

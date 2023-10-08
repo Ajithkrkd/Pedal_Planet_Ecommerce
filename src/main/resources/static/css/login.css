@@ -160,7 +160,7 @@ form .signup-link a:hover{
              color:black;
              font-size: 18px;
              font-family: Arial, sans-serif;
-            z-index:100;
+
         }
   .forgot{
                     position: fixed;
@@ -177,7 +177,7 @@ form .signup-link a:hover{
                      color:black;
                      font-size: 18px;
                      font-family: Arial, sans-serif;
-                    z-index:100;
+
                 }
                         .cart_error{
                                     position: fixed;
@@ -194,7 +194,7 @@ form .signup-link a:hover{
                                      color:black;
                                      font-size: 18px;
                                      font-family: Arial, sans-serif;
-                                    z-index:100;
+
                                 }
   .cart_success{
                                                         position: fixed;
@@ -211,7 +211,7 @@ form .signup-link a:hover{
                                                          color:black;
                                                          font-size: 18px;
                                                          font-family: Arial, sans-serif;
-                                                        z-index:100;
+
                                                     }
     </style>
 

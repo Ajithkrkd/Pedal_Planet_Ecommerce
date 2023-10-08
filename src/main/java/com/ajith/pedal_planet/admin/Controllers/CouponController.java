@@ -1,4 +1,4 @@
-package com.ajith.pedal_planet.controllers;
+package com.ajith.pedal_planet.admin.Controllers;
 
 import com.ajith.pedal_planet.Enums.CouponType;
 import com.ajith.pedal_planet.Repository.CategoryRepository;
@@ -19,7 +19,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin/coupon")
-public class AdminCouponController {
+public class CouponController {
 
     @Autowired
     private ProductRepository productRepository;
@@ -85,7 +85,7 @@ public class AdminCouponController {
                 coupon.setProduct(null);
             }
             couponService.saveCoupon(coupon);
-            return "redirect:/admin/coupon/create";
+            return "redirect:/admin/coupon/listCoupons";
         }
     }
 

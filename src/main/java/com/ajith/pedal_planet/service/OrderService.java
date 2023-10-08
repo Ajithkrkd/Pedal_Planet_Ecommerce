@@ -1,12 +1,15 @@
 package com.ajith.pedal_planet.service;
 
 import com.ajith.pedal_planet.DTO.FilterRequest;
+import com.ajith.pedal_planet.DTO.MonthlySalesDTO;
 import com.ajith.pedal_planet.models.CartItem;
 import com.ajith.pedal_planet.models.Customer;
 import com.ajith.pedal_planet.models.Order;
 
 import javax.servlet.http.HttpSession;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface OrderService {
@@ -20,4 +23,29 @@ public interface OrderService {
     List< Order> getAllOrders ( );
 
     List< Order> filterOrders (List< Order> allOrders, FilterRequest filterRequest);
+
+    void changeStatusToCancel (Long orderId);
+
+    List< Order> getAllOrdersWithStatusDelivered ( );
+    List<Order> getSalesBetweenTheOrderDate (LocalDate startDate, LocalDate endDate);
+
+    List< Order> getAllOrdersWithStatusDeliveredBetweenTheDate (List< Order> orderList);
+
+    List< MonthlySalesDTO> getMonthlySalesData ( );
+
+    Long getTotalNumberOfOrders ( );
+
+    Long getTotalNumberOfRecentOrders ( );
+
+    Long getTotalNumberOfReturnedAndCanceledOrders ( );
+
+    float getTotalSalesAmount ( );
+    
+
+    float getTotalRefundAmount ( );
+
+
+   float calculateProfitForDeliveredOrders();
+
+    Map< String, Integer> calculatePaymentMethodPercentages ( );
 }

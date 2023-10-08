@@ -214,7 +214,6 @@ public class CustomerAccountController {
         Optional<Order> order  = orderRepository.findById(order_id);
         if(order.isPresent()){
             Order existingOrder = order.get();
-            existingOrder.setStatus(Status.CANCELLED);
             variantService.increaseStock(order_id);
             existingOrder.setCancellationReason (cancellationReason);
             existingOrder.setStatus ( Status.CANCEL_REQUEST_SENT );
@@ -237,7 +236,6 @@ public class CustomerAccountController {
             Order existingOrder = order.get();
             existingOrder.setStatus(Status.RETURN_REQUEST_SENT);
             existingOrder.setCancellationReason ( cancellationReason );
-
             orderRepository.save(existingOrder);
             redirectAttributes.addFlashAttribute("message" ,"you return request was sent successfully");
             return "redirect:/account/orders";

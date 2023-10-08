@@ -3,6 +3,7 @@ package com.ajith.pedal_planet.models;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import java.util.List;
@@ -32,6 +33,7 @@ public class Product {
 
 	private float price;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "category_id")
 	private Category category;

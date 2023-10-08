@@ -193,6 +193,18 @@ display: inline-block;
 
  }
 
+ .status-CANCEL_REQUEST_SENT{
+             display: inline-block;
+             padding: 5px 10px;
+             border: 1px solid #ccc;
+             width: 100%;
+             color:#fff;
+             background-color:rgb(232,143,26);
+             border-radius:9px;
+             text-align:center;
+
+  }
+
 
 
 .hh-grayBox {

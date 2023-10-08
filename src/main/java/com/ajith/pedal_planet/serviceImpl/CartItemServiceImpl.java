@@ -21,5 +21,15 @@ public class CartItemServiceImpl implements CartItemService {
         return cartItemRepository.findByCart(cart);
     }
 
+    @Override
+    public void removeCartItem (Cart cart) {
+        List<CartItem> cartItems = cartItemRepository.findByCart ( cart );
+        for (CartItem cartItem : cartItems) {
+            cartItemRepository.delete(cartItem);
+        }
+
+        System.out.println ( cartItems);
+    }
+
 
 }

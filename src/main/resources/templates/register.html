@@ -17,7 +17,7 @@
 						<img src="/homeImages/kids.png" class="ml-5 p-3 mt-5" style="width: auto; height: 300px;">
 					</div>
 					<div class="col-lg-7">
-						<div class="p-5">
+						<div class="">
 
 							<form th:action="@{/createUser}" th:object="${customerDTO}" method="POST">
 								<!-- ... other form inputs ... -->
@@ -85,10 +85,7 @@
 							</form>
 
 							<hr>
-							<div class="text-center">
-								<a class="small" th:href="@{/forgot_password}" href="reset_password_form.html">Forgot
-									Password?</a>
-							</div>
+
 							<div class="text-center">
 								<a class="small" th:href="@{/signin}">Already have an account? Login!</a>
 							</div>
