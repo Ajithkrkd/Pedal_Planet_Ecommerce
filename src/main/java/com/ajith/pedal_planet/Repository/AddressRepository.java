@@ -6,13 +6,13 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface AddressRepository extends JpaRepository<Address ,Long> {
+public interface AddressRepository extends JpaRepository < Address, Long > {
 
-    List<Address> findAllByCustomer_Id(Long customerId);
+    List < Address > findAllByCustomer_Id (Long customerId);
 
-    List< Address> findByCustomer_IdAndIsDeleteFalse (Long id);
+    List < Address > findByCustomer_IdAndIsDeleteFalse (Long id);
 
 
-    @Query ("SELECT a FROM Address a WHERE a.customer.id = :customerId AND a.isDefault = true")
-    Address findDefaultAddressByCustomerId(Long customerId);
+    @Query ( "SELECT a FROM Address a WHERE a.customer.id = :customerId AND a.isDefault = true" )
+    Address findDefaultAddressByCustomerId (Long customerId);
 }

@@ -3,7 +3,11 @@ package com.ajith.pedal_planet.serviceImpl;
 import java.util.List;
 import java.util.Optional;
 
+import com.ajith.pedal_planet.models.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.ajith.pedal_planet.Repository.CategoryRepository;
@@ -59,14 +63,25 @@ public class CategoryServiceImpl implements CategoryService {
 		return categoryRepository.findCategoryByIsAvailableTrue();
 	}
 
-	@Override
-	public List<Category> getCategoriesByName(String name) {
 
-		return categoryRepository.findByName(name);
-	}
 
 	@Override
 	public List<Category> findAll() {
 		return categoryRepository.findAll();
 	}
+
+	@Override
+	public Page < Category > getAllCategoriesWithPagination (int pageNumber, int pageSize) {
+		Pageable pageable = PageRequest.of(pageNumber-1, pageSize);
+		return categoryRepository.findAll (pageable);
+	}
+
+	@Override
+	public Page < Category > searchCategories (int pageNumber, int size, String keyword) {
+		Pageable pageable = PageRequest.of(pageNumber-1, size);
+		Page <Category> categories = categoryRepository.searchCategory (keyword, pageable);
+		return categories;
+	}
+
+
 }

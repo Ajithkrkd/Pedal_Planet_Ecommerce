@@ -29,15 +29,8 @@ public interface ProductService {
 	public List<Product> getAvailableProductsByCategory(int id);
 
 
-	
-	// PAGINATION
-	
-	public Page<Product> getAllproductWithPagination( int pageNumber , int size);
 
-	public Page<Product> searchProduct(int pageNumber, String keyword);
-
-
-    Optional<Product> findByName(String name);
+	Optional<Product> findByName(String name);
 
     List<Product> getRelatedProductsByCategory(Category category,Long ProductId);
 
@@ -48,4 +41,12 @@ public interface ProductService {
 
 
     String handleFileUpload (MultipartFile image) throws IOException;
+
+    Page< Product> getAllProductWithPagination (int pageNumber, int pageSize);
+
+	Page< Product> searchProduct (int pageNumber, int size, String keyword);
+
+    List< Product> getAvailableProductsByCategoryAndPriceRange (int categoryId, float minPrice, float maxPrice);
+
+	List< Product> findProductsByKeyword (String keyword);
 }

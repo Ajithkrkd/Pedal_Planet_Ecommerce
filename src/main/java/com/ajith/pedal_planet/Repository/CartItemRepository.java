@@ -8,11 +8,10 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface CartItemRepository  extends JpaRepository<CartItem , Long> {
+public interface CartItemRepository extends JpaRepository < CartItem, Long > {
 
 
-
-    List<CartItem> findByCart(Cart cartId);
+    List < CartItem > findByCart (Cart cartId);
 
 
 }

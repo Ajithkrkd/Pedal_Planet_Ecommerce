@@ -17,10 +17,10 @@
     <div class="container">
 		<center>
 				<h4 class="mt-5"><a style="text-decoration: none;" href="/admin/categories">Manage Category Here</a></h4>
-				<form class="form-inline mt-3" th:action="@{/admin/searchCategories}" method="get">
+				<form class="form-inline mt-3" th:action="@{/admin/categories/pages/1/5/search-categories-result}" method="get">
 				<div class="col-md-12 col-lg-12 col-xl-12">
-					<input style="max-width: 300px;" id="name" type="text" name="name" th:value="*{name}" required class="form-control" placeholder="Enter username here"> 
-				<input class="btn btn-primary btn-success " type="submit" name="search" value="Search"></input>
+					<input style="max-width: 300px;" id="name" type="text" name="keyword" required class="form-control" placeholder="Enter username here">
+				<input class="btn btn-primary btn-success " type="submit"></input>
 				</div>	
 			</form>
 			</center>
@@ -65,7 +65,43 @@
                 </tr>
             </tbody>
         </table>
-       
+
+        <nav class="my-5" aria-label="Page navigation example">
+            <div class="col-sm-2 page-item" th:if="${totalPages != null}">
+                Total categories : [[${totalItems}]]
+                <form id="pageSizeForm">
+                    <label for="pageSize">Page Size:</label>
+                    <select name="size" id="pageSize">
+                        <option th:value="${5}">5</option>
+                        <option th:value="${10}">10</option>
+                        <option th:value="${25}">25</option>
+                        <option th:value="${50}">50</option>
+                        <option th:value="${100}">100</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary">Apply</button>
+
+                </form>
+            </div>
+            <ul class="pagination justify-content-center">
+                <!--when the user tries to press the previous button after reaching 0, then the button will be disabled-->
+                <li class="page-item" th:classappend="${currentPage > 1} ? '' : 'disabled'">
+                    <a class="page-link" th:href="@{/admin/categories/pages/{page}(page=${currentPage - 1}, size=${size})}">Previous</a>
+                </li>
+                <!--to get 1, 2, 3-->
+                <span th:each="i : ${#numbers.sequence(1,totalPages)}">
+                    <li class="page-item" th:classappend="${i == currentPage}? 'active' : ''">
+                        <a class="page-link" th:href="@{/admin/categories/pages/{page}(page=${i}, size=${size})}">[[${i}]]</a>
+                    </li>
+             </span>
+                <!--when the user tries to press the next button after reaching the total page count, the button will be disabled-->
+                <li class="page-item" th:classappend="${currentPage < totalPages} ? '' : 'disabled'">
+                    <a class="page-link" th:href="@{/admin/categories/pages/{page}(page=${currentPage + 1}, size=${size})}">Next</a>
+                </li>
+            </ul>
+
+        </nav>
+
+
     </div>
 
     <div th:replace="fragments/footer :: footer"></div>

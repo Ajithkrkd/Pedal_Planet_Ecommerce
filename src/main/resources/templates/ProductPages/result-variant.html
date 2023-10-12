@@ -41,7 +41,7 @@
 <div class="container-fluid">
     <div style="text-align: center;">
         <h4 class="mt-5"><a href="/admin/variant">Add variant </a></h4>
-        <form class="form-inline mt-3" th:action="@{/admin/variant/pages/0/search-result}" method="get">
+        <form class="form-inline mt-3" th:action="@{/admin/variant/pages/1/5/search-variant-result}" method="get">
             <div class="col-md-12 col-lg-12 col-xl-12">
                 <input style="max-width: 300px;" id="search"name="keyword" required class="form-control" placeholder="Enter username here">
                 <button class="btn btn-primary btn-success " type="submit" >Search</button>
@@ -84,30 +84,49 @@
 
 </div>
 <nav class="my-5" aria-label="Page navigation example">
-
     <div class="col-sm-2 page-item" th:if="${totalPages != null}">
-        Total Products : [[${totalItems}]]
+        Total variant : [[${totalItems}]]
+        <form id="pageSizeForm">
+            <label for="pageSize">Page Size:</label>
+            <select name="size" id="pageSize">
+                <option th:value="${5}">5</option>
+                <option th:value="${10}">10</option>
+                <option th:value="${25}">25</option>
+                <option th:value="${50}">50</option>
+                <option th:value="${100}">100</option>
+            </select>
+            <button type="submit" class="btn btn-primary">Apply</button>
+
+        </form>
     </div>
-
     <ul class="pagination justify-content-center">
-        <!--when the user try to press previous button  after reaching 0 then button will disabled-->
-        <li  class="page-item " th:classappend="${currentPage > 0} ? '' : 'disabled'">
-            <a class="page-link"  th:href="@{'/admin/variant/pages/' + ${currentPage - 1}}">Previous</a>
+        <!--when the user tries to press the previous button after reaching 0, then the button will be disabled-->
+        <li class="page-item" th:classappend="${currentPage > 1} ? '' : 'disabled'">
+            <a class="page-link" th:href="@{/admin/variant/pages/{page}(page=${currentPage - 1}, size=${size})}">Previous</a>
         </li>
-        <!--to get 1 , 2 , 3-->
+        <!--to get 1, 2, 3-->
         <span th:each="i : ${#numbers.sequence(1,totalPages)}">
-
-		    	<li class="page-item" th:classappend="${currentPage == i-1} ? 'active' : ''">
-				<a class="page-link"   th:href="@{'/admin/variant/pages/' +${i-1}}">[[${i}]]</a>
-				</li>
-			</span>
-        <!--when the user try to press next button  after reaching total page count then button will disabled-->
-        <li class="page-item" th:classappend="${currentPage < totalPages-1} ? '' : 'disabled'">
-            <a class="page-link" th:href="@{'/admin/variant/pages/' + ${currentPage + 1}}">Next</a>
+                    <li class="page-item" th:classappend="${i == currentPage}? 'active' : ''">
+                        <a class="page-link" th:href="@{/admin/variant/pages/{page}(page=${i}, size=${size})}">[[${i}]]</a>
+                    </li>
+             </span>
+        <!--when the user tries to press the next button after reaching the total page count, the button will be disabled-->
+        <li class="page-item" th:classappend="${currentPage < totalPages} ? '' : 'disabled'">
+            <a class="page-link" th:href="@{/admin/variant/pages/{page}(page=${currentPage + 1}, size=${size})}">Next</a>
         </li>
     </ul>
+
 </nav>
 
+<script>
+    document.getElementById("pageSizeForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        var pageSize = document.getElementById("pageSize").value;
+        // Set the current page to 0 when changing the page size
+        var currentPage = 1;
+        window.location.href = "/admin/variant/pages/" + currentPage + "?size=" + pageSize;
+    });
+</script>
 <div th:replace="fragments/footer::footer"></div>
 
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"

@@ -2,28 +2,43 @@ package com.ajith.pedal_planet.controllers;
 
 import com.ajith.pedal_planet.DTO.Utility;
 import com.ajith.pedal_planet.Exceptions.CustomerNotFoundException;
+import com.ajith.pedal_planet.Repository.CustomerRepository;
 import com.ajith.pedal_planet.models.Customer;
+import com.ajith.pedal_planet.service.BasicServices;
 import com.ajith.pedal_planet.service.CustomerService;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
+import java.util.Optional;
 
 @Controller
 public class ForgottenPasswordController {
     @Autowired
     private JavaMailSender mailSender;
+
+    @Autowired
+    private BasicServices basicServices;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
+
+    @Autowired
+    private CustomerRepository customerRepository;
 
     @Autowired
     private CustomerService customerService;
@@ -82,8 +97,9 @@ public class ForgottenPasswordController {
         model.addAttribute("token" , token);
 
         if(customer == null){
-            redirectAttributes.addFlashAttribute("forgotmessage" ,"invalid token");
-            return "forgotmessage";
+            System.out.println ("Customer not found" );
+            redirectAttributes.addFlashAttribute("forgotMessage" ,"Invalid Token !! Request One More ");
+            return "redirect:/signin";
         }
         else {
             return "reset_password_form";
@@ -100,12 +116,46 @@ public class ForgottenPasswordController {
     Customer customer = customerService.getByResetPasswordToken(token);
 
     if(customer == null){
-        redirectAttributes.addFlashAttribute("error" , "Invalid Token");
-        return "forgotmessage";
+        System.out.println ("here" );
+        redirectAttributes.addFlashAttribute("forgotMessage" , "Invalid Token !! Request One More ");
+        return "redirect:/signin";
     }else{
         customerService.updatePassword(customer , password);
-        redirectAttributes.addFlashAttribute("forgotmessage" ,"You have successfully changed your password.");
+        redirectAttributes.addFlashAttribute("forgotMessage" ,"You have successfully changed your password.");
         return "redirect:/signin?changed";
     }
+    }
+
+
+    @PostMapping("/account/forgotten_password")
+    public String forgottenPassword(@RequestParam ("currentPassword") String currentPassword,
+                                    @RequestParam("newPassword") String newPassword,
+                                    @RequestParam("confirmPassword") String confirmPassword,
+                                    RedirectAttributes redirectAttributes) {
+
+        Optional <Customer> customer = customerService.findByUsername(basicServices.getCurrentUsername());
+        if (customer.isPresent()) {
+            Customer loggedInCustomer = customer.get();
+
+            if (passwordEncoder.matches(currentPassword, loggedInCustomer.getPassword())) {
+                if (newPassword.equals(confirmPassword)) {
+                    String hashedPassword = passwordEncoder.encode(newPassword);
+                    loggedInCustomer.setPassword(hashedPassword);
+                    customerRepository.save(loggedInCustomer);
+                    redirectAttributes.addFlashAttribute("message", "Password changed successfully.");
+                    return "redirect:/account";
+                } else {
+                    redirectAttributes.addFlashAttribute("error", "New password and confirmation do not match.");
+                    return "redirect:/account";
+                }
+            } else {
+                redirectAttributes.addFlashAttribute("error", "Current password is incorrect.");
+                return "redirect:/account";
+            }
+
+
+        } else {
+            return "redirect:/signin?notLogged";
+        }
     }
 }

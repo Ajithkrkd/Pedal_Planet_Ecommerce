@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>banners</title>
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/cropper/2.3.4/cropper.min.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js" integrity="sha512-9KkIqdfN7ipEW6B6k+Aq20PV31bjODg4AA52W+tYtAE0jE0kMx49bjJ3FgvS56wzmyfMUHbQ4Km2b7l9+Y/+Eg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+        <style>
+            .page{
+            margin : 1em auto;
+            max-width:768px;
+            display: flex;
+            align-items:flex-start;
+            flex-wrap:wrap;
+            height: 100%;
+            }
+
+            .box{
+                padding: 0.5em;
+                width: 100%;
+                margin: 0.5em;
+            }
+
+            .box-2{
+                padding: 0.5em;
+                width: calc(100%/2 - 1em);
+
+            }
+
+            .options label ,options input{
+            width: 4em;
+            padding:0.5em , 1em;
+
+            }
+            .hide{
+            display: none;
+
+            }
+
+            .img{
+            width: 100%;
+            }
+        </style>
+
+
+    </head>
+    <body>
+    <div th:replace="/fragments/header::header"></div>
+
+    <div class="container">
+        <h4>Crop the Image here</h4>
+    </div>
+
+    <input class="form-control" type="text" id="text-input" placeholder="Enter random text">
+
+
+    <div class="form-group container">
+        <label for="file-input">upload image</label>
+        <input class="form-control" type="file"  id="file-input" accept="image/*">
+    </div>
+
+    <div class="box-2">
+        <div class="result">
+
+        </div>
+    </div>
+
+
+    <div class="box-2 img-result hide">
+
+        <img src="" alt="" class="cropped">
+
+    </div>
+
+        <div class="box">
+            <div class="options hide ">
+                <label >Width</label>
+                <input type="number"   class="img-w" value="300" min="100" max="1200">
+            </div>
+
+            <button class="btn save hide">Save</button>
+
+            <a href="" class="btn download hide">download</a>
+        </div>
+
+
+
+
+
+    <div th:replace="/fragments/footer::footer"></div>
+
+    <script>
+        // Function to generate a random string of a specified length
+ function generateRandomString(length) {
+     const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+     let randomString = "";
+
+     for (let i = 0; i < length; i++) {
+         const randomIndex = Math.floor(Math.random() * charset.length);
+         randomString += charset.charAt(randomIndex);
+     }
+
+     return randomString;
+ }
+
+ const upload = document.getElementById("file-input");
+ const result = document.querySelector(".result");
+ const save = document.querySelector(".save");
+ const options = document.querySelector(".options");
+ const cropped = document.querySelector(".cropped");
+ const img_w = document.querySelector(".img-w");
+ const img_result = document.querySelector(".img-result");
+
+ let cropper = "";
+
+ upload.addEventListener("change", (e) => {
+     const reader = new FileReader();
+     const selectedFile = e.target.files[0];
+
+     if (selectedFile) {
+         reader.onload = (e) => {
+             if (e.target.result) {
+                 // Create a new Image
+                 let img = document.createElement("img");
+                 img.id = "image";
+                 img.src = e.target.result;
+
+                 // Clean the result before
+                 result.innerHTML = "";
+
+                 // Append the new Image
+                 result.appendChild(img);
+
+                 // Generate a random string as the file name
+                 const fileName = generateRandomString(8); // You can specify the desired length
+                 img.setAttribute("data-file-name", fileName);
+
+                 // Show the save button and options
+                 save.classList.remove("hide");
+                 options.classList.remove("hide");
+
+                 // Initialize Cropper
+                 cropper = new Cropper(img);
+             }
+         };
+
+         reader.readAsDataURL(selectedFile);
+     }
+ });
+
+ save.addEventListener("click", (e) => {
+     e.preventDefault();
+
+     // Get the file name from the data attribute
+     let fileName = cropped.getAttribute("data-file-name");
+
+     // Get the cropped image as a base64-encoded data URL
+     let imgSrc = cropper
+         .getCroppedCanvas({
+             width: img_w.value,
+         })
+         .toDataURL();
+
+     console.log(imgSrc);
+     cropped.classList.remove("hide");
+     img_result.classList.remove("hide");
+
+     // Show img cropped
+     cropped.src = imgSrc;
+
+     // Create a temporary link to trigger the download
+     console.log(fileName + "ajith");
+     let a = document.createElement('a');
+     a.href = imgSrc;
+     a.download = fileName;
+     a.style.display = 'none';
+     document.body.appendChild(a);
+     a.click();
+     document.body.removeChild(a);
+ });
+
+
+    </script>
+
+
+</body>
+
+
+</html>
+
+

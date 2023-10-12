@@ -32,6 +32,11 @@ function hideCartErrorDiv()
                 success: function(data) {
 
                     console.log('Default address updated successfully');
+                     Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Default address updated successfully',
+                        });
                 },
                 error: function(error) {
 

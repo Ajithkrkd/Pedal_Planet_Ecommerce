@@ -1,14 +1,16 @@
 package com.ajith.pedal_planet.admin.Controllers;
 
-import com.ajith.pedal_planet.controllers.PaginationController;
 import com.ajith.pedal_planet.models.Customer;
-import com.ajith.pedal_planet.service.CustomerService;
 import com.ajith.pedal_planet.service.CategoryService;
+import com.ajith.pedal_planet.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 import java.util.List;
@@ -18,8 +20,7 @@ import java.util.List;
 public class CustomerController {
 
 
-    @Autowired
-    PaginationController paginationController;
+
 
     @Autowired
     private CategoryService categoryService;

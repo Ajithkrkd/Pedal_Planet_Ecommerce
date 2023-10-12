@@ -21,7 +21,9 @@
 </div>
 
 
-
+<div th:if="${forgotMessage}" class="alert-danger">
+    <h5  class="text-center p-2" th:text="${forgotMessage}"></h5>
+</div>
 
 
 <div class="container mt-5">

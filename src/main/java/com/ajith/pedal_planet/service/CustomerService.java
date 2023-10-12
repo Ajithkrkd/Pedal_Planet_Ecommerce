@@ -17,47 +17,47 @@ import javax.servlet.http.HttpServletRequest;
 public interface CustomerService {
 
 
+    public Customer createUser (Customer customerEntity);
+
+    public boolean checkEmail (String email);
+
+    public boolean isValidUser (String email, String password);
+
+    public void registerNewCustomer (CustomerDTO customerDTO, HttpServletRequest request, String link);
 
 
-	public Customer createUser(Customer customerEntity) ;
-	
-	 public boolean checkEmail(String email);
+    //ADMIN
 
-	public boolean isValidUser(String email, String password);
-	
-	public void registerNewCustomer(CustomerDTO customerDTO , HttpServletRequest request ,String link);
+    public List < Customer > getAllCustomer ( );
 
-	
-	//ADMIN
-	
-	public List<Customer> getAllCustomer();
-	public Optional<Customer> getCustomerById(Long id);
+    public Optional < Customer > getCustomerById (Long id);
 
-	public void toggleCustomerStautsById(Long id);
+    public void toggleCustomerStautsById (Long id);
 
 
-	
-	public Page<Customer> getAllCustomerWithPagination(int pageNumber , int size);
+    public Page < Customer > getAllCustomerWithPagination (int pageNumber, int size);
 
-	public Page<Customer> searchCustomers(int pageNumber,int size, String keyword);
+    public Page < Customer > searchCustomers (int pageNumber, int size, String keyword);
 
 
-    Optional<Customer> findByUsername(String email);
+    Optional < Customer > findByUsername (String email);
 
-	//forgot password controller methods
-	public void updateResetPasswordToken(String token , String email);
-	public Customer getByResetPasswordToken	(String token);
-	public void updatePassword(Customer customer , String newPassword);
+    //forgot password controller methods
+    public void updateResetPasswordToken (String token, String email);
 
-    Optional<Customer> getByReferralLink(String link);
+    public Customer getByResetPasswordToken (String token);
 
-    void deleteCart(Cart cart);
+    public void updatePassword (Customer customer, String newPassword);
 
-    List< Address> getNonDeltedAddressList (Long id);
+    Optional < Customer > getByReferralLink (String link);
+
+    void deleteCart (Cart cart);
+
+    List < Address > getNonDeltedAddressList (Long id);
 
     Long getTotalNumberOfCustomer ( );
 
-	Long getTotalNumberOfBlockedCustomer ( );
+    Long getTotalNumberOfBlockedCustomer ( );
 
-	Long getTotalNumberOfRecentCustomer ( );
+    Long getTotalNumberOfRecentCustomer ( );
 }

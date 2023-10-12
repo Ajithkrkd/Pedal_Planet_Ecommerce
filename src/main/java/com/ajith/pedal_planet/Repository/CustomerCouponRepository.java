@@ -19,5 +19,9 @@ public interface CustomerCouponRepository extends JpaRepository<CustomerCoupon ,
 
 
 
-    boolean existsByCoupon_Id (Long id);
+
+
+
+
+    boolean existsByCustomer_IdAndCoupon_Id (Long id, Long id1);
 }

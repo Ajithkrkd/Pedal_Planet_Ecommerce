@@ -1,19 +1,15 @@
 package com.ajith.pedal_planet.serviceImpl;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.transaction.Transactional;
-
+import com.ajith.pedal_planet.DTO.CustomerDTO;
 import com.ajith.pedal_planet.Enums.Wallet_Method;
 import com.ajith.pedal_planet.Exceptions.CustomerNotFoundException;
 import com.ajith.pedal_planet.Repository.AddressRepository;
-import com.ajith.pedal_planet.controllers.WalletController;
+import com.ajith.pedal_planet.Repository.CustomerRepository;
 import com.ajith.pedal_planet.models.Address;
 import com.ajith.pedal_planet.models.Cart;
+import com.ajith.pedal_planet.models.Customer;
 import com.ajith.pedal_planet.models.Wallet;
+import com.ajith.pedal_planet.service.CustomerService;
 import com.ajith.pedal_planet.service.WalletHistoryService;
 import com.ajith.pedal_planet.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +19,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.ajith.pedal_planet.DTO.CustomerDTO;
-import com.ajith.pedal_planet.Repository.CustomerRepository;
-import com.ajith.pedal_planet.service.CustomerService;
-import com.ajith.pedal_planet.models.Customer;
+import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {

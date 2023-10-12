@@ -19,7 +19,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin/coupon")
-public class CouponController {
+public class AdminCouponController {
 
     @Autowired
     private ProductRepository productRepository;

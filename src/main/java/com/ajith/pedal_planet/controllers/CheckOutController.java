@@ -74,7 +74,7 @@ public class CheckOutController {
     private WalletService walletService;
 
     @GetMapping ( "/placeOrder" )
-    public String getCheckOutPage (Model model) {
+    public String getCheckOutPage (Model model , RedirectAttributes redirectAttributes) {
 
 
         Optional < Customer > customer = customerService.findByUsername ( basicServices.getCurrentUsername ( ) );
@@ -82,9 +82,10 @@ public class CheckOutController {
             Customer existingCustomer = customer.get ( );
             Cart cart = customer.get ( ).getCart ( );
             List < CartItem > cartItems = cart.getCartItems ( );
+
             String total_price_price = String.valueOf ( cartservice.getTotalOfferPrice ( cartItems ) );
-             List<Address> customerAddress =  customerService.getNonDeltedAddressList(existingCustomer.getId ());
-             Address defualtAddress = addressService.getDefualtAddressByCustomer_Id(existingCustomer.getId ());
+            List<Address> customerAddress =  customerService.getNonDeltedAddressList(existingCustomer.getId ());
+            Address defualtAddress = addressService.getDefualtAddressByCustomer_Id(existingCustomer.getId ());
 
             model.addAttribute ( "cartItems", cartItems );
             model.addAttribute ( "customerAddress", customerAddress );
@@ -98,16 +99,27 @@ public class CheckOutController {
             }
 
             return "/userside/checkOutPage";
+        }else{
+            redirectAttributes.addFlashAttribute ( "message" ,"please login" );
+            return "redirect:/signin";
         }
 
-        return "/userSide/checkOutPage";
+
     }
 
     @PostMapping ( "/showConfirmation" )
-    public String processOrder (@RequestParam ( "paymentMethod" ) String payment,
-                                @RequestParam ( "ordered_address" ) Long address_id,
+    public String processOrder (@RequestParam ( value = "paymentMethod" ,required = false) String payment,
+                                @RequestParam ( value = "ordered_address" ,required = false) Long address_id,
                                 RedirectAttributes redirectAttributes, Model model, HttpSession session) {
 
+        if(address_id == null){
+            redirectAttributes.addFlashAttribute("message", "Please select a valid address. or add");
+            return "redirect:/placeOrder";
+        }
+        if(payment == null){
+            redirectAttributes.addFlashAttribute("message", "Please select Payment Method");
+            return "redirect:/placeOrder";
+        }
         Optional < Customer > customer = customerService.findByUsername ( basicServices.getCurrentUsername ( ) );
         if ( customer.isPresent ( ) ) {
             Customer existingCustomer = customer.get ( );
@@ -130,11 +142,15 @@ public class CheckOutController {
             }
 
 
+
             Optional < Address > customerAddress = addressRepository.findById ( address_id );
             if ( customerAddress.isPresent ( ) ) {
 
                 model.addAttribute ( "orderAddress", customerAddress.get ( ) );
                 model.addAttribute ( "paymentMethod", payment );
+            }else{
+                redirectAttributes.addFlashAttribute("addressNotFoundMessage", "Please select a valid address.");
+                return "redirect:/placeOrder";
             }
             System.out.println ( "reached show confirm" );
             return "/userSide/confirmationPage";

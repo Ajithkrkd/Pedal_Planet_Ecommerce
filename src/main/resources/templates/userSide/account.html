@@ -7,6 +7,8 @@
     <title>account</title>
     <link rel="stylesheet" href="/css/account.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <style>
 
 
@@ -71,7 +73,7 @@ table.responsive-table tbody tr:nth-child(even) {
     </h4>
     <div class="card overflow-hidden">
         <div class="row no-gutters row-bordered row-border-light">
-            <div class="col-md-3 pt-0">
+            <div class="col-md-2 pt-0">
                 <div class="list-group list-group-flush account-settings-links">
                     <a class="list-group-item list-group-item-action active" data-toggle="list"
                        href="#account-general">Profile Information</a>
@@ -93,7 +95,7 @@ table.responsive-table tbody tr:nth-child(even) {
                 </div>
             </div>
 
-            <div class="col-md-9 p-5">
+            <div class="col-md-9">
                 <div class="tab-content">
                     <!--profile section start-->
                     <div class="tab-pane fade active show" id="account-general">
@@ -110,10 +112,10 @@ table.responsive-table tbody tr:nth-child(even) {
                             <div class="form-group">
                                 <label class="form-label">E-mail</label>
                                 <input type="text" class="form-control mb-1" th:value="${customer.email}" readonly>
-                                <div class="alert alert-warning mt-3">
-                                    Do you want to change your email?<br>
-                                    <a href="javascript:void(0)">Resend confirmation</a>
-                                </div>
+<!--                                <div class="alert alert-warning mt-3">-->
+<!--                                    Do you want to change your email?<br>-->
+<!--                                    <a href="javascript:void(0)">Resend confirmation</a>-->
+<!--                                </div>-->
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Company</label>
@@ -127,27 +129,29 @@ table.responsive-table tbody tr:nth-child(even) {
                     <!--password changing email confirmation start-->
                     <div class="tab-pane fade " id="account-change-password">
                         <form th:action="@{/account/forgotten_password}" method="post" th:object="${customer}">
-                            <div class="card-body p-4">
+                            <div class="card-body">
                                 <h4 id="passwordChanging">Change Password</h4>
                                 <div class="form-group">
                                     <label class="form-label">Current password</label>
-                                    <input type="password" id="currentPassword" name="currentPassword"
+                                    <input type="password" id="currentPassword" name="currentPassword" placeholder="Enter here"
                                            class="form-control" required>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">New password</label>
-                                    <input type="password" id="newPassword" name="newPassword" class="form-control"
+                                    <input type="password" id="newPassword" name="newPassword" class="form-control" placeholder="Enter here"
                                            required minlength="8">
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">Repeat new password</label>
-                                    <input type="password" id="confirmPassword" name="confirmPassword"
+                                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Enter here"
                                            class="form-control" required minlength="8">
                                 </div>
                                 <a class="" href="#" data-toggle="modal" data-target="#forgottenPasswordModal">forgotten
                                     Password ?</a>
+
+                                <button type="submit" class="btn btn-primary">submit</button>
                             </div>
-                            <button type="submit" class="btn btn-primary">submit</button>
+
                         </form>
                     </div>
                     <!--password changing email confirmation end-->
@@ -356,8 +360,7 @@ table.responsive-table tbody tr:nth-child(even) {
 
                     <div class="tab-pane fade saved-addresses" id="savedAdress">
                        <div  class="row">
-                           <a style="float: right;" data-toggle="list" href="#add_address">Add Address</a>
-
+                           <a class="ml-4 btn btn-primary" data-toggle="list" href="#add_address">Add Address</a>
                        </div>
                         <!-- Address Card 1 -->
 <div>
@@ -506,9 +509,10 @@ table.responsive-table tbody tr:nth-child(even) {
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
-<script type="text/javascript">
+<script type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 
-</script>
+
 
 <script src="/js/account.js"></script>
 

@@ -115,7 +115,7 @@
                               th:object="${coupons}">
                         <div class="mb-3">
                             <label for="code"><i class="fas fa-ticket-alt"></i> Coupon Code:</label>
-                            <input type="text" id="code" name="code" class="form-control" th:value="${coupon.code}" readonly>
+                            <input type="text" id="code" name="code" class="form-control" th:value="${coupon.code}">
                         </div>
 
                         <div id="productSection" th:if="${coupon.type == 'PRODUCT'}">

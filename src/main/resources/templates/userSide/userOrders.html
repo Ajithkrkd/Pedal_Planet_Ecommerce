@@ -29,40 +29,53 @@
                 <div class="row">
 
 
-                    <div class="col-md-2 d-flex flex-column mr-2">
-                        <div class="filters d-flex flex-md-column " style="
-                                    font-size: 16px;
-                                    font-weight: 600;">
 
-                            <h4 class="text-center p-2 " style="
-                                font-weight: 700;
-                                /* border: darkblue; */
-                            ">ORDER STATUS:</h4>
-                            <label><input type="checkbox" name="status" value="PENDING"> pending</label>
-                            <label><input type="checkbox" name="status" value="CONFIRMED"> Confirmed</label>
-                            <label><input type="checkbox" name="status" value="SHIPPING"> Shipped</label>
-                            <label><input type="checkbox" name="status" value="OUT_FOR_DELIVERY"> out for delivery</label>
-                            <label><input type="checkbox" name="status" value="DELIVERED"> delivered</label>
-                            <label><input type="checkbox" name="status" value="CANCELLED"> Cancelled</label>
-                            <label><input type="checkbox" name="status" value="RETURNED"> Returned</label>
-                            <label><input type="checkbox" name="status" value="CANCEL_REQUEST_SENT"> Cancel request sent</label>
-                            <label><input type="checkbox" name="status" value="RETURN_REQUEST_SENT"> return request sent</label>
-                            <label><input type="checkbox" name="status" value="REFUNDED">Refunded </label>
+                        <div class="col-md-2 d-flex flex-column mr-2">
+                            <div class="filters d-flex flex-column " style="
+                                                        font-size: 16px;
+                                                        font-weight: 600;">
+                                <h4 class="text-center p-2 " style="
+                                                    font-weight: 700;
+                                                    /* border: darkblue; */
+                                                ">SORT BY:</h4>
+                                <div>
+                                    <a href="/account/orders/sort?sortBy=asc">Sort Ascending</a>
+                                    <a href="/account/orders/sort?sortBy=desc">Sort Descending</a>
+                                </div>
+                                <form th:action="@{/account/orders}" method="post" class="d-flex flex-column mr-2">
+
+                                <h4 class="text-center p-2 " style="
+                                                    font-weight: 700;
+                                                    /* border: darkblue; */
+                                                ">ORDER STATUS:</h4>
+                                <label><input required type="radio" name="status" value="PENDING"> pending</label>
+                                <label><input required type="radio" name="status" value="CONFIRMED"> Confirmed</label>
+                                <label><input required type="radio" name="status" value="SHIPPING"> Shipped</label>
+                                <label><input required type="radio" name="status" value="OUT_FOR_DELIVERY"> out for delivery</label>
+                                <label><input required type="radio" name="status" value="DELIVERED"> delivered</label>
+                                <label><input required type="radio" name="status" value="CANCELLED"> Cancelled</label>
+                                <label><input required type="radio" name="status" value="RETURNED"> Returned</label>
+                                <label><input required type="radio" name="status" value="CANCEL_REQUEST_SENT"> Cancel request sent</label>
+                                <label><input required type="radio" name="status" value="RETURN_REQUEST_SENT"> return request sent</label>
+                                <label><input required type="radio" name="status" value="REFUNDED">Refunded </label>
 
 
-                            <h4 class="text-center p-2 " style="
-                                font-weight: 700;
-                                /* border: darkblue; */
-                            ">ORDER DATE:</h4>
-                            <label><input type="checkbox" name="time" value="Last 30 days"> Last 30 days</label>
-                            <label><input type="checkbox" name="time" value="Last Week"> Last Week</label>
-                            <label><input type="checkbox" name="time" value="Last Month"> Last Month</label>
-                            <label><input type="checkbox" name="time" value="Last Year"> Last Year</label>
+                                <h4 class="text-center p-2 " style="
+                                                    font-weight: 700;
+                                                    /* border: darkblue; */
+                                                ">ORDER DATE:</h4>
+                                <label><input required type="radio" name="time" value="Last 30 days"> Last 30 days</label>
+                                <label><input required type="radio" name="time" value="Last Week"> Last Week</label>
+                                <label><input required type="radio" name="time" value="Last Month"> Last Month</label>
+                                <label><input required type="radio" name="time" value="Last Year"> Last Year</label>
+                                    <button type="submit" class="btn-dark w-100">search</button>
+                                </form>
+
+                            </div>
+
                         </div>
 
-                    </div>
-
-                    <!-- Order Listing (right side) -->
+                                        <!-- Order Listing (right side) -->
                     <div class="col-md-9">
 
 

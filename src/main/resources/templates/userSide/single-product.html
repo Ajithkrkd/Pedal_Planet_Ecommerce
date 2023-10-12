@@ -175,7 +175,7 @@
         </div>
         <div class="col-lg-3 col-md-4 col-sm-6" th:each="item : ${relatedProducts}">
             <div class="product__item" >
-                <div class="product__item__pic set-bg" data-setbg="">
+                <div class="product__item__pic set-bg h-100" data-setbg="">
                     <a th:href="@{/shop/single-product/{id}(id=${item.id})}">
                         <img th:src="@{${'/Images/product/' + item.images[0].imagePath}}"
                              alt="Product Image">

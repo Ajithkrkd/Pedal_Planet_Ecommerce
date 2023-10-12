@@ -72,21 +72,11 @@ public class ProductServiceImpl implements ProductService{
 
 	//PAGINATION
 	
-	@Override
-	public Page<Product> getAllproductWithPagination(int pageNumber, int size) {
-		
-		Pageable pageable = PageRequest.of(pageNumber, size);
-		return this.productRepository.findAll(pageable);	
-	}
 
-	//SEARCH PRODUCT
+
+
 	
-	@Override
-	public Page<Product> searchProduct(int pageNumber, String keyword ) {
-		Pageable pageable =PageRequest.of(pageNumber, 5);
-		Page<Product> products = productRepository.searchProducts(keyword,pageable);
-		return products;
-	}
+
 
 	@Override
 	public Optional<Product> findByName(String name) {
@@ -140,8 +130,31 @@ public class ProductServiceImpl implements ProductService{
 		Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 		System.gc();
 
-		// Return the file path
 		return fileName;
+	}
+
+	@Override
+	public Page < Product > getAllProductWithPagination (int pageNumber, int pageSize) {
+		Pageable pageable = PageRequest.of(pageNumber-1, pageSize);
+		return  productRepository.findAll (pageable);
+	}
+
+	@Override
+	public Page < Product > searchProduct (int pageNumber, int size, String keyword) {
+		Pageable pageable = PageRequest.of(pageNumber-1, size);
+		Page <Product> products = productRepository.searchProducts (keyword, pageable);
+		return products;
+
+	}
+
+	@Override
+	public List < Product > getAvailableProductsByCategoryAndPriceRange (int categoryId, float minPrice, float maxPrice) {
+			return productRepository.getAvailableProductsByCategoryAndPriceRange(categoryId, minPrice, maxPrice);
+	}
+
+	@Override
+	public List < Product > findProductsByKeyword (String keyword) {
+		return productRepository.getProductsByKeyword(keyword);
 	}
 
 

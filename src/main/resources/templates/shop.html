@@ -2,15 +2,14 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<meta charset="UTF-8">
-	<meta name="description" content="Ashion Template">
-	<meta name="keywords" content="Ashion, unica, creative, html">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-	<title>shop</title>
-	<style>
+    <meta charset="UTF-8">
+    <meta name="description" content="Ashion Template">
+    <meta name="keywords" content="Ashion, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <title>shop</title>
+    <style>
 
         .product__item {
             display: flex;
@@ -28,113 +27,170 @@
         .product__item__text {
             padding: 15px;
         }
-	</style>
+    </style>
 
 </head>
 
 <body>
-	<div th:replace="fragments/header::header"></div>
-	<!-- Page Preloder -->
-	<div id="preloder">
-		<div class="loader"></div>
-	</div>
+<div th:replace="fragments/header::header"></div>
+<!-- Page Preloder -->
+<div id="preloder">
+    <div class="loader"></div>
+</div>
 
 
-	<!-- Offcanvas Menu End -->
+<!-- Offcanvas Menu End -->
 
 
+<!-- Shop search Begin -->
+<form class="example text-center pt-3" th:action="@{/shopSearch}" method="post">
+    <input type="text" placeholder="Search.." name="keyword" class="col-lg-4 col-8" style="padding: 7px; border-radius: 6px;">
+    <button type="submit" class="btn btn-dark" style="height: 41px;width: 53px;"><i class="fa fa-search"></i></button>
+</form>
+<!-- Shop search end -->
+
+<!-- Shop section Begin -->
+<section class="shop spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-3">
+                <div class="shop__sidebar">
+                    <div class="sidebar__categories">
+                        <div class="section-title">
+                            <h4><a th:href="@{/shop}">Categories</a></h4>
+                        </div>
 
 
-	<!-- Shop Section Begin -->
-	<section class="shop spad">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-3 col-md-3">
-					<div class="shop__sidebar">
-						<div class="sidebar__categories">
-							<div class="section-title">
-								<h4><a th:href="@{/shop}">Categories</a></h4>
-							</div>
-							<div class="categories__accordion">
-								<div >
-									<div class="card" th:each="category : ${categories}" >
-										<div class="card-heading active">
-											<a 
-												th:href="@{/shop/productByCategory/{id}(id=${category.id})}"
-												th:text="${category.name}">
-											</a>
-										</div>
+                        <div class="categories__accordion">
+                            <div>
+                                <div class="dropdown">
 
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-9 col-md-9">
-					<div class="row">
-						<div class="col-lg-4 col-md-6 my-2" th:each="product, iStat : ${availableproducts}">
-							<div class=" women card my-2  product__item" >
-								<div class="product__item__pic set-bg">
-
-									<a th:href="@{/shop/single-product/{id}(id=${product.id})}">
-										<th:block th:if="${not #lists.isEmpty(product.images)}">
-											<img th:src="@{${'/Images/product/' + product.images[0].imagePath}}" alt="Product Image">
-										</th:block>
-
-									</a>
-								</div>
-									<div class="product__item__text">
-										<!-- Apply styles for the product name and price -->
-										<h6><a href="#" th:text="${product.name}" style="font-weight: bold;">Buttons tweed blazer</a></h6>
-										<span style="font-size: 24px; font-weight: bold;">RS . <span style="font-size: 20px;" th:text="${product.price}"></span></span>
-									</div>
-								<div class="col text-center px-2 py-2 ">
-
-									<div class="col text-center px-2 py-2">
-										<th:block th:if="${product.inWishList}">
-											<span class="btn btn-success w-100">WISHLISTED</span>
-										</th:block>
-										<th:block th:unless="${product.inWishList}">
-											<button class="btn btn-secondary w-100" th:data-product-id="${product.id}">WISHLIST</button>
-										</th:block>
-									</div>
-								</div>
-								</div>
-								</div>
-						</div>
-					</div>
-				</div>
+                                   <form th:action="@{/shopByCategory}" method="post">
+                                       <div th:each="category : ${categories}">
+                                           <input type="radio"  th:text="${category.name}" class="category-link my-3 mr-3" name="category" th:value="${category.id}" required>
+                                       </div>
+                                       <button type="submit" class="btn btn-primary w-100"> Search Categories</button>
+                                   </form>
+                                    <label class="w-100 btn btn-outline-success my-3" style="
+                                                            font-size: 19px;
+                                                            font-weight: 500;
+                                                            line-height: 16px;">Filter</label>
 
 
-			</div>
+                                    <form th:action="@{/shop}" method="post">
+                                        <button class="btn btn-dark w-100" type="button" data-toggle="collapse"
+                                                data-target="#collapseExample1" aria-expanded="false"
+                                                aria-controls="collapseExample1">
+                                           SELECT CATEGORY
+                                        </button>
+                                        <div class="collapse pl-3 pt-2" id="collapseExample1">
+                                            <div class="card" th:each="category : ${categories}">
+                                                <div class="card-heading active">
+                                                    <input type="radio" class="mt-3 mr-3" name="category" th:text="${category.name}"
+                                                           th:value="${category.id}" required>
+                                                </div>
 
-			<div class="col-lg-12 text-center mt-5">
-				<div class="pagination__option">
-					<a href="#">1</a>
-					<a href="#">2</a>
-					<a href="#">3</a>
-					<a href="#"><i class="fa fa-angle-right"></i></a>
-				</div>
-			</div>
+                                            </div>
+                                        </div>
 
-	</section>
-	<!-- Shop Section End -->
+                                </div>
 
 
-	<div th:replace="fragments/footer::footer"></div>
-	<!-- Search Begin -->
-	<div class="search-model">
-		<div class="h-100 d-flex align-items-center justify-content-center">
-			<div class="search-close-switch">+</div>
-			<form class="search-model-form">
-				<input type="text" id="search-input" placeholder="Search here.....">
-			</form>
-		</div>
-	</div>
-	<!-- Search End -->
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
-	<script type="text/javascript" src="/js/wishlist.js"></script>
+                                <button class="btn btn-dark mt-5 w-100" type="button" data-toggle="collapse"
+                                        data-target="#collapseExample2" aria-expanded="false"
+                                        aria-controls="collapseExample2">
+                                    SELECT PRICE
+                                </button>
+                                <div class="collapse mt-3" id="collapseExample2">
+
+                                    <div class="col">
+                                        <label >Price Range:</label>
+                                        <input style="pading:5px; margin:5px;" class="w-100" type="number"
+                                               name="minPrice" placeholder="Min Price" required>
+                                        <input style="pading:5px; margin:5px;" class="w-100" type="number"
+                                               name="maxPrice" placeholder="Max Price" required>
+
+                                    </div>
+                                    <button type="submit" class="btn btn-success w-100">APPLY</button>
+
+                                </div>
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9 col-md-9">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 my-2" th:each="product, iStat : ${availableproducts}">
+                        <div class=" women card my-2  product__item">
+                            <div class="product__item__pic set-bg h-100">
+
+                                <a th:href="@{/shop/single-product/{id}(id=${product.id})}">
+                                    <th:block th:if="${not #lists.isEmpty(product.images)}">
+                                        <img th:src="@{${'/Images/product/' + product.images[0].imagePath}}"
+                                             alt="Product Image">
+                                    </th:block>
+
+                                </a>
+                            </div>
+                            <div class="product__item__text">
+                                <!-- Apply styles for the product name and price -->
+                                <h6><a href="#" th:text="${product.name}" style="font-weight: bold;">Buttons tweed
+                                    blazer</a></h6>
+                                <span style="font-size: 24px; font-weight: bold;">RS . <span style="font-size: 20px;"
+                                  th:text="${product.price}"></span></span>
+                            </div>
+                            <div class="col text-center px-2 py-2 ">
+
+                                <div class="col text-center px-2 py-2">
+                                    <th:block th:if="${product.inWishList}">
+                                        <span class="btn btn-success w-100">WISHLISTED</span>
+                                    </th:block>
+                                    <th:block th:unless="${product.inWishList}">
+                                        <button class="btn btn-secondary w-100" th:data-product-id="${product.id}">
+                                            WISHLIST
+                                        </button>
+                                    </th:block>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+  <!--  <div class="col-lg-12 text-center mt-5">
+        <div class="pagination__option">
+            <a href="#">1</a>
+            <a href="#">2</a>
+            <a href="#">3</a>
+            <a href="#"><i class="fa fa-angle-right"></i></a>
+        </div>
+    </div>-->
+
+</section>
+<!-- Shop Section End -->
+
+
+<div th:replace="fragments/footer::footer"></div>
+<!-- Search Begin -->
+<div class="search-model">
+    <div class="h-100 d-flex align-items-center justify-content-center">
+        <div class="search-close-switch">+</div>
+        <form class="search-model-form">
+            <input type="text" id="search-input" placeholder="Search here.....">
+        </form>
+    </div>
+</div>
+<!-- Search End -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+<!-- Include jQuery -->
+
+<script type="text/javascript" src="/js/wishlist.js"></script>
 
 </body>
 

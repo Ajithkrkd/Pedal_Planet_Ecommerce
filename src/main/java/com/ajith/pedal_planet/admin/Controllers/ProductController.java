@@ -2,13 +2,15 @@ package com.ajith.pedal_planet.admin.Controllers;
 
 import com.ajith.pedal_planet.Repository.CategoryRepository;
 import com.ajith.pedal_planet.Repository.ProductRepository;
-import com.ajith.pedal_planet.controllers.PaginationController;
+
+import com.ajith.pedal_planet.models.Customer;
 import com.ajith.pedal_planet.models.Image;
 import com.ajith.pedal_planet.models.Product;
-import com.ajith.pedal_planet.service.ImageService;
 import com.ajith.pedal_planet.service.CategoryService;
+import com.ajith.pedal_planet.service.ImageService;
 import com.ajith.pedal_planet.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,12 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -36,8 +34,7 @@ public class ProductController {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    @Autowired
-    PaginationController paginationController;
+
 
     @Autowired
     private CategoryService categoryService;
@@ -51,8 +48,52 @@ public class ProductController {
 
     @GetMapping("/products")
     public String getProducts(Model model) {
-        return paginationController.findPaginatedProducts(1, model);
+        return findPaginatedProducts(1, 5, model);
     }
+
+
+    @GetMapping ("/products/pages/{pageNumber}" )
+    public String findPaginatedProducts (@PathVariable ( value = "pageNumber" ) int pageNumber,
+                                         @RequestParam ( value = "size", defaultValue = "5" ) int PageSize,
+                                         Model model) {
+
+        Page < Product > page = productService.getAllProductWithPagination ( pageNumber, PageSize );
+        List < Product > products = page.getContent ( );
+        model.addAttribute ( "currentPage", pageNumber );
+        model.addAttribute ( "totalPages", page.getTotalPages ( ) );
+        model.addAttribute ( "totalItems", page.getTotalElements ( ) );
+        model.addAttribute ( "products", products );
+        model.addAttribute ( "size", PageSize );
+        return "/ProductPages/products";
+    }
+
+    //SEARCH FOR CUSTOMER
+
+    @GetMapping ( "/products/pages/{pageNumber}/{size}/search-product-result" )
+    public String searchCustomers (@PathVariable ( "pageNumber" ) int pageNumber,
+                                   @PathVariable ( "size" ) int PageSize,
+                                   @RequestParam ( "keyword" ) String keyword,
+                                   Model model,
+                                   Principal principal) {
+
+        int size = PageSize;
+        if ( principal == null ) {
+            return "redirect:/signin";
+        } else {
+
+
+            Page < Product > page = productService.searchProduct( pageNumber, size, keyword );
+
+            List < Product > products = page.getContent ( );
+            model.addAttribute ( "totalPages", page.getTotalPages ( ) );
+            model.addAttribute ( "currentPage", pageNumber );
+            model.addAttribute ( "totalItems", page.getTotalElements ( ) );
+            model.addAttribute ( "products", products );
+
+            return "/ProductPages/result-products";
+        }
+    }
+
 
 
     @GetMapping("/products/add")

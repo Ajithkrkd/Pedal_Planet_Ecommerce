@@ -7,12 +7,10 @@ import com.ajith.pedal_planet.service.AddressService;
 import com.ajith.pedal_planet.service.BasicServices;
 import com.ajith.pedal_planet.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Optional;
@@ -123,5 +121,16 @@ public class addressController {
         return "redirect:/account";
     }
 
+    @PostMapping("/account/set_default_address/{addressId}")
+    @ResponseBody
+    public ResponseEntity <String> updateDefaultAddress(@PathVariable ("addressId") Long addressId) {
+        Optional < Customer > customer = customerService.findByUsername (basicServices.getCurrentUsername ());
+        if(customer.isPresent ()) {
+            Customer existingCustomer = customer.get ();
+            addressService.customerAddressWantToMakeDefaultAddress(addressId,existingCustomer);
+        }
+
+        return null;
+    }
 
 }

@@ -26,7 +26,7 @@ public class CustomerCouponServiceImpl implements CustomerCouponService {
             System.out.println ( existingCoupon + "    hello 7" );
 
             // Check if a CustomerCoupon entity exists for the given coupon's ID
-            boolean isCouponApplied = customerCouponRepository.existsByCoupon_Id ( existingCoupon.getId ( ) );
+            boolean isCouponApplied = customerCouponRepository.existsByCustomer_IdAndCoupon_Id ( currentCustomer.getId () ,existingCoupon.getId () );
 
             if ( isCouponApplied ) {
                 System.out.println ( "Coupon is applied" );

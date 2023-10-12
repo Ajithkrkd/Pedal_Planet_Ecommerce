@@ -9,8 +9,8 @@ import java.util.List;
 @Getter
 @Setter
 public class FilterRequest {
-    private List< Status > statusFilters;
-    private String[] timeFilters;
+    private Status status;
+    private String  time;
 
 
 }

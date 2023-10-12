@@ -5,6 +5,7 @@ import com.ajith.pedal_planet.DTO.MonthlySalesDTO;
 import com.ajith.pedal_planet.models.CartItem;
 import com.ajith.pedal_planet.models.Customer;
 import com.ajith.pedal_planet.models.Order;
+import org.springframework.data.domain.Page;
 
 import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
@@ -48,4 +49,15 @@ public interface OrderService {
    float calculateProfitForDeliveredOrders();
 
     Map< String, Integer> calculatePaymentMethodPercentages ( );
+
+    Page< Order> getAllProductWithPagination (int pageNumber, int pageSize);
+
+    Page< Order> searchOrder (int pageNumber, int size, String keyword);
+
+    Page< Order> filterOrder (int pageNumber, int size, String status);
+
+    Optional< Order> findById (long orderId);
+
+
+    void save (Order existingOrder);
 }

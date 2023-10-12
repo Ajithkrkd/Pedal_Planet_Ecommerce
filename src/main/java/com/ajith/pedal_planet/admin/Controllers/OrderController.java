@@ -6,11 +6,13 @@ import com.ajith.pedal_planet.Repository.OrderRepository;
 import com.ajith.pedal_planet.Repository.PaymentRepository;
 import com.ajith.pedal_planet.models.Order;
 import com.ajith.pedal_planet.models.OrderItem;
+import com.ajith.pedal_planet.models.Product;
 import com.ajith.pedal_planet.service.AddressService;
 import com.ajith.pedal_planet.service.OrderService;
 import com.ajith.pedal_planet.service.PaymentService;
 import com.ajith.pedal_planet.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -18,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -47,14 +50,81 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
+/*
+* List<Order> orders = orderRepository.findAll();
+        model.addAttribute("orders", orders);*/
     @GetMapping("/orders")
     public String getOrderList(Model model) {
-        List<Order> orders = orderRepository.findAll();
 
-        model.addAttribute("orders", orders);
+        findPaginatedOrders ( 1,5,model );
+        return "/orderPages/order_management";
+    }
+    @GetMapping ("/orders/pages/{pageNumber}" )
+    public String findPaginatedOrders (@PathVariable ( value = "pageNumber" ) int pageNumber,
+                                                   @RequestParam ( value = "size", defaultValue = "5" ) int PageSize,
+                                                   Model model) {
+
+        Page < Order > page = orderService.getAllProductWithPagination ( pageNumber, PageSize );
+        List < Order > orders = page.getContent ( );
+        model.addAttribute ( "currentPage", pageNumber );
+        model.addAttribute ( "totalPages", page.getTotalPages ( ) );
+        model.addAttribute ( "totalItems", page.getTotalElements ( ) );
+        model.addAttribute ( "orders", orders );
+        model.addAttribute ( "size", PageSize );
         return "/orderPages/order_management";
     }
 
+    //SEARCH FOR CUSTOMER
+
+    @GetMapping ( "/orders/pages/{pageNumber}/{size}/search-orders-result" )
+    public String searchOrder (@PathVariable ( "pageNumber" ) int pageNumber,
+                                   @PathVariable ( "size" ) int PageSize,
+                                   @RequestParam ( "keyword" ) String keyword,
+                                   Model model,
+                                   Principal principal) {
+
+        int size = PageSize;
+        if ( principal == null ) {
+            return "redirect:/signin";
+        } else {
+
+
+            Page < Order > page = orderService.searchOrder( pageNumber, size, keyword );
+
+            List < Order > orders = page.getContent ( );
+            model.addAttribute ( "totalPages", page.getTotalPages ( ) );
+            model.addAttribute ( "currentPage", pageNumber );
+            model.addAttribute ( "totalItems", page.getTotalElements ( ) );
+            model.addAttribute ( "orders", orders );
+
+            return "/orderPages/order-management-result";
+        }
+    }
+
+    @GetMapping ( "/orders/pages/{pageNumber}/{size}/filter" )
+    public String searchFilteredOrder (@PathVariable ( "pageNumber" ) int pageNumber,
+                                   @PathVariable ( "size" ) int PageSize,
+                                   @RequestParam ( "status" ) String status,
+                                   Model model,
+                                   Principal principal) {
+
+        int size = PageSize;
+        if ( principal == null ) {
+            return "redirect:/signin";
+        } else {
+
+
+            Page < Order > page = orderService.filterOrder( pageNumber, size, status );
+
+            List < Order > orders = page.getContent ( );
+            model.addAttribute ( "totalPages", page.getTotalPages ( ) );
+            model.addAttribute ( "currentPage", pageNumber );
+            model.addAttribute ( "totalItems", page.getTotalElements ( ) );
+            model.addAttribute ( "orders", orders );
+
+            return "/orderPages/order-management-result";
+        }
+    }
 
     @GetMapping("/order_details/{order_id}")
     public String getPerticularOrderDetails(@PathVariable("order_id") Long order_id,

@@ -7,8 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AddressService {
-   /* public Address bindAddress(HttpServletRequest request);
-*/
+
     Address save(Address address);
 
     void deleteById(Long addressId);

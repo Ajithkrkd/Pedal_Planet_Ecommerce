@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>banner-management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
+          rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+</head>
+<div th:replace="fragments/AdminHeader :: AdminHeader"></div>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col text-center py-4" style="background-color: #F5F5F9; min-height: 100vh;">
+            <div>
+                <h2>View and change the banners</h2>
+            </div>
+            <div th:if="${error_message}">
+                <div class="alert-danger p-3 " th:text="${error_message}"></div>
+
+            </div>
+            <div th:if="${message}">
+                <div class="alert-success p-3 " th:text="${message}"></div>
+
+            </div>
+            <form class="row d-flex justify-content-center " method="post" action="/upload"  enctype="multipart/form-data">
+                <div class="col d-flex flex-column col-md-8">
+                    <div class="border border-dark p-3 shadow"  th:each="banner : ${banners}">
+
+
+                            <img class="img-fluid" th:src="@{${'/banner/'+ banner.imagePath}}"  alt="">
+                            <div class="row p-3">
+                                <div class="col-md-6">
+                                    <label>SET ACTIVE</label>
+                                    <input type="radio" name="setActive" th:id="'activeBanner-' + ${banner.id}"
+                                           th:value="${banner.id}" th:checked="${banner.active}"  onchange="setBannerActive(this)" />
+                                </div>
+                                <div class="col-md-6">
+                                    <a th:href="@{/admin/banner/delete/{id}(id=${banner.id})}" class="btn btn-sm"
+                                       th:classappend="${!banner.deleted} ? 'btn-danger' : 'btn-success'"
+                                       th:onclick="showConfirm(${banner.deleted})">
+                                        <span th:if="${banner.deleted}">Make Available</span>
+                                        <span th:unless="${banner.deleted}">Make Unavailable</span>
+                                    </a>
+
+                                </div>
+                            </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="d-flex justify-content-center my-4">
+                        <input type="file" name="file" >
+                    </div>
+                    <div class="d-flex justify-content-center my-4">
+                        <input type="text" name="url" class="form-control" placeholder="add the route -- must in this form '/shop'....." required>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <button class="btn btn-secondary w-50" type="submit">Upload</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+   <div th:replace="/fragments/footer::footer"></div>
+
+
+
+<script>
+
+    function setBannerActive(radioInput) {
+
+            var bannerId = $(radioInput).val();
+
+
+            $.ajax({
+                url: '/admin/setBannerActive/' + bannerId,
+                type: 'POST',
+                success: function(data) {
+
+                    console.log('Default banner updated successfully');
+                     Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: ' banner updated successfully',
+                        });
+                },
+                error: function(error) {
+                Swal.fire({
+                            icon: 'error',
+                            title: 'error',
+                            text: ' The banner is Not Available',
+                        });
+                    console.error('Error updating  banner: ' + error);
+                }
+            });
+        }
+
+</script>
+</body>
+
+</html>

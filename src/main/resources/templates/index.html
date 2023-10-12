@@ -7,8 +7,6 @@
     <meta name="keywords" content="Ashion, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
-
     <title>home</title>
 
     <!-- Google Font -->
@@ -18,7 +16,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <style>
-        /* Style the image container */
+
         .image-container {
             position: relative;
             height: 100%;
@@ -65,8 +63,30 @@
         }
 
         .image-text p {
-            font-size: 16px;
+            font-size: 46px;
         }
+@media screen and (max-width: 768px) {
+      .image-container {
+          height: auto; /* Let the height adjust to the content */
+      }
+
+      .image-container img {
+          height: auto;
+      }
+
+      .image-text {
+          background-color: rgba(255, 255, 255, 0.9); /* Adjust the background color for better readability */
+          padding: 10px;
+      }
+
+      .image-text h3 {
+          font-size: 50px;
+      }
+
+      .image-text p {
+          font-size: 26px;
+      }
+  }
 
     </style>
 </head>
@@ -80,29 +100,26 @@
     <section class="categories">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-6 p-0">
+
+                <div class="col p-1">
                     <div class="image-container">
-                        <img src="/homeImages/bannerPedal4.jpeg" alt="Image 1">
-                        <div class="image-text">
-                            <h3>
-                                "Eco-Friendly Commuting: Explore Electric Vehicles!"</h3>
-                            <p>"Charge into the Future: Discover Electric Mobility!"</p>
-                        </div>
+                        <img class="img-fluid" th:src="@{${'/banner/'+ ActiveBanner.imagePath}}"  alt="">
+                        <a class="" th:href="@{${ActiveBanner.url}}">
+                            <div class="image-text">
+                                <h3>
+                                    "Eco-Friendly Commuting: Explore Electric Vehicles!"</h3>
+                                <p>"Take A Look"</p>
+                            </div>
+                        </a>
                     </div>
-                </div>
-                <div class="col-lg-6 p-0">
-                    <div class="image-container">
-                        <img src="/homeImages/bannerPedal3.jpeg" alt="Image 2">
-                        <div class="image-text">
-                            <h3>"Explore the Latest in Bicycles!"</h3>
-                            <p>Pedal into the future with our newest bicycle arrivals. </p>
-                        </div>
-                    </div>
+
                 </div>
                 <!-- Add similar code for other images -->
             </div>
         </div>
     </section>
+
+    <h2 class="text-center mt-5">EXPLORE NEW</h2>
 
     <!-- Categories Section End -->
 <!-- Product Section Begin -->
@@ -130,7 +147,7 @@
             <div class="row">
                 <div class="col-lg-3 col-md-4 col-sm-6 mix women card my-2 " th:each="product, iStat : ${availableproducts}">
                     <div class="product__item">
-                        <div class="product__item__pic set-bg">
+                        <div class="product__item__pic set-bg h-100">
                             <a th:href="@{/shop/single-product/{id}(id=${product.id})}">
                                 <th:block th:if="${not #lists.isEmpty(product.images)}">
                                     <!-- Display the first image for the product -->

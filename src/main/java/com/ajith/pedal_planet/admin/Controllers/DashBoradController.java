@@ -29,7 +29,7 @@ public class DashBoradController {
         model.addAttribute ( "total_profit" ,orderService.calculateProfitForDeliveredOrders());
         model.addAttribute ( "total_Refunds" ,orderService.getTotalRefundAmount());
 
-        return "AdminDashboard";
+        return "/admin/AdminDashboard";
     }
 
 

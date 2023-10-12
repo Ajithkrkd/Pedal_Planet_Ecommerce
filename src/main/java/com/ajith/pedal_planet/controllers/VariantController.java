@@ -8,6 +8,7 @@ import com.ajith.pedal_planet.service.ProductService;
 import com.ajith.pedal_planet.service.VariantService;
 import com.ajith.pedal_planet.serviceImpl.VariantServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,14 +34,53 @@ public class VariantController {
     VariantServiceImpl variantService;
 
 
-    @Autowired
-     private PaginationController paginationController;
+
 
     @GetMapping("/variant")
     public String listProduct(Model model) {
-        return paginationController.findPaginatedProductsForVariant(1, model);
+        return findPaginatedProductsForVariant(1,5, model);
+    }
+    @GetMapping ("/variant/pages/{pageNumber}" )
+    public String findPaginatedProductsForVariant (@PathVariable ( value = "pageNumber" ) int pageNumber,
+                                                     @RequestParam ( value = "size", defaultValue = "5" ) int PageSize,
+                                                     Model model) {
+
+        Page < Product > page = productService.getAllProductWithPagination ( pageNumber, PageSize );
+        List < Product > products = page.getContent ( );
+        model.addAttribute ( "currentPage", pageNumber );
+        model.addAttribute ( "totalPages", page.getTotalPages ( ) );
+        model.addAttribute ( "totalItems", page.getTotalElements ( ) );
+        model.addAttribute ( "products", products );
+        model.addAttribute ( "size", PageSize );
+        return "/ProductPages/variants";
     }
 
+    //SEARCH FOR CUSTOMER
+
+    @GetMapping ( "/variant/pages/{pageNumber}/{size}/search-variant-result" )
+    public String searchCustomers (@PathVariable ( "pageNumber" ) int pageNumber,
+                                   @PathVariable ( "size" ) int PageSize,
+                                   @RequestParam ( "keyword" ) String keyword,
+                                   Model model,
+                                   Principal principal) {
+
+        int size = PageSize;
+        if ( principal == null ) {
+            return "redirect:/signin";
+        } else {
+
+
+            Page < Product > page = productService.searchProduct( pageNumber, size, keyword );
+
+            List < Product > products = page.getContent ( );
+            model.addAttribute ( "totalPages", page.getTotalPages ( ) );
+            model.addAttribute ( "currentPage", pageNumber );
+            model.addAttribute ( "totalItems", page.getTotalElements ( ) );
+            model.addAttribute ( "products", products );
+
+            return "/ProductPages/result-variant";
+        }
+    }
     @GetMapping("/variant/{productId}")
     public String getAll(@PathVariable("productId") Long id ,Model model){
 

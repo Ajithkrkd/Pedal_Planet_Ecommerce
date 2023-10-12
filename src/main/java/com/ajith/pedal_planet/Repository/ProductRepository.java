@@ -25,6 +25,19 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
 	@Query("SELECT p FROM Product p WHERE p.category = :category AND p.id != :productId")
 	List<Product> getRelatedProductsByCategory(@Param("category") Category category ,@Param("productId") Long productId);
-	
-	
+
+	@Query("SELECT p FROM Product p WHERE p.category.id = :categoryId " +
+			"AND p.price BETWEEN :minPrice AND :maxPrice " +
+			"AND p.isAvailable = true")
+    List< Product> getAvailableProductsByCategoryAndPriceRange (int categoryId, float minPrice, float maxPrice);
+
+
+
+	@Query("SELECT p FROM Product p WHERE p.price BETWEEN :minPrice AND :maxPrice AND p.isAvailable = true")
+	List<Product> findAvailableProductsByPriceRange(float minPrice, float maxPrice);
+
+
+	@Query("SELECT p FROM Product p WHERE (p.name LIKE %:keyword% OR p.shortDescription LIKE %:keyword% OR p.longDescription LIKE %:keyword%) "
+			)
+	List< Product> getProductsByKeyword (String keyword);
 }

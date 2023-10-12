@@ -8,6 +8,9 @@ import com.ajith.pedal_planet.Repository.*;
 import com.ajith.pedal_planet.models.*;
 import com.ajith.pedal_planet.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
@@ -226,6 +229,37 @@ public class OrderServiceImpl implements OrderService {
         return paymentMethodPercentages;
     }
 
+    @Override
+    public Page < Order > getAllProductWithPagination (int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of ( pageNumber-1 , pageSize    );
+        return orderRepository.findAll ( pageable );
+    }
+
+
+    @Override
+    public Page < Order > searchOrder (int pageNumber, int size, String keyword) {
+        Pageable pageable = PageRequest.of(pageNumber-1, size);
+        Page <Order> orders = orderRepository.searchOrder (keyword, pageable);
+        return orders;
+    }
+
+    @Override
+    public Page < Order > filterOrder (int pageNumber, int size, String status) {
+        Pageable pageable = PageRequest.of(pageNumber-1, size);
+        Page <Order> orders = orderRepository.filterOrder ( Status.valueOf ( status ), pageable);
+        return orders;
+    }
+
+    @Override
+    public Optional < Order > findById (long orderId) {
+        return  orderRepository.findById ( orderId );
+    }
+
+    @Override
+    public void save (Order existingOrder) {
+        orderRepository.save ( existingOrder );
+    }
+
     private float calculateTotalWholesalePrice(Order order) {
         float totalWholesalePrice = 0;
         for (OrderItem orderItem : order.getOrderItems()) {
@@ -271,9 +305,11 @@ public class OrderServiceImpl implements OrderService {
             long daysDifference = filterService.calculateDaysDifference(orderedDate,currentDate);
 
 
-            if (filterRequest.getStatusFilters().contains(order.getStatus()) || filterRequest.getStatusFilters().contains(filterService.isWithinDateRange( Arrays.toString ( filterRequest.getTimeFilters () ), daysDifference)))
+            if ( filterRequest.getStatus ( ).equals ( order.getStatus ( ) ) )
                     {
                 filteredOrders.add(order);
+            } else {
+                filterService.isWithinDateRange ( Arrays.toString ( filterRequest.getTime ( ).toCharArray ( ) ), daysDifference );
             }
         }
 
