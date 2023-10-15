@@ -138,7 +138,7 @@ public class userOrderController {
 
     }
 
-    @PostMapping("/update_status_to_cancel/{orderId}")
+    @PostMapping("/account/update_status_to_cancel/{orderId}")
     public String ChangeOrderStatusToCancel(@PathVariable ("orderId")Long  order_id,@RequestParam("cancellationReason") String cancellationReason,
                                             RedirectAttributes redirectAttributes){
         paymentService.changePaymentStatus(order_id);
@@ -158,13 +158,14 @@ public class userOrderController {
         return "redirect:/account/orders";
     }
 
-    @PostMapping("/update_status_to_return/{orderId}")
+    @PostMapping("/account/update_status_to_return/{orderId}")
     public String return_the_product(@PathVariable ("orderId")Long  order_id,
                                      @RequestParam("cancellationReason") String cancellationReason,
                                      RedirectAttributes redirectAttributes){
         Optional<Order> order  = orderService.findById(order_id);
         if(order.isPresent()){
             Order existingOrder = order.get();
+            variantService.increaseStock(order_id);
             existingOrder.setStatus(Status.RETURN_REQUEST_SENT);
             existingOrder.setCancellationReason ( cancellationReason );
             orderService.save(existingOrder);

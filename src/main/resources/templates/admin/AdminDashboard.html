@@ -135,10 +135,17 @@
 
 			<div class="row mt-5">
 				<div class="col-md-6 p-5">
+						<div id="year-filter">
+							<label for="year-select">Select Year:</label>
+							<select id="year-select" name="year" onchange="reloadPage(this.value)">
+								<!-- Year options will be added dynamically using JavaScript -->
+							</select>
+						</div>
 					<div class="col p-2" id="chart1"></div>
 				</div>
 
-				<div class="col-md-6 p-5">
+
+			<div class="col-md-6 p-5">
 					<div class="col" id="chart2"  ></div>
 				</div>
 
@@ -184,6 +191,19 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 <script src="/js/adminPanel.js"></script>
+<script>
+	const yearSelect = document.getElementById('year-select');
+    const currentYear = new Date().getFullYear();
+
+
+    for (let year = currentYear - 5; year <= currentYear; year++) {
+        const option = document.createElement('option');
+        option.value = year;
+        option.textContent = year;
+        yearSelect.appendChild(option);
+    }
+</script>
+
 
 </body>
 </html>

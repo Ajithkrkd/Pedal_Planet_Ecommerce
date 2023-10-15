@@ -12,7 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
@@ -36,6 +39,9 @@ public class CustomerAccountController {
 
     @Autowired
     private BasicServices basicServices;
+
+    @Autowired
+    private OtpService otpService;
 
 
     @GetMapping ( "" )
@@ -74,4 +80,27 @@ public class CustomerAccountController {
         return "/userSide/account";
     }
 
+
+    @PostMapping ("/changeProfileNameAndPhoneNumber")
+    public String changeProfileNameAndPhoneNumber(@RequestParam("fullName") String fullName,
+                                                  @RequestParam("phoneNumber")String phoneNumber
+                                                    , RedirectAttributes redirectAttributes){
+        Optional < Customer > customer = customerService.findByUsername ( basicServices.getCurrentUsername () );
+        if(customer.isPresent ()){
+            Customer existingCustomer = customer.get ();
+            existingCustomer.setFullName ( fullName );
+            existingCustomer.setPhoneNumber ( phoneNumber );
+            customerService.save(existingCustomer);
+            redirectAttributes.addFlashAttribute ( "successProfile", "Profile Updated" );
+            return "redirect:/account";
+        }
+        redirectAttributes.addFlashAttribute ( "errorProfile", "Profile Not Updated" );
+        return "redirect:/account";
+    }
+
+    @PostMapping("/forgot_email")
+    public String changeCustomerEmail(@RequestParam ("email") String email , RedirectAttributes redirectAttributes){
+        System.out.println (email );
+        return "redirect:/account";
+    }
 }

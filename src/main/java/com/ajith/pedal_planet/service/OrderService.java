@@ -32,7 +32,7 @@ public interface OrderService {
 
     List< Order> getAllOrdersWithStatusDeliveredBetweenTheDate (List< Order> orderList);
 
-    List< MonthlySalesDTO> getMonthlySalesData ( );
+    List< MonthlySalesDTO> getMonthlySalesData ( int selectedYear );
 
     Long getTotalNumberOfOrders ( );
 
@@ -60,4 +60,6 @@ public interface OrderService {
 
 
     void save (Order existingOrder);
+
+    float findTotalSalesAmount (List< Order> orderList);
 }

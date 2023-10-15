@@ -61,7 +61,8 @@ public class SalesReportController {
         List<Order> orderList = orderService.getSalesBetweenTheOrderDate( startDate1, endDate1);
         List<Order> OrderThatIsDelivered = orderService.getAllOrdersWithStatusDeliveredBetweenTheDate (orderList);
         model.addAttribute ( "allOrders" , OrderThatIsDelivered);
-        System.out.println (startDate + " " + endDate );
+        float TotalAmount = orderService.findTotalSalesAmount(OrderThatIsDelivered);
+        model.addAttribute ( "total" , TotalAmount );
         return "/admin/sales-report";
     }
 
@@ -80,7 +81,7 @@ public class SalesReportController {
             renderer.layout();
             renderer.createPDF(outputStream);
             response.setContentType("application/pdf");
-            response.setHeader("Content-Disposition", "attachment; filename=invoice.pdf");
+            response.setHeader("Content-Disposition", "attachment; filename=salesReport.pdf");
 
             OutputStream responseOutputStream = response.getOutputStream();
             outputStream.writeTo(responseOutputStream);
@@ -104,6 +105,8 @@ public class SalesReportController {
         List<Order> orderList = orderService.getSalesBetweenTheOrderDate( startDate1, endDate1);
         List<Order> OrderThatIsDelivered = orderService.getAllOrdersWithStatusDeliveredBetweenTheDate (orderList);
         model.addAttribute ( "allOrders" , OrderThatIsDelivered);
+        float TotalAmount = orderService.findTotalSalesAmount(OrderThatIsDelivered);
+        model.addAttribute ( "total" , TotalAmount );
 
         Context context = new Context();
         context.setVariables(model.asMap());
@@ -113,18 +116,18 @@ public class SalesReportController {
     //graph
     @GetMapping("/admin/monthlySalesChart")
     @ResponseBody
-    public List< MonthlySalesDTO > getMonthlySalesData(){
-        return orderService.getMonthlySalesData();
+    public List< MonthlySalesDTO > getMonthlySalesData(@RequestParam ("year") int year){
+        return orderService.getMonthlySalesData(year);
     }
 
 
 
 
 
-
+//pie chart
     @GetMapping("/admin/payment_data")
     @ResponseBody
-    public List<Integer> getPaymentData() {
+    public List<Integer> getPaymentMethodForPieChart() {
         try {
             Map<String, Integer> paymentData = orderService.calculatePaymentMethodPercentages();
             System.out.println (paymentData );
@@ -132,7 +135,6 @@ public class SalesReportController {
             System.out.println (paymentMethodCounts + "paymentMethodCounts" );
             return paymentMethodCounts;
         } catch (Exception e) {
-            // Handle errors or return an empty list if necessary
             return Collections.emptyList();
         }
     }

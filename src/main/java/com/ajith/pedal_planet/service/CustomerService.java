@@ -60,4 +60,6 @@ public interface CustomerService {
     Long getTotalNumberOfBlockedCustomer ( );
 
     Long getTotalNumberOfRecentCustomer ( );
+
+    void save (Customer existingCustomer);
 }

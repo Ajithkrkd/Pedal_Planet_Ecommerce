@@ -98,17 +98,9 @@ public class OrderServiceImpl implements OrderService {
             orderItem.setOrder(order);
             orderItems.add(orderItem);
         }
-
-
-
-
-
         cart.setCoupon_discount_amount ( null );
         cart.setTotal_amount_AfterDiscount ( null );
         cart.setCoupon ( null );
-
-
-
         cartRepository.save(cart);
         orderRepository.save(order);
         paymentService.savePaymentDeatils ( order );
@@ -167,10 +159,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List < MonthlySalesDTO > getMonthlySalesData ( ) {
-        List < Object[] > resultRows =orderRepository.findMonthlySalesData ();
+    public List<MonthlySalesDTO> getMonthlySalesData(int selectedYear) {
+        List<Object[]> resultRows = orderRepository.findMonthlySalesData(selectedYear);
+        System.out.println (resultRows );
         return mapToMonthlySalesDTO(resultRows);
     }
+
 
     @Override
     public Long getTotalNumberOfOrders() {
@@ -258,6 +252,21 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void save (Order existingOrder) {
         orderRepository.save ( existingOrder );
+    }
+
+    /**
+     * @param orderList
+     * @return
+     */
+    @Override
+    public float findTotalSalesAmount (List < Order > orderList) {
+        float totalSalesAmount = 0;
+       for( Order order : orderList){
+           float total  = order.getTotal();
+           totalSalesAmount += total;
+           System.out.println (totalSalesAmount );
+       }
+       return totalSalesAmount;
     }
 
     private float calculateTotalWholesalePrice(Order order) {

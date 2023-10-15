@@ -24,9 +24,10 @@ public interface OrderRepository extends JpaRepository <Order ,Long> {
 
     @Query("SELECT YEAR(o.ordered_date) AS year, MONTH(o.ordered_date) AS month, SUM(o.total) AS total " +
             "FROM orders o " +
-            "WHERE o.status = '4' " +  // Filter by status DELIVERED
+            "WHERE o.status = '4' AND YEAR(o.ordered_date) = :selectedYear " +
             "GROUP BY YEAR(o.ordered_date), MONTH(o.ordered_date)")
-    List<Object[]> findMonthlySalesData();
+    List<Object[]> findMonthlySalesData(@Param("selectedYear") int selectedYear);
+
 
 
     @Query("SELECT COUNT(o) FROM orders o")

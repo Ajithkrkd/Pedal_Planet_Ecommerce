@@ -213,4 +213,12 @@ public class CustomerServiceImpl implements CustomerService {
 			return customerRepository.countCustomersJoinedWithinAWeek(oneWeekAgo);
 
 	}
+
+	/**
+	 * @param existingCustomer
+	 */
+	@Override
+	public void save (Customer existingCustomer) {
+		customerRepository.save ( existingCustomer );
+	}
 }

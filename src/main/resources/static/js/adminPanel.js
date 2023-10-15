@@ -78,36 +78,50 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   };
 
-  var chart = new ApexCharts(document.querySelector("#chart1"), options);
+
+
+
+
+
+ var chart = new ApexCharts(document.querySelector("#chart1"), options);
   chart.render();
 
-  fetch('/admin/monthlySalesChart')
-    .then(response => response.json())
-    .then(data => {
-      // Initialize an array to store sales data for all months (initialized to 0)
-      var allMonthsSales = Array(12).fill(0);
+  // Get the select element
+  var yearSelect = document.getElementById('year-select');
 
-      // Extract the total sales data and month numbers from the received data
-      data.forEach(item => {
-        allMonthsSales[item.month - 1] = item.totalSales;
-      });
+  // Add a "change" event listener to the select element
+  yearSelect.addEventListener("change", function () {
+    const selectedYear = yearSelect.value;
 
-      // Get month names
-      var monthNames = getMonthNames();
+    // Fetch data based on the selected year
+    fetch(`/admin/monthlySalesChart?year=${selectedYear}`)
+      .then(response => response.json())
+      .then(data => {
+        // Initialize an array to store sales data for all months (initialized to 0)
+        var allMonthsSales = Array(12).fill(0);
 
-      // Update the x-axis categories with month names
-      chart.updateOptions({
-        xaxis: {
-          categories: monthNames
-        }
-      });
+        // Extract the total sales data and month numbers from the received data
+        data.forEach(item => {
+          allMonthsSales[item.month - 1] = item.totalSales;
+        });
 
-      // Update the chart series with the extracted sales data
-      chart.updateSeries([{
-        data: allMonthsSales
-      }]);
-    })
-    .catch(error => console.error('Error fetching data:', error));
+        // Get month names
+        var monthNames = getMonthNames();
+
+        // Update the x-axis categories with month names
+        chart.updateOptions({
+          xaxis: {
+            categories: monthNames
+          }
+        });
+
+        // Update the chart series with the extracted sales data
+        chart.updateSeries([{
+          data: allMonthsSales
+        }]);
+      })
+      .catch(error => console.error('Error fetching data:', error));
+  });
 
   // Function to get month names
   function getMonthNames() {

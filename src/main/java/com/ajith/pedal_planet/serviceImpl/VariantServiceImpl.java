@@ -32,9 +32,12 @@ public class VariantServiceImpl implements VariantService {
     @Override
     public void increaseStock(Long orderId) {
        List<OrderItem> orderItems =  orderItemRepository.findAllByOrder_Id(orderId);
+
        for(OrderItem x : orderItems){
            Variant variant = x.getVariant();
-           variant.setStock(x.getQuantity());
+           System.out.println (x.getQuantity ()+"ajith quantity set" );
+           System.out.println (x.getQuantity ()+"ajith quantity set" );
+           variant.setStock(x.getQuantity() + variant.getStock ());
            variantRepository.save(variant);
        }
     }

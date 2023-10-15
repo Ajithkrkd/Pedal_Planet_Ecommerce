@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Contact Pedal_Planet</title>
+</head>
+<body>
+<div th:replace="/fragments/header::header"></div>
+<div th:if="${message}" id="messageDiv">
+    <h5 class="text-center" th:text="${message}"></h5>
+</div>
+<section class="contact spad">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="contact__content">
+                    <div class="contact__address">
+                        <h5>Contact info</h5>
+                        <ul>
+                            <li>
+                                <h6><i class="fa fa-map-marker"></i> Address</h6>
+                                <p>SFNo 192, Earithottam, kannampalayam, Coimbatore</p>
+                            </li>
+                            <li>
+                                <h6><i class="fa fa-phone"></i> Phone</h6>
+                                <p><span>+178-123-243</span><span>+125-668-886</span></p>
+                            </li>
+                            <li>
+                                <h6><i class="fa fa-headphones"></i> Support</h6>
+                                <p>pedalplanetbicycles@gmail.com</p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="contact__form">
+                        <h5>SEND MESSAGE</h5>
+                        <form action="/sentMail" method="post">
+                            <input type="text" name="CustomerName" placeholder="Name" min="6" max="20" required>
+                            <input type="email" name="CustomerEmail" placeholder="Email" required>
+                            <input type="text" name="CustomerSubject" placeholder="Subject" min="8" max="30" required>
+                            <textarea type="text" name="CustomerMessage" placeholder="Message" min="30" max="50" required></textarea>
+                            <button type="submit" class="site-btn">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+<div th:replace="/fragments/footer::footer"></div>
+
+
+<script>
+    setTimeout(function() {
+        document.getElementById("messageDiv").style.display = "none";
+    }, 4000); // 4 seconds in milliseconds
+</script>
+</body>
+</html>
