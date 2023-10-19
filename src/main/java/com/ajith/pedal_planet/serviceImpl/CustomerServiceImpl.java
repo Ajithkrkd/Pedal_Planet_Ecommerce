@@ -221,4 +221,12 @@ public class CustomerServiceImpl implements CustomerService {
 	public void save (Customer existingCustomer) {
 		customerRepository.save ( existingCustomer );
 	}
+
+	/**
+	 * @return
+	 */
+	@Override
+	public long count ( ) {
+		return customerRepository.count ();
+	}
 }

@@ -159,7 +159,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<MonthlySalesDTO> getMonthlySalesData(int selectedYear) {
+    public List<MonthlySalesDTO>   getMonthlySalesData(int selectedYear) {
         List<Object[]> resultRows = orderRepository.findMonthlySalesData(selectedYear);
         System.out.println (resultRows );
         return mapToMonthlySalesDTO(resultRows);
@@ -184,14 +184,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public float getTotalSalesAmount ( ) {
-        return orderRepository.getTotalSalesAmount();
+    public Optional < Float > getTotalSalesAmount ( ) {
+        return Optional.of ( orderRepository.getTotalSalesAmount ( ) );
     }
 
 
     @Override
-    public float getTotalRefundAmount ( ) {
-        return orderRepository.getTotalAmountSumForRefundOrders();
+    public Optional < Float > getTotalRefundAmount ( ) {
+        return Optional.of ( orderRepository.getTotalAmountSumForRefundOrders ( ) );
     }
 
 

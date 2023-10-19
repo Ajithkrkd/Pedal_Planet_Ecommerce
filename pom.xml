@@ -115,7 +115,9 @@
 	</dependencies>
 
 	<build>
+		<finalName>pedal_planet_app</finalName>
 		<plugins>
+
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>

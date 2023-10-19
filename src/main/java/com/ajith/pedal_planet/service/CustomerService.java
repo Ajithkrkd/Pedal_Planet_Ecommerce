@@ -62,4 +62,6 @@ public interface CustomerService {
     Long getTotalNumberOfRecentCustomer ( );
 
     void save (Customer existingCustomer);
+
+    long count ( );
 }

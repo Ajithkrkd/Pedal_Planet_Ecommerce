@@ -40,10 +40,10 @@ public interface OrderService {
 
     Long getTotalNumberOfReturnedAndCanceledOrders ( );
 
-    float getTotalSalesAmount ( );
-    
+    Optional<Float> getTotalSalesAmount ( );
 
-    float getTotalRefundAmount ( );
+
+    Optional<Float> getTotalRefundAmount ( );
 
 
    float calculateProfitForDeliveredOrders();
