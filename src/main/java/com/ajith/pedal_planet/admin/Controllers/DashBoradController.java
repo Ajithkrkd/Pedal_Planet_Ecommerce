@@ -31,10 +31,20 @@ public class DashBoradController {
             model.addAttribute ( "returned_canceled_orders" ,orderService.getTotalNumberOfReturnedAndCanceledOrders());
             Optional < Float > totalsales = orderService.getTotalSalesAmount();
             if(totalsales.isPresent()){
-                model.addAttribute ( "total_sales" ,totalsales);
+                model.addAttribute ( "salesBool" ,true);
+                model.addAttribute ( "total_sales" ,totalsales.get ());
+            }else{
+                model.addAttribute ( "salesBool" ,false);
             }
             model.addAttribute ( "total_profit" ,orderService.calculateProfitForDeliveredOrders());
-            model.addAttribute ( "total_Refunds" ,orderService.getTotalRefundAmount());
+            Optional<Float> refunds = orderService.getTotalRefundAmount ();
+            if(refunds.isPresent ()){
+                model.addAttribute ( "refundBool" ,true);
+                model.addAttribute ( "total_Refunds" ,refunds.get ());
+            }
+            else {
+                model.addAttribute ( "refundBool" ,true);
+            }
 
         return "admin/AdminDashboard";
     }

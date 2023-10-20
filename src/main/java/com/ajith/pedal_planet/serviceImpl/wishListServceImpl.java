@@ -53,7 +53,7 @@ public class wishListServceImpl implements WishListService {
     public boolean checkProductInCustomerWishlist (Customer customer, Long productId) {
         Optional<Product> existingProduct = productRepository.findById ( productId );
         if ( existingProduct.isPresent()){
-            return checkProductInCustomerWishlist ( customer, productId );
+            return wishListRepository.existsByCustomerAndProduct ( customer, existingProduct.get() );
         }
         return false;
     }

@@ -64,6 +64,7 @@ public class WishListController {
 
             Optional < Customer > existingCustomer = customerService.findByUsername ( basicServices.getCurrentUsername ( ) );
             if ( existingCustomer.isPresent ( ) ) {
+                System.out.println ("this is customer " + existingCustomer.get() );
                 boolean isProductExistInTheWishList = wishListService.checkProductInCustomerWishlist ( existingCustomer.get ( ), productId );
                 System.out.println ( isProductExistInTheWishList );
                 if ( isProductExistInTheWishList ) {
