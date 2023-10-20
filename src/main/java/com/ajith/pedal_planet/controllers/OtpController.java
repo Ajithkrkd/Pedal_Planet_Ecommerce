@@ -35,7 +35,7 @@ public class OtpController {
 		model.addAttribute("resend" , "resend");
 		model.addAttribute("success" , "success");
 		
-		return "/otp/otpPage";
+		return "otp/otpPage";
 	}
 
 	@PostMapping("/otpSubmit")

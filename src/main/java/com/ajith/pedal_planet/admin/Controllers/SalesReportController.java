@@ -44,7 +44,7 @@ public class SalesReportController {
         List < Order > orderList = orderService.getAllOrdersWithStatusDelivered ();
         model.addAttribute ( "allOrders" , orderList );
 
-        return "/admin/sales-report";
+        return "admin/sales-report";
     }
     @GetMapping ("/admin/filter-Sales-Report")
     public String filterSalesReport(@RequestParam ("startDate") String startDate,
@@ -63,7 +63,7 @@ public class SalesReportController {
         model.addAttribute ( "allOrders" , OrderThatIsDelivered);
         float TotalAmount = orderService.findTotalSalesAmount(OrderThatIsDelivered);
         model.addAttribute ( "total" , TotalAmount );
-        return "/admin/sales-report";
+        return "admin/sales-report";
     }
 
     @PostMapping("/admin/generatePdf")
@@ -74,7 +74,7 @@ public class SalesReportController {
             ITextRenderer renderer = new ITextRenderer (  );
 
             String htmlContent = renderThymeleafTemplate (startDate , endDate ,model);
-            String baseURL ="http://localhost:9000";
+            String baseURL ="http://pedalplanet.com";
             renderer.setDocumentFromString(htmlContent, baseURL);
 
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

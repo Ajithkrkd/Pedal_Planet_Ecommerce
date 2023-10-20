@@ -56,7 +56,7 @@ public class CustomerController {
         model.addAttribute ( "totalItems", page.getTotalElements ( ) );
         model.addAttribute ( "customers", customers );
         model.addAttribute ( "size", PageSize );
-        return "/CustomerPages/customer";
+        return "CustomerPages/customer";
     }
 
     //SEARCH FOR CUSTOMER
@@ -82,7 +82,7 @@ public class CustomerController {
             model.addAttribute ( "totalItems", page.getTotalElements ( ) );
             model.addAttribute ( "customers", customers );
 
-            return "/CustomerPages/result-customer";
+            return "CustomerPages/result-customer";
         }
     }
 

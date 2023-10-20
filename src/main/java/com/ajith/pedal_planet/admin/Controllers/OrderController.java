@@ -57,7 +57,7 @@ public class OrderController {
     public String getOrderList(Model model) {
 
         findPaginatedOrders ( 1,5,model );
-        return "/orderPages/order_management";
+        return "orderPages/order_management";
     }
     @GetMapping ("/orders/pages/{pageNumber}" )
     public String findPaginatedOrders (@PathVariable ( value = "pageNumber" ) int pageNumber,
@@ -71,7 +71,7 @@ public class OrderController {
         model.addAttribute ( "totalItems", page.getTotalElements ( ) );
         model.addAttribute ( "orders", orders );
         model.addAttribute ( "size", PageSize );
-        return "/orderPages/order_management";
+        return "orderPages/order_management";
     }
 
     //SEARCH FOR CUSTOMER
@@ -97,7 +97,7 @@ public class OrderController {
             model.addAttribute ( "totalItems", page.getTotalElements ( ) );
             model.addAttribute ( "orders", orders );
 
-            return "/orderPages/order-management-result";
+            return "orderPages/order-management-result";
         }
     }
 
@@ -122,7 +122,7 @@ public class OrderController {
             model.addAttribute ( "totalItems", page.getTotalElements ( ) );
             model.addAttribute ( "orders", orders );
 
-            return "/orderPages/order-management-result";
+            return "orderPages/order-management-result";
         }
     }
 
@@ -145,7 +145,7 @@ public class OrderController {
         }
 
 
-        return "/orderPages/adminSingleOrder";
+        return "orderPages/adminSingleOrder";
 
     }
 

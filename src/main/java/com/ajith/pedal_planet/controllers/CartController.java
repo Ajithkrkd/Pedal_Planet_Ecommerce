@@ -115,7 +115,7 @@ public class CartController {
                 model.addAttribute("customer", customer.get());
 
 
-                return "/cartPages/cart";
+                return "cartPages/cart";
             }
 
     }

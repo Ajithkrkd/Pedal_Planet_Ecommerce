@@ -119,7 +119,7 @@ public class Home_Shop_Controller {
 		model.addAttribute("product" , product);
 		model.addAttribute("relatedProducts" , relatedProducts);
 
-		return "/userSide/single-product";
+		return "userSide/single-product";
 	}
 
 	

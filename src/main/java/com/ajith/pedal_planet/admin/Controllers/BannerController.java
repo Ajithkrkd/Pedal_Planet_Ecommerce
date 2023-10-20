@@ -30,9 +30,9 @@ public class BannerController {
     @GetMapping("/admin/banner-Management")
     public String getBannerManagement(Model model){
         model.addAttribute ( "banners" , bannerService.findAllBanners() );
-        return "/admin/banner-management";
+        return "admin/banner-management";
     }
-    @GetMapping("/banner")
+    @GetMapping("/banner")//for image croping
     public String getBannerPage(){
         return "banners";
     }

@@ -56,7 +56,7 @@ public class InvoiceController {
 
 
 
-    return "/userSide/invoice";
+    return "userSide/invoice";
 }
 
    @GetMapping("/generatePdf/{orderId}")
@@ -97,6 +97,6 @@ public class InvoiceController {
         model.addAttribute("total_price", currentOrder.get().getTotal ());
         Context context = new Context();
         context.setVariables(model.asMap());
-        return templateEngine.process("/userSide/invoice.html", context);
+        return templateEngine.process("userSide/invoice.html", context);
     }
 }

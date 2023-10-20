@@ -12,7 +12,7 @@
 
 </head>
             <body>
-            <div th:replace="/fragments/header::header"></div>
+            <div th:replace="fragments/header::header"></div>
 
 
             <div th:if="${message}">
@@ -126,7 +126,7 @@
 
             <p class="no-more-results">No More Results To Display</p>
 
-            <div th:replace="/fragments/footer:: footer"></div>
+            <div th:replace="fragments/footer:: footer"></div>
             <script>
                 function sendPaymentMethod() {
                     var selectedPaymentMethod = document.getElementById("paymentMethod").value;

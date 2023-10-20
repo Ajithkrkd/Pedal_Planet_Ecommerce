@@ -130,7 +130,7 @@ public class userOrderController {
             model.addAttribute ( "orderedDate", basicServices.getFormattedDate ( existingOrder.getOrdered_date () ) );
             model.addAttribute ( "shippedDate" ,basicServices.getFormattedDate ( existingOrder.getShipping_date () ) );
             model.addAttribute ( "deliveredDate",basicServices.getFormattedDate ( existingOrder.getExpecting_date () ) );
-            return "/userSide/userSingleOrder";
+            return "userSide/userSingleOrder";
 
         }
         redirectAttributes.addFlashAttribute("error" ,"Order data is not fount");

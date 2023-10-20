@@ -77,7 +77,7 @@ public class CustomerAccountController {
             return "redirect:/signin?notLogged";
         }
 
-        return "/userSide/account";
+        return "userSide/account";
     }
 
 

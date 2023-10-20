@@ -64,7 +64,7 @@ public class ProductController {
         model.addAttribute ( "totalItems", page.getTotalElements ( ) );
         model.addAttribute ( "products", products );
         model.addAttribute ( "size", PageSize );
-        return "/ProductPages/products";
+        return "ProductPages/products";
     }
 
     //SEARCH FOR CUSTOMER
@@ -90,7 +90,7 @@ public class ProductController {
             model.addAttribute ( "totalItems", page.getTotalElements ( ) );
             model.addAttribute ( "products", products );
 
-            return "/ProductPages/result-products";
+            return "ProductPages/result-products";
         }
     }
 
@@ -100,7 +100,7 @@ public class ProductController {
     public String getAddProduct(Model model) {
         model.addAttribute("product", new Product());
         model.addAttribute("categories" ,categoryRepository.findCategoryByIsAvailableTrue());
-        return "/ProductPages/Addproducts";
+        return "ProductPages/Addproducts";
     }
 
     @PostMapping("/products/save")
@@ -113,7 +113,7 @@ public class ProductController {
         if(existingProduct.isPresent()){
             result.rejectValue("name" , "error.name" ,"product already exist");
             model.addAttribute("categories" ,categoryRepository.findCategoryByIsAvailableTrue());
-            return "/ProductPages/Addproducts";
+            return "ProductPages/Addproducts";
         }
 
         Product newProduct = new Product();
@@ -151,7 +151,7 @@ public class ProductController {
     public String productDetails(@PathVariable ("id") Long id, Model model) {
         Product product = productService.getProductBy_id(id).get(); // Fetch product details from service
         model.addAttribute("product", product);
-        return "/ProductPages/productDetails";
+        return "ProductPages/productDetails";
     }
 
     @GetMapping("/product/toggle-list/{id}")
@@ -167,7 +167,7 @@ public class ProductController {
         if(product != null){
             model.addAttribute("product" , product);
             model.addAttribute("categories" , categoryRepository.findCategoryByIsAvailableTrue());
-            return "/ProductPages/update-product";
+            return "ProductPages/update-product";
         }
         return "redirect:/admin/products";
     }

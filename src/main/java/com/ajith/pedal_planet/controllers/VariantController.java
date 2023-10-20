@@ -52,7 +52,7 @@ public class VariantController {
         model.addAttribute ( "totalItems", page.getTotalElements ( ) );
         model.addAttribute ( "products", products );
         model.addAttribute ( "size", PageSize );
-        return "/ProductPages/variants";
+        return "ProductPages/variants";
     }
 
     //SEARCH FOR CUSTOMER
@@ -78,7 +78,7 @@ public class VariantController {
             model.addAttribute ( "totalItems", page.getTotalElements ( ) );
             model.addAttribute ( "products", products );
 
-            return "/ProductPages/result-variant";
+            return "ProductPages/result-variant";
         }
     }
     @GetMapping("/variant/{productId}")
@@ -96,7 +96,7 @@ public class VariantController {
         model.addAttribute("productName" , productName);
         model.addAttribute("variants" ,variants);
         model.addAttribute("productId" ,id);
-        return "/ProductPages/variant-management";
+        return "ProductPages/variant-management";
     }
     @GetMapping("/variant/create/{productId}")
     public String createNewVariant(@PathVariable("productId") Long id,
@@ -107,7 +107,7 @@ public class VariantController {
         model.addAttribute("productId" ,id);
         model.addAttribute("productName" ,productName);
         model.addAttribute("variant" ,new Variant());
-        return "/ProductPages/create-variant";
+        return "ProductPages/create-variant";
     }
     @PostMapping("/variant/save")
     public String saveVariant(@ModelAttribute Variant variant,
@@ -126,7 +126,7 @@ public class VariantController {
             model.addAttribute("productName" ,productName);
             model.addAttribute("variant" ,variant);
 
-            return "/ProductPages/create-variant";
+            return "ProductPages/create-variant";
         }
         variant.setProduct(product.get());
         variantService.save(variant);
@@ -156,7 +156,7 @@ public class VariantController {
         model.addAttribute("variant" ,variant);
         model.addAttribute("productId" ,product_id);
         model.addAttribute("variantId" , variant_id);
-        return"/ProductPages/update-variant";
+        return"ProductPages/update-variant";
     }
 
 
@@ -176,7 +176,7 @@ public class VariantController {
             if (!existingVariant.get().getId().equals(variantId)) {
                 result.rejectValue("variantName", "error.variantName", "Variant already exists for the product");
                 model.addAttribute("productName", productService.getProductBy_id(id).get().getName());
-                return "/ProductPages/update-variant";
+                return "ProductPages/update-variant";
             }
         }
         Optional<Product> product = productService.getProductBy_id(id);

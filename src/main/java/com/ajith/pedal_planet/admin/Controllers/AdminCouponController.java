@@ -48,7 +48,7 @@ public class AdminCouponController {
                 .map(Coupon::isExpired)
                 .forEach(System.out::println );
 
-        return "/couponPages/coupon-management";
+        return "couponPages/coupon-management";
     }
 
 

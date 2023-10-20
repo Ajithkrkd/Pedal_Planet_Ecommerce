@@ -38,13 +38,13 @@ public class CategoryController {
         model.addAttribute ( "totalItems", page.getTotalElements ( ) );
         model.addAttribute ( "categories", categories );
         model.addAttribute ( "size", PageSize );
-        return "/CategoryPages/categories";
+        return "CategoryPages/categories";
     }
 
     @GetMapping ( "/categories/add" )
     public String getaddCategory (Model model) {
         model.addAttribute ( "category", new Category ( ) );
-        return "/CategoryPages/AddCategories";
+        return "CategoryPages/AddCategories";
     }
 
     @PostMapping ( "/categories/add" )
@@ -66,7 +66,7 @@ public class CategoryController {
         Optional < Category > category = categoryService.getCategoryByid ( id );
         if ( category.isPresent ( ) ) {
             model.addAttribute ( "category", category );
-            return "/CategoryPages/AddCategories";
+            return "CategoryPages/AddCategories";
         } else {
             return "/error";
         }
@@ -94,7 +94,7 @@ public class CategoryController {
             model.addAttribute ( "totalItems", page.getTotalElements ( ) );
             model.addAttribute ( "categories", categories );
 
-            return "/CategoryPages/result-category";
+            return "CategoryPages/result-category";
         }
     }
 }

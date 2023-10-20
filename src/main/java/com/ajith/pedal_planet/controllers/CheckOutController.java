@@ -98,7 +98,7 @@ public class CheckOutController {
                 model.addAttribute ( "discount", cart.getCoupon_discount_amount ( ) );
             }
 
-            return "/userside/checkOutPage";
+            return "userside/checkOutPage";
         }else{
             redirectAttributes.addFlashAttribute ( "message" ,"please login" );
             return "redirect:/signin";
@@ -153,7 +153,7 @@ public class CheckOutController {
                 return "redirect:/placeOrder";
             }
             System.out.println ( "reached show confirm" );
-            return "/userSide/confirmationPage";
+            return "userSide/confirmationPage";
 
         } else {
             return "error";

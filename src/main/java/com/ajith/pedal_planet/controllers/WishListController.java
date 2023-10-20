@@ -43,7 +43,7 @@ public class WishListController {
     public String getWishListItem (Model model) {
         List < Wishlist > wishListItems = wishListService.getAllProductsInWishList ( );
         model.addAttribute ( "wishListItems", wishListItems );
-        return "/userSide/wishList";
+        return "userSide/wishList";
     }
 
     @PostMapping ( "/add/{productId}" )
