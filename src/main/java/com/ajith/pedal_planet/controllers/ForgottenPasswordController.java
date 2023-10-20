@@ -51,7 +51,7 @@ public class ForgottenPasswordController {
 
         try {
             customerService.updateResetPasswordToken(token, email);
-            String resetPasswordLink = Utility.getSiteURL(request) + "/reset_password?token=" + token;
+            String resetPasswordLink = "http://pedalplanet.com" + "/reset_password?token=" + token;
             sentEmailwithPasswordLink(email, resetPasswordLink);
             redirectAttributes.addFlashAttribute("forgotmessage", "We have sent a reset password link to your email. Please check.");
         } catch (CustomerNotFoundException e) {

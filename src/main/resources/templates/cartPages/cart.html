@@ -80,7 +80,7 @@
             <div class="row-1 orderItem py-2 d-flex my-3 flex-md-row flex-column justify-content-around align-items-center" th:each="cartItem : ${cart}"}>
 
                 <div class="col-12 col-md-3">
-                    <img th:src="@{/images/product/{imagePath}(imagePath=${cartItem.variant.product.images[0].imagePath})}" alt="/assets/img/cart.jpg" class="img-fluid" style="width:15rem">
+                    <img th:src="@{/Images/product/{imagePath}(imagePath=${cartItem.variant.product.images[0].imagePath})}" alt="/assets/img/cart.jpg" class="img-fluid" style="width:15rem">
                 </div>
 
                 <div class="m-0 col-12 col-md-3">

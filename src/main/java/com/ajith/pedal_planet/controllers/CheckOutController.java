@@ -98,7 +98,7 @@ public class CheckOutController {
                 model.addAttribute ( "discount", cart.getCoupon_discount_amount ( ) );
             }
 
-            return "userside/checkOutPage";
+            return "userSide/checkOutPage";
         }else{
             redirectAttributes.addFlashAttribute ( "message" ,"please login" );
             return "redirect:/signin";
