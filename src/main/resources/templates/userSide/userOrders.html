@@ -84,7 +84,7 @@
                     <div class="row justify-content-between align-content-center" th:each="order : ${orders}" data-order-id="${order.id}">
                         <div class="col-md-2 text-center d-flex flex-column justify-content-center align-content-center">
                              <span th:each="orderItem : ${order.orderItems}">
-                                <img th:src="@{/images/product/{imagePath}(imagePath=${orderItem.variant.product.images[0].imagePath})}"
+                                <img th:src="@{/Images/product/{imagePath}(imagePath=${orderItem.variant.product.images[0].imagePath})}"
                                      alt="/assets/img/cart.jpg" class="cart-item-image">
                              </span>
                         </div>

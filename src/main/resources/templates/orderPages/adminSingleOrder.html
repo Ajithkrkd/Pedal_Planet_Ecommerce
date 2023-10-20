@@ -28,7 +28,7 @@
             <input type="hidden" name="order_id" th:value="${item.order.id}">
 
             <div class="col-12 col-md-3">
-                <img  th:src="@{/images/product/{imagePath}(imagePath=${item.variant.product.images[0].imagePath})}"
+                <img  th:src="@{/Images/product/{imagePath}(imagePath=${item.variant.product.images[0].imagePath})}"
                       alt="/assets/img/cart.jpg" class=" img-fluid" style="height:10rem"  >
             </div>
 

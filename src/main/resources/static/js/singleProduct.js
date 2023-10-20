@@ -27,11 +27,11 @@
     var selectElement = document.getElementById('selectedVariant');
     var selectedVariantPrice = document.getElementById('selectedVariantPrice');
      var defaultPrice = selectElement.options[0].getAttribute('data-variant-price');
-    selectedVariantPrice.textContent = '$' + defaultPrice;
+    selectedVariantPrice.textContent = '₹ ' + defaultPrice;
     selectElement.addEventListener('change', function() {
         var selectedOption = selectElement.options[selectElement.selectedIndex];
         var price = selectedOption.getAttribute('data-variant-price');
-        selectedVariantPrice.textContent = '$' + price;
+        selectedVariantPrice.textContent = '₹ ' + price;
     });
 
 

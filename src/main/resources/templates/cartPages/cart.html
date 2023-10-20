@@ -87,9 +87,9 @@
                     <p class="product_name" th:text="${#strings.abbreviate(cartItem.variant.product.name, 30)}" style="font-size: 22px; font-weight: 800; color: #111111;">Product Name</p>
                     <p class="variant_name" style="font-size:20px;" th:text="${cartItem.variant.VariantName}">Variant Name</p>
                     <div>
-                        <span style="font-size:31px;">'₹' <span  th:id="'priceTagOriginal-' + ${cartItem.variant.id}"  style="font-size: 31px; margin-bottom: 40px;font-weight: 700;font-family: sans-serif;" class="price-text strikethrough" th:text="${ cartItem.variant.offerPrice * cartItem.quantity}">2799</span></span>
+                        <span style="font-size:31px;"> ₹ <span  th:id="'priceTagOriginal-' + ${cartItem.variant.id}"  style="font-size: 31px; margin-bottom: 40px;font-weight: 700;font-family: sans-serif;" class="price-text strikethrough" th:text="${ cartItem.variant.offerPrice * cartItem.quantity}">2799</span></span>
 
-                        <span style="font-size:24px;">'₹' <span th:id="'actualPrice-' + ${cartItem.variant.id}" style="font-size: 24px;margin-bottom: 21px;text-decoration-line: line-through;" class="price-text strikethrough" th:text="${ cartItem.variant.price * cartItem.quantity}">2799</span></span>
+                        <span style="font-size:24px;"> ₹ <span th:id="'actualPrice-' + ${cartItem.variant.id}" style="font-size: 24px;margin-bottom: 21px;text-decoration-line: line-through;" class="price-text strikethrough" th:text="${ cartItem.variant.price * cartItem.quantity}">2799</span></span>
 
                     </div>
                 </div>

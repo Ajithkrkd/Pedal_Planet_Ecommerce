@@ -185,7 +185,7 @@ public class CheckOutController {
     @GetMapping ( "/orderSuccess" )
 
     public String getOrderSuccessPage ( ) {
-        return "/userSide/orderSuccess";
+        return "userSide/orderSuccess";
     }
 
     @PostMapping ( "/cancelOrder" )

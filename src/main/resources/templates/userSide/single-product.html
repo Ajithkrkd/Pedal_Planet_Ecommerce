@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+Z<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" >
 
 <head>
@@ -86,14 +86,6 @@
             <div class="col-lg-6">
                 <div class="product__details__text">
                     <h2 th:text="${product.name}"><span>Brand: PEDAL PLANET</span></h2>
-                    <div class="rating">
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <span>( 138 reviews )</span>
-                    </div>
                     <input type="hidden" name="product_Id" id="product_Id" th:value="${product.id}">
                     <div th:text="${product.shortDescription}"></div>
                     <div class="product__details__price default-price" id="selectedVariantPrice"></div>
@@ -188,13 +180,6 @@
                 </div>
                 <div class="product__item__text">
                     <h6 th:text="${item.name}"><a href="#">Buttons tweed blazer</a></h6>
-                    <div class="rating">
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                    </div>
                     <div class="product__price" th:text="${item.price}">$ 59.0</div>
                 </div>
             </div>
