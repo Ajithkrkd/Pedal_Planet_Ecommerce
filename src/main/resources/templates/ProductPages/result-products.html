@@ -36,7 +36,7 @@
 
 <body>
 
-<div th:replace="fragments/AdminHeader :: AdminHeader"></div>
+<div th:replace="/fragments/AdminHeader :: AdminHeader"></div>
 
 <div class="container-fluid">
 	<div class="text-center my-5" >
@@ -127,7 +127,7 @@
 	</ul>
 
 </nav>
-<div th:replace="fragments/footer::footer"></div>
+<div th:replace="/fragments/footer::footer"></div>
 
 <script>
 	document.getElementById("pageSizeForm").addEventListener("submit", function (e) {

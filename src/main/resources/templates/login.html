@@ -7,7 +7,7 @@
 </head>
 
 <body class="bg-gradient-primary">
-<div th:replace="fragments/header :: header"></div>
+<div th:replace="/fragments/header :: header"></div>
 
 <div id="cart_error1" th:if="${param.cart_error}" class=" col-sm-12 col-lg-6 text-center alert-warning  cart_error py-3">
     "Ready to add to your cart? Log in to make it happen! 🛒🔑"
@@ -139,7 +139,7 @@
     </div>
 </div>
 
-<div th:replace="fragments/footer::footer"></div>
+<div th:replace="/fragments/footer::footer"></div>
 
 
 <script>
