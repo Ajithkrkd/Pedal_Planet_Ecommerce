@@ -42,7 +42,7 @@ public class WalletServiceImpl implements WalletService {
             Long id = existingCustomer.getId();
            String link = existingCustomer.getReferralLink();
 
-                return Utility.getSiteURL(request) +"/register?link=" +link;
+                return "http://pedalplanet.online/register?link=" +link;
         }
         return null;
     }
