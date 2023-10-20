@@ -7,6 +7,8 @@ const wishlistButtons = document.querySelectorAll('button[data-product-id]');
         })
         .then((response) => response.json())
         .then((response) => {
+        console.log(response)
+        console.log(response)
             const button = document.querySelector(`button[data-product-id="${productId}"]`);
 
             if (response.inWishlist) {

@@ -61,9 +61,10 @@ public class WishListController {
 
         }
 
-            Optional<Customer> existingCustomer = customerService.findByUsername ( basicServices.getCurrentUsername () );
-            if(existingCustomer.isPresent ()) {
-                boolean isProductExistInTheWishList = wishListService.checkProductInCustomerWishlist ( existingCustomer.get(), productId );
+
+            Optional < Customer > existingCustomer = customerService.findByUsername ( basicServices.getCurrentUsername ( ) );
+            if ( existingCustomer.isPresent ( ) ) {
+                boolean isProductExistInTheWishList = wishListService.checkProductInCustomerWishlist ( existingCustomer.get ( ), productId );
                 System.out.println ( isProductExistInTheWishList );
                 if ( isProductExistInTheWishList ) {
                     response.setError ( "This product is already in your wishlist" );
@@ -79,7 +80,9 @@ public class WishListController {
                 response.setMessage ( "product added to to the wishlist" );
                 return ResponseEntity.ok ( response );
             }
-        return ResponseEntity.ok( response);
+
+        response.setError ( "user is not there" );
+        return ResponseEntity.status ( HttpStatus.BAD_REQUEST ).body ( response );
 
     }
 
