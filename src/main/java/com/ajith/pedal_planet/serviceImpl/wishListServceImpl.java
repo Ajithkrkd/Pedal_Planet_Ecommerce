@@ -1,7 +1,9 @@
 package com.ajith.pedal_planet.serviceImpl;
 
+import com.ajith.pedal_planet.Repository.ProductRepository;
 import com.ajith.pedal_planet.Repository.WishListRepository;
 import com.ajith.pedal_planet.Repository.WishListService;
+import com.ajith.pedal_planet.models.Customer;
 import com.ajith.pedal_planet.models.Product;
 import com.ajith.pedal_planet.models.Wishlist;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,30 +17,45 @@ import java.util.Optional;
 public class wishListServceImpl implements WishListService {
 
     @Autowired
+    private ProductRepository productRepository;
+
+
+    @Autowired
     private WishListRepository wishListRepository;
-    @Override
-    public boolean checkTheProductExistInTheWishList (Long productId) {
-       return wishListRepository.existsByProduct_Id ( productId );
-    }
+
 
     @Override
     public void saveTheWishlist (Wishlist wishlist) {
         wishListRepository.save ( wishlist );
     }
 
-    @Override
-    public List < Wishlist > getAllProductsInWishList ( ) {
-        return wishListRepository.findAll ();
-    }
-
-    @Override
-    public Product getProductFromWihListBy (Long productId) {
-        return wishListRepository.findByProduct_Id ( productId);
-    }
 
     @Transactional
-    public void removeProductFromWishlist(Long productId) {
-        wishListRepository.deleteByProductId(productId);
+    public void removeProductFromWishlist (Long productId) {
+        wishListRepository.deleteByProductId ( productId );
+    }
+
+    /**
+     * @param customer
+     * @return
+     */
+    @Override
+    public List < Wishlist > getAllProductsInWishListByCustomer (Customer customer) {
+        return wishListRepository.getAllProductsInWishListByCustomer ( customer );
+    }
+
+    /**
+     * @param customer
+     * @param productId
+     * @return
+     */
+    @Override
+    public boolean checkProductInCustomerWishlist (Customer customer, Long productId) {
+        Optional<Product> existingProduct = productRepository.findById ( productId );
+        if ( existingProduct.isPresent()){
+            return checkProductInCustomerWishlist ( customer, productId );
+        }
+        return false;
     }
 
 }

@@ -41,9 +41,13 @@ public class WishListController {
 
     @GetMapping ()
     public String getWishListItem (Model model) {
-        List < Wishlist > wishListItems = wishListService.getAllProductsInWishList ( );
-        model.addAttribute ( "wishListItems", wishListItems );
-        return "userSide/wishList";
+        Optional < Customer > existingCustomer = customerService.findByUsername ( basicServices.getCurrentUsername () );
+        if( existingCustomer.isPresent()) {
+            List < Wishlist > wishListItems = wishListService.getAllProductsInWishListByCustomer ( existingCustomer.get ());
+            model.addAttribute ( "wishListItems", wishListItems );
+            return "userSide/wishList";
+        }
+         return "redirect:/signin";
     }
 
     @PostMapping ( "/add/{productId}" )
@@ -56,39 +60,54 @@ public class WishListController {
             return ResponseEntity.status ( HttpStatus.BAD_REQUEST ).body ( response );
 
         }
-        boolean isProductExistInTheWishList = wishListService.checkTheProductExistInTheWishList ( productId );
-        System.out.println ( isProductExistInTheWishList );
-        if ( isProductExistInTheWishList ) {
-            response.setError ( "This product is already in your wishlist" );
-            return ResponseEntity.status ( HttpStatus.BAD_REQUEST )
-                    .body ( response );
-        } else {
-            Optional < Product > productWantToAdd = productService.getProductBy_id ( productId );
-            Wishlist wishlist = new Wishlist ( );
-            wishlist.setProduct ( productWantToAdd.get ( ) );
-            wishlist.setCustomer ( customerService.findByUsername ( basicServices.getCurrentUsername ( ) ).get ( ) );
-            wishListService.saveTheWishlist ( wishlist );
-        }
-        response.setMessage ( "product added to to the wishlist" );
-        return ResponseEntity.ok ( response );
+
+            Optional<Customer> existingCustomer = customerService.findByUsername ( basicServices.getCurrentUsername () );
+            if(existingCustomer.isPresent ()) {
+                boolean isProductExistInTheWishList = wishListService.checkProductInCustomerWishlist ( existingCustomer.get(), productId );
+                System.out.println ( isProductExistInTheWishList );
+                if ( isProductExistInTheWishList ) {
+                    response.setError ( "This product is already in your wishlist" );
+                    return ResponseEntity.status ( HttpStatus.BAD_REQUEST )
+                            .body ( response );
+                } else {
+                    Optional < Product > productWantToAdd = productService.getProductBy_id ( productId );
+                    Wishlist wishlist = new Wishlist ( );
+                    wishlist.setProduct ( productWantToAdd.get ( ) );
+                    wishlist.setCustomer ( customerService.findByUsername ( basicServices.getCurrentUsername ( ) ).get ( ) );
+                    wishListService.saveTheWishlist ( wishlist );
+                }
+                response.setMessage ( "product added to to the wishlist" );
+                return ResponseEntity.ok ( response );
+            }
+        return ResponseEntity.badRequest ().body ( "product not found" );
+
     }
 
     @GetMapping ( "/check/{productId}" )
     @ResponseBody
     public ResponseEntity < Map < String, Boolean > > checkWishlist (@PathVariable ( "productId" ) Long productId) {
-
-        boolean inWishlist = wishListService.checkTheProductExistInTheWishList ( productId );
+        Optional<Customer> existingCustomer = customerService.findByUsername ( basicServices.getCurrentUsername () );
         Map < String, Boolean > response = new HashMap <> ( );
-        response.put ( "inWishlist", inWishlist );
-        return ResponseEntity.ok ( response );
+        if(existingCustomer.isPresent ()) {
+            boolean inWishlist = wishListService.checkProductInCustomerWishlist ( existingCustomer.get (), productId );
+
+            response.put ( "inWishlist", inWishlist );
+            return ResponseEntity.ok ( response );
+        }
+        response.put ( "inWishlist" ,false);
+        return ResponseEntity.ok (response);
     }
 
 
     @DeleteMapping("/remove/{productId}")
     @ResponseBody
     public ResponseEntity<String> removeProductFromWishlist(@PathVariable Long productId) {
-        wishListService.removeProductFromWishlist(productId);
-        return ResponseEntity.ok("Product removed from the wishlist.");
+        Optional < Customer > existingCustomer = customerService.findByUsername ( basicServices.getCurrentUsername ( ) );
+        if ( existingCustomer.isPresent ( ) ) {
+            wishListService.removeProductFromWishlist ( productId );
+            return ResponseEntity.ok ( "Product removed from the wishlist." );
+        }
+        return ResponseEntity.ok ( "" );
     }
 
 
