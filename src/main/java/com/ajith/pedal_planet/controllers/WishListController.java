@@ -91,13 +91,14 @@ public class WishListController {
     public ResponseEntity < Map < String, Boolean > > checkWishlist (@PathVariable ( "productId" ) Long productId) {
         Optional<Customer> existingCustomer = customerService.findByUsername ( basicServices.getCurrentUsername () );
         Map < String, Boolean > response = new HashMap <> ( );
+        boolean inWishlist = false;
         if(existingCustomer.isPresent ()) {
-            boolean inWishlist = wishListService.checkProductInCustomerWishlist ( existingCustomer.get (), productId );
+            inWishlist = wishListService.checkProductInCustomerWishlist ( existingCustomer.get (), productId );
 
             response.put ( "inWishlist", inWishlist );
             return ResponseEntity.ok ( response );
         }
-        response.put ( "inWishlist" ,false);
+        response.put ( "inWishlist" ,inWishlist);
         return ResponseEntity.ok (response);
     }
 
