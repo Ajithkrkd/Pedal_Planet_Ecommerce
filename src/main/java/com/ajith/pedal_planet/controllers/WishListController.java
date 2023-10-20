@@ -79,7 +79,7 @@ public class WishListController {
                 response.setMessage ( "product added to to the wishlist" );
                 return ResponseEntity.ok ( response );
             }
-        return ResponseEntity.badRequest ().body ( "product not found" );
+        return ResponseEntity.ok( response);
 
     }
 
