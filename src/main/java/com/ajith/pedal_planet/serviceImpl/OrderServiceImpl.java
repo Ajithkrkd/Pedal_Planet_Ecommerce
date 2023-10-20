@@ -269,6 +269,14 @@ public class OrderServiceImpl implements OrderService {
        return totalSalesAmount;
     }
 
+    /**
+     * @return
+     */
+    @Override
+    public List < Order > getAllOrdersByCustomer (Customer customer ) {
+        return orderRepository.findAllOrdersByCustomer(customer);
+    }
+
     private float calculateTotalWholesalePrice(Order order) {
         float totalWholesalePrice = 0;
         for (OrderItem orderItem : order.getOrderItems()) {

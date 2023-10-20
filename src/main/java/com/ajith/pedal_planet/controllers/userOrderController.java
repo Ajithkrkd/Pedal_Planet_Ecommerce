@@ -68,19 +68,26 @@ public class userOrderController {
         FilterRequest filterRequest = new FilterRequest();
         filterRequest.setStatus ( Status.valueOf ( status ) );
         filterRequest.setTime ( time );
-        List < Order > allOrders = orderService.getAllOrders();
-        System.out.println (allOrders.size());
-        List<Order> filteredOrders = orderService.filterOrders(allOrders, filterRequest);
+        Optional < Customer > existingCustomer = customerService.findByUsername ( basicServices.getCurrentUsername () );
+        if( existingCustomer.isPresent()) {
+            List < Order > sortedOrders = orderService.getAllOrdersByCustomer ( existingCustomer.get ( ) );
+        System.out.println (sortedOrders.size());
+        List<Order> filteredOrders = orderService.filterOrders(sortedOrders, filterRequest);
         if( filteredOrders.isEmpty ( ) ){
             redirectAttributes.addFlashAttribute ( "message" ,"No Orders with this filter Result !!" );
         }
         model.addAttribute ( "orders",filteredOrders );
         return "userSide/userOrders";
-
+        }
+        return "redirect:/signin";
     }
     @GetMapping("/account/orders/sort")
     public String sortOrders(@RequestParam("sortBy") String sortBy, Model model) {
-        List<Order> sortedOrders = orderService.getAllOrders();
+        Optional < Customer > existingCustomer = customerService.findByUsername ( basicServices.getCurrentUsername () );
+        if( existingCustomer.isPresent()){
+
+
+        List<Order> sortedOrders = orderService.getAllOrdersByCustomer(existingCustomer.get ());
 
         if ("asc".equals(sortBy)) {
             sortedOrders.sort( Comparator.comparing(Order::getOrdered_date));
@@ -89,7 +96,10 @@ public class userOrderController {
         }
 
         model.addAttribute("orders", sortedOrders);
+
         return "userSide/userOrders";
+        }
+        return "redirect:/signin";
     }
     @GetMapping("/account/view_order/{id}")
     public String  getSingleOrderDetails(@PathVariable ("id") long order_Id,

@@ -1,6 +1,7 @@
 package com.ajith.pedal_planet.Repository;
 
 import com.ajith.pedal_planet.Enums.Status;
+import com.ajith.pedal_planet.models.Customer;
 import com.ajith.pedal_planet.models.Order;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -69,5 +70,6 @@ public interface OrderRepository extends JpaRepository <Order ,Long> {
     @Query("SELECT o FROM orders o WHERE o.status LIKE :status")
     Page<Order> filterOrder(@Param ("status") Status status, Pageable pageable);
 
+    List< Order> findAllOrdersByCustomer (Customer customer);
 }
 

@@ -62,4 +62,6 @@ public interface OrderService {
     void save (Order existingOrder);
 
     float findTotalSalesAmount (List< Order> orderList);
+
+    List< Order> getAllOrdersByCustomer ( Customer customer );
 }

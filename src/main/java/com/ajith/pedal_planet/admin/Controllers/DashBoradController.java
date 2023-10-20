@@ -29,7 +29,10 @@ public class DashBoradController {
             model.addAttribute ( "total_orders" ,orderService.getTotalNumberOfOrders());
             model.addAttribute ( "recent_orders" ,orderService.getTotalNumberOfRecentOrders());
             model.addAttribute ( "returned_canceled_orders" ,orderService.getTotalNumberOfReturnedAndCanceledOrders());
-            model.addAttribute ( "total_sales" ,orderService.getTotalSalesAmount());
+            Optional < Float > totalsales = orderService.getTotalSalesAmount();
+            if(totalsales.isPresent()){
+                model.addAttribute ( "total_sales" ,totalsales);
+            }
             model.addAttribute ( "total_profit" ,orderService.calculateProfitForDeliveredOrders());
             model.addAttribute ( "total_Refunds" ,orderService.getTotalRefundAmount());
 
