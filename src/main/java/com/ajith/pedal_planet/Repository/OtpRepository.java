@@ -10,8 +10,6 @@ public interface OtpRepository extends JpaRepository<OtpEntity, Integer>{
 
 	public OtpEntity findByEmail(String email);
 
-	
 
-
-
+    boolean existsByEmail (String email);
 }

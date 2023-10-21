@@ -157,3 +157,21 @@ function walletPayment() {
         }
     });
 }
+
+function validatePhoneNumber(input) {
+    var phoneNumber = input.value;
+
+    // Use a regular expression to check for non-digit characters.
+    var nonDigitPattern = /\D/;
+
+    if (nonDigitPattern.test(phoneNumber)) {
+        // If non-digit characters are found, clear the input and display a SweetAlert.
+        input.value = "";
+        Swal.fire({
+            icon: 'error',
+            title: 'Validation Error',
+            text: 'No letters or special characters'
+        });
+    }
+}
+

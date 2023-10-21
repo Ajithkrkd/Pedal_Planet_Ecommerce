@@ -65,9 +65,11 @@
                         <a th:href="@{/admin/variants/toggle-list/{productId}/{id}(productId=${productId}, id=${variant.id})}"
                            th:classappend="${variant.isAvailable} ? 'btn btn-sm btn-success' : 'btn btn-sm btn-danger'"
                            th:title="${variant.isAvailable} ? 'Make Unavailable' : 'Make Available'"
+                           th:data-confirm-message="${variant.isAvailable} ? 'Are you sure you want to make this variant unavailable?' : 'Are you sure you want to make this variant available?'"
                            onclick="return confirmToggleAvailability(this)">
                             <i th:class="${variant.isAvailable} ? 'fa fa-check' : 'fa fa-trash'"></i>
                         </a>
+
                     </td>
                 </tr>
                 </tbody>
@@ -97,9 +99,10 @@
                  flashMessage.classList.add("alert-success");
                  flashMessage.style.display = "block";
 
-                 // Hide the success message after 3 seconds (adjust as needed)
+
                  setTimeout(function() {
                      flashMessage.style.display = "none";
+                      location.reload();
                  }, 3000);
 
                  // You can also update the button's appearance here
@@ -125,5 +128,7 @@
  }
 
 </script>
+
+
 </body>
 </html>

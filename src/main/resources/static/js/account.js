@@ -44,3 +44,40 @@ function hideCartErrorDiv()
                 }
             });
         }
+
+
+//js for checking the edit profile validation
+
+function validateName(input) {
+
+    var lettersPattern = /^[A-Za-z]+$/;
+    var inputValue = input.value;
+    if (!lettersPattern.test(inputValue)) {
+       input.value = "";
+              Swal.fire({
+                  icon: 'error',
+                  title: 'Validation Error',
+                  text: 'Full Name should contain letters only. No spaces are allowed'
+              });
+    }
+}
+
+
+function validateNumber(input) {
+    // Define a regular expression pattern to match exactly 10 digits.
+   var numberPattern = /^\d*$/;
+
+    // Get the input value.
+    var inputValue = input.value;
+
+    // Check if the input matches the pattern.
+    if (!numberPattern.test(inputValue)) {
+        // If it doesn't match, clear the input and show a SweetAlert.
+        input.value = "";
+        Swal.fire({
+            icon: 'error',
+            title: 'Validation Error',
+            text: 'no letters or special characters.'
+        });
+    }
+}

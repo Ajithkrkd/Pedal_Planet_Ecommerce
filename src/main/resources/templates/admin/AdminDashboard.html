@@ -120,7 +120,7 @@
 					<div class="card" style="background-color:white;">
 						<div class="card-body shadow  border boreder-dark d-flex flex-md-column justify-content-center align-items-center">
 							<h4 class=" card-title col-md-12 text-center" style="font-size: 20px;font-weight: 500;"> Profit</h4>
-							<p class="card-text col-md-6 text-center" th:text="${total_profit}" style="font-size: 34px;font-weight: 800;">3234345</p>
+							<p class="card-text col-md-12 text-center" th:text="${total_profit}" style="font-size: 34px;font-weight: 800;">3234345</p>
 						</div>
 					</div>
 				</div>
@@ -129,12 +129,12 @@
 					<div class="card" style="background-color:white;">
 						<div th:if="${salesBool}" class="card-body shadow  border boreder-dark d-flex flex-md-column justify-content-center align-items-center">
 							<h4 class="card-title col-md-12 text-center" style="font-size: 20px;font-weight: 500;">Refunds</h4>
-							<p class="card-text col-md-6 text-center " th:text="${total_Refunds}" style="font-size: 34px;font-weight: 800;">24345</p>
+							<p class="card-text col-md-12 text-center " th:text="${total_Refunds}" style="font-size: 34px;font-weight: 800;">24345</p>
 						</div>
 
 						<div th:unless="${salesBool}" class="card-body shadow  border boreder-dark d-flex flex-md-column justify-content-center align-items-center">
 							<h4 class="card-title col-md-12 text-center" style="font-size: 20px;font-weight: 500;">Refunds</h4>
-							<p class="card-text col-md-6 text-center " text="0" style="font-size: 34px;font-weight: 800;">24345</p>
+							<p class="card-text col-md-12 text-center " text="0" style="font-size: 34px;font-weight: 800;">24345</p>
 						</div>
 					</div>
 				</div>

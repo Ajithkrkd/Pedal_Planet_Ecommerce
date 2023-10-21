@@ -51,15 +51,15 @@ public class ForgottenPasswordController {
 
         try {
             customerService.updateResetPasswordToken(token, email);
-            String resetPasswordLink = "http://pedalplanet.com" + "/reset_password?token=" + token;
+            String resetPasswordLink = "http://pedalplanet.online" + "/reset_password?token=" + token;
             sentEmailwithPasswordLink(email, resetPasswordLink);
             redirectAttributes.addFlashAttribute("forgotmessage", "We have sent a reset password link to your email. Please check.");
+            return "redirect:/signin";
         } catch (CustomerNotFoundException e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
         } catch (UnsupportedEncodingException | MessagingException e) {
             redirectAttributes.addFlashAttribute("error", "Error while sending email");
         }
-
         return "redirect:/signin";
     }
 

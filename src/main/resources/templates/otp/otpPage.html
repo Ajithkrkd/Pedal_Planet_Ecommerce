@@ -107,8 +107,8 @@ body{
 <body>
 <div th:replace="fragments/header::header"></div>
 <div class="container maindiv">
-    <div class="commonbody">
-        <h1 id="maintext">OTP Verification</h1>
+    <div class="text-center">
+        <h1 id="maintext mt-5">OTP Verification</h1>
         <p class="subtext">Please enter the OTP sent to your email </p>
 
 
@@ -122,16 +122,18 @@ body{
             Enter the OTP to complete your Registration ! check your email !!
         </div>
 
+            <div class="otp-countdown" id="countdown"></div>
 
-        <div class="otp-countdown" id="countdown"></div>
-      		  <p class="subtext"> OTP valid upto 4 minutes </p>
+
+
+      		  <p class="subtext"> OTP valid upto 2 minutes </p>
         <form th:action="@{/otpSubmit}" method="post" id="otpForm">
 
-			<div class="row">
-				<div class="col-12 mb-2">
+			<div class="row d-flex justify-content-center">
+				<div class="col-md-6 mb-2">
 					<input class="input" type="text" id="enteredOtp" name="enteredOtp" placeholder="Enter OTP" required>
-				</div>
-				<div class="col-12 mb-2">
+
+
 					<button class="button w-100 mb-1"   type="submit" >Verify OTP</button>
 					<a type="button" class="btn btn-success w-100 mb-1" id="resendButton" hidden href="/reSendOtp">Re-Send</a>
 				</div>

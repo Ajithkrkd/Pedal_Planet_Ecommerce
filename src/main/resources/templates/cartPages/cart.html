@@ -72,6 +72,10 @@
 <div class="alert-danger cart_added my-3" id="cart_deleted" th:if="${param.deleted}">
     📦 Your item has deleted! 📦
 </div>
+
+<div class="alert-danger py-6  my-3 text-center"  th:if="${message}">
+   <p th:text="${message}"></p>
+</div>
 <!-- Shop Cart Section Begin -->
 <section class="shop-cart spad">
     <div class="container">

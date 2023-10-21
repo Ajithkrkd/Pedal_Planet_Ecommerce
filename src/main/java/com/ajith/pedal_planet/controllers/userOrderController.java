@@ -40,6 +40,10 @@ public class userOrderController {
     @Autowired
      private  PaymentService paymentService;
 
+    @Autowired
+    private  WalletService walletService;
+
+
     @GetMapping ("/account/orders")
     public String showUserOrders(Model model, Principal principal){
         if(principal == null ){
@@ -158,6 +162,9 @@ public class userOrderController {
             variantService.increaseStock(order_id);
             existingOrder.setCancellationReason (cancellationReason);
             existingOrder.setStatus ( Status.CANCEL_REQUEST_SENT );
+            if(existingOrder.getPayment () == Payment.ONLINE){
+                walletService.refundTheamountToWallet ( order_id );
+            }
             orderService.save(existingOrder);
             redirectAttributes.addFlashAttribute("message" ,"you cancelled your order");
             return "redirect:/account/orders";

@@ -75,14 +75,21 @@ public class CheckOutController {
 
     @GetMapping ( "/placeOrder" )
     public String getCheckOutPage (Model model , RedirectAttributes redirectAttributes) {
-
-
         Optional < Customer > customer = customerService.findByUsername ( basicServices.getCurrentUsername ( ) );
         if ( customer.isPresent ( ) ) {
             Customer existingCustomer = customer.get ( );
             Cart cart = customer.get ( ).getCart ( );
             List < CartItem > cartItems = cart.getCartItems ( );
-
+            if(cartItems.isEmpty ()){
+                redirectAttributes.addFlashAttribute ( "message" , "Ooops !! you have no products in your cart");
+                return "redirect:/cart";
+            }
+            for( CartItem item : cartItems){
+                if( item.getVariant ().getStock () <= 0){
+                    redirectAttributes.addFlashAttribute ( "message" , "Oops! the item ("+item.getVariant ().getProduct ().getName ()+")is not in the stock Remove it" );
+                return "redirect:/cart";
+                }
+            }
             String total_price_price = String.valueOf ( cartservice.getTotalOfferPrice ( cartItems ) );
             List<Address> customerAddress =  customerService.getNonDeltedAddressList(existingCustomer.getId ());
             Address defualtAddress = addressService.getDefualtAddressByCustomer_Id(existingCustomer.getId ());

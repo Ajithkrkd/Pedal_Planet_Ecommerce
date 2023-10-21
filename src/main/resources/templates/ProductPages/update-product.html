@@ -87,8 +87,8 @@
                         <div class="form-group">
                             <label>Product Images:</label>
                             <div class="row">
-                                <div class="col-md-12 d-flex flex-md-column">
-                                    <div class="col-sm-12" th:each="image, imageIndex : *{images}" id="imageDiv${imageIndex.index}">
+                                <div class="col">
+                                    <div class="col" th:each="image, imageIndex : *{images}" id="imageDiv${imageIndex.index}">
                                         <img th:src="@{/Images/product/{imagePath}(imagePath=${image.imagePath})}" class="img-thumbnail" style="width: 200px;" id="image${imageIndex.index}">
                                         <div class="">
                                             <button type="button" class="btn btn-danger delete-button" th:attr="data-image-id=${image.id}, data-image-index=${imageIndex.index}" onclick="deleteImage(this.getAttribute('data-image-id'), this.getAttribute('data-image-index'))">Delete</button>

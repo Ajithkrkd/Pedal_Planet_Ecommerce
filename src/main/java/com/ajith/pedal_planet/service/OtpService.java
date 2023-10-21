@@ -21,4 +21,6 @@ public interface OtpService {
 
 
 	void deleteExistingOtp(String email);
+
+    boolean isOtpExisitByCustomer (String email);
 }

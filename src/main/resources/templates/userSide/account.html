@@ -147,11 +147,11 @@ table.responsive-table tbody tr:nth-child(even) {
                                     <form action="/account/changeProfileNameAndPhoneNumber" method="post">
                                         <div class="form-group">
                                             <label for="editFullName">Full Name:</label>
-                                            <input type="text" class="form-control" name="fullName" id="editFullName" th:value="${customer.fullName}" required>
+                                            <input type="text" class="form-control" name="fullName" id="editFullName" th:value="${customer.fullName}"  required oninput="validateName(this)">
                                         </div>
                                         <div class="form-group">
                                             <label for="editPhone">Phone:</label>
-                                            <input type="text" class="form-control" name="phoneNumber" id="editPhone" th:value="${customer.phoneNumber}" required>
+                                            <input type="text" class="form-control" name="phoneNumber" id="editPhone" th:value="${customer.phoneNumber}" minlength="10" maxlength="10" required oninput="validateNumber(this)" >
                                         </div>
 
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

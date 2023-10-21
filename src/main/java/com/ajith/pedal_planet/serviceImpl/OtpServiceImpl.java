@@ -75,6 +75,15 @@ public class OtpServiceImpl implements OtpService {
 		otpRepository.delete(otp);
 	}
 
+	/**
+	 * @param email
+	 * @return
+	 */
+	@Override
+	public boolean isOtpExisitByCustomer (String email) {
+		return otpRepository.existsByEmail ( email );
+	}
+
 
 	@Override
 	public void sentOtpToEmail(String customerEmail, int otp) throws MessagingException, UnsupportedEncodingException {

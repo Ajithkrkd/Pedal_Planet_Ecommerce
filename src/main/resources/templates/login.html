@@ -21,9 +21,13 @@
 </div>
 
 
-<div th:if="${forgotMessage}" class="alert-danger">
+<div th:if="${forgotMessage}" class="alert-success">
     <h5  class="text-center p-2" th:text="${forgotMessage}"></h5>
 </div>
+<div th:if="${error}" class="alert-danger">
+    <h5  class="text-center p-2" th:text="${error}"></h5>
+</div>
+
 
 
 <div class="container mt-5">
@@ -46,7 +50,7 @@
                         <p class="form-label">We will be sending a reset password link to your email</p>
                         <div class="form-group">
                             <label for="forgotPasswordEmail">Email</label>
-                            <input type="email" class="form-control" id="forgotPasswordEmail" name="email" placeholder="Enter your email">
+                            <input type="email" class="form-control" id="forgotPasswordEmail" name="email" placeholder="Enter your email" required>
                         </div>
                     </div>
                     <div class="modal-footer">

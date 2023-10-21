@@ -65,7 +65,9 @@ public class OtpController {
 	public String resendOtp(HttpServletRequest request, HttpSession session) throws MessagingException, UnsupportedEncodingException {
 	    CustomerDTO customerDTO = (CustomerDTO) session.getAttribute("customerDTO");
 	    if (customerDTO != null) {
-			otpService.deleteExistingOtp(customerDTO.getEmail());//I want to delete the existing otp to avoid the conflict
+			if(otpService.isOtpExisitByCustomer(customerDTO.getEmail ())){
+				otpService.deleteExistingOtp(customerDTO.getEmail());
+			}
 	        otpService.sentOtp(customerDTO, session);
 	        return "redirect:/otpPage?success=resend";
 	    }
