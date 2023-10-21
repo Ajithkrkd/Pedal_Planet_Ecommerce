@@ -62,7 +62,7 @@ public class AdminCouponController {
         model.addAttribute("categoryList", categoryList);
         model.addAttribute("productList", productList);
         model.addAttribute("coupon", new Coupon());
-        return "/couponPages/create-coupon";
+        return "couponPages/create-coupon";
     }
 
     @PostMapping("/save")
@@ -123,7 +123,6 @@ public class AdminCouponController {
                                      @PathVariable("couponId") Long id,
                                      Model model,
                                      RedirectAttributes redirectAttributes) {
-        System.out.println(id);
 
 
         Optional<Coupon> coupon = couponService.findById(id);

@@ -74,7 +74,7 @@ public class SalesReportController {
             ITextRenderer renderer = new ITextRenderer (  );
 
             String htmlContent = renderThymeleafTemplate (startDate , endDate ,model);
-            String baseURL ="http://pedalplanet.com";
+            String baseURL ="http://pedalplanet.online";
             renderer.setDocumentFromString(htmlContent, baseURL);
 
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

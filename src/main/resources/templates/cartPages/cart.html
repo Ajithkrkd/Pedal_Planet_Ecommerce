@@ -98,7 +98,8 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-4">
-                    <div class="d-flex align-items-center">
+                    <h5 class="text-center">Quantity</h5>
+                    <div class="d-flex align-items-center justify-content-center">
                         <button onclick="sendCartItem(this.getAttribute('data-variant-id'))" th:data-variant-id="${cartItem.variant.id}" class="increase items-count px-3 py-2 m-0 " type="button" style="border-radius: 5px; border: 1px solid;" >
                             <i class="fa fa-plus"></i>
                         </button>
@@ -127,14 +128,9 @@
         </div>
 
         <div class="row">
-            <div class="col-lg-6 col-md-6 col-sm-6">
-                <div class="cart__btn">
-                    <a href="/shop">Continue Shopping</a>
-                </div>
-            </div>
-            <div class="col-lg-6 col-md-6 col-sm-6">
-                <div class="cart__btn update__btn">
-                    <a href="/shop"><span class="icon_loading"></span> Update cart</a>
+            <div class="col-12">
+                <div class="cart__btn update__btn float-left">
+                    <a href="/shop"><span class="icon_loading"></span> Add Another Product</a>
                 </div>
             </div>
         </div>
