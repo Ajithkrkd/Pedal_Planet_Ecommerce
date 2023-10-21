@@ -42,6 +42,7 @@ public class OtpController {
 	public String proccessOtp(HttpServletRequest request, HttpSession session) {
 		String enteredOtp = request.getParameter("enteredOtp");
 		String userEmail = (String) session.getAttribute("userEmail");
+		otpService.removeAllExpiredOtp();
 		if (userEmail != null) {
 			Integer storedOtp = otpService.getStoredOtpByEmail(userEmail); // Implement this method in your otpService
 

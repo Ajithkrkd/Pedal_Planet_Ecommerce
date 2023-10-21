@@ -1,0 +1,91 @@
+/*product card css start*/
+ .product__item {
+
+                display: flex; /* Use Flexbox to align items */
+                flex-direction: column; /* Stack child elements vertically */
+                height: 100%; /* Make each card take up the full height */
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+                background-color: white; /* Optional: Add a white background color to the cards */
+            }
+
+            /* Adjust styles for the inner elements */
+            .product__item__pic {
+                flex-grow: 1; /* Allow the image to grow and take up remaining space */
+            }
+
+            .product__item__text {
+                padding: 15px;
+ }
+/*product card css end*/
+
+        .image-container {
+            position: relative;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Style the images */
+        .image-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        /* Style the image text overlay */
+        .image-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.8);
+            color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            opacity: 0; /* Initially hide the text */
+            transition: opacity 0.3s ease;
+        }
+
+        /* Show the text overlay on hover */
+        .image-container:hover .image-text {
+            opacity: 2;
+        }
+
+        /* Style the title and description */
+        .image-text h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .image-text p {
+            font-size: 46px;
+        }
+@media screen and (max-width: 768px) {
+      .image-container {
+          height: auto; /* Let the height adjust to the content */
+      }
+
+      .image-container img {
+          height: auto;
+      }
+
+      .image-text {
+          background-color: rgba(255, 255, 255, 0.9); /* Adjust the background color for better readability */
+          padding: 10px;
+      }
+
+      .image-text h3 {
+          font-size: 23px;
+      }
+
+      .image-text p {
+          font-size: 26px;
+      }
+  }
+

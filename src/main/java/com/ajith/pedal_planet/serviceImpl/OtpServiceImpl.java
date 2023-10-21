@@ -2,6 +2,7 @@ package com.ajith.pedal_planet.serviceImpl;
 import java.io.UnsupportedEncodingException;
 import java.sql.Date;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Random;
 
 import javax.mail.MessagingException;
@@ -82,6 +83,18 @@ public class OtpServiceImpl implements OtpService {
 	@Override
 	public boolean isOtpExisitByCustomer (String email) {
 		return otpRepository.existsByEmail ( email );
+	}
+
+	/**
+	 *
+	 */
+	@Override
+	public void removeAllExpiredOtp ( ) {
+		LocalDateTime expirationTime = LocalDateTime.now().minusMinutes(4);
+		List<OtpEntity> expiredOtps = otpRepository.findByCreationTimeBefore(expirationTime);
+		for(OtpEntity otp : expiredOtps){
+			otpRepository.delete(otp);
+		}
 	}
 
 

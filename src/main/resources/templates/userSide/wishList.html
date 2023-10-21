@@ -52,7 +52,7 @@
 
 
             <div class="product__item">
-                <div class="product__item__pic set-bg">
+                <div class="product__item__pic set-bg h-100">
                     <a th:href="@{/shop/single-product/{id}(id=${item.product.id})}">
                         <th:block th:if="${not #lists.isEmpty(item.product.images)}">
                             <!-- Display the first image for the product -->

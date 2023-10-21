@@ -5,6 +5,10 @@ import org.springframework.stereotype.Repository;
 
 import com.ajith.pedal_planet.models.Customer;
 import com.ajith.pedal_planet.models.OtpEntity;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Repository
 public interface OtpRepository extends JpaRepository<OtpEntity, Integer>{
 
@@ -12,4 +16,6 @@ public interface OtpRepository extends JpaRepository<OtpEntity, Integer>{
 
 
     boolean existsByEmail (String email);
+
+    List< OtpEntity> findByCreationTimeBefore (LocalDateTime expirationTime);
 }

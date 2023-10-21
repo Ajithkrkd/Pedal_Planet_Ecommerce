@@ -5,30 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OTP Verification</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <style>
-        .commonbody {
-
-            font-family: Arial, sans-serif;
-            border: 1px solid #ccc;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 70vh;
-            width: auto;
-            margin: 0;
-            gap: 10px;
-        }
 
 
 
 
 
 
-        #maintext {
-            font-size: 30px;
-            color: #333;
-        }
+
+
 
         .subtext {
             color: #777;
@@ -108,7 +96,7 @@ body{
 <div th:replace="fragments/header::header"></div>
 <div class="container maindiv">
     <div class="text-center">
-        <h1 id="maintext mt-5">OTP Verification</h1>
+        <h5 class=" mt-5">OTP Verification</h5>
         <p class="subtext">Please enter the OTP sent to your email </p>
 
 
@@ -131,7 +119,7 @@ body{
 
 			<div class="row d-flex justify-content-center">
 				<div class="col-md-6 mb-2">
-					<input class="input" type="text" id="enteredOtp" name="enteredOtp" placeholder="Enter OTP" required>
+					<input class="input" type="text" id="enteredOtp" name="enteredOtp" placeholder="Enter OTP" required onchange="validateOtp(this)">
 
 
 					<button class="button w-100 mb-1"   type="submit" >Verify OTP</button>
@@ -170,6 +158,22 @@ body{
 
     startCountdown(totalSeconds, countdownDisplay, resendButton);
   };
+
+
+    function validateOtp(input) {
+   var numberPattern = /^\d*$/;
+    var inputValue = input.value;
+
+    // Check if the input matches the pattern.
+    if (!numberPattern.test(inputValue)) {
+        input.value = "";
+        Swal.fire({
+            icon: 'error',
+            title: 'Validation Error',
+            text: 'no letters or special characters.'
+        });
+    }
+}
 
 </script>
 </body>
