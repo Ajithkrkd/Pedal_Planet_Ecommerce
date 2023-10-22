@@ -23,7 +23,7 @@ public class BannerController {
     private BannerService bannerService;
 
     String rootPath = System.getProperty("user.dir");
-    String uplodDir = rootPath + "/src/main/resources/static/banner";
+    String uplodDir = rootPath + "/banner";
 
 
 

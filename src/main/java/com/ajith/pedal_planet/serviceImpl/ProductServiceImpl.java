@@ -115,7 +115,7 @@ public class ProductServiceImpl implements ProductService{
 
 		// Define the directory to save the file in
 		String rootPath = System.getProperty("user.dir");
-		String uploadDir = rootPath + "/src/main/resources/static/Images/product";
+		String uploadDir = rootPath + "/Images/product";
 
 		// Create the directory if it doesn't exist
 		File dir = new File(uploadDir);

@@ -65,7 +65,7 @@ public class InvoiceController {
             ITextRenderer renderer = new ITextRenderer (  );
 
             String htmlContent = renderThymeleafTemplate (orderId ,model);
-            String baseURL ="http://localhost:9000";
+            String baseURL ="http://pedalplanet.online";
             renderer.setDocumentFromString(htmlContent, baseURL);
 
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

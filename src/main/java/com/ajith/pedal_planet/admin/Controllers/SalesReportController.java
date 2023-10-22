@@ -110,7 +110,7 @@ public class SalesReportController {
 
         Context context = new Context();
         context.setVariables(model.asMap());
-        return templateEngine.process("/admin/sales-report", context);
+        return templateEngine.process("admin/sales-report.html", context);
     }
 
     //graph
