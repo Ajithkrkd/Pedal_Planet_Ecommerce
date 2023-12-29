@@ -54,8 +54,9 @@ else{
 
 buy.addEventListener("click", () => {
 
-
+//here we get the selected payment method
   const paymentStatus = document.getElementById("paymentMethod").textContent;
+
   console.log(paymentStatus + " hello")
   if (paymentStatus === "ONLINE") {
     $.ajax({
@@ -84,6 +85,7 @@ buy.addEventListener("click", () => {
                             amount: response.amount,
                             order_id: response.id,
                             name: 'Pedal Planet',
+                            color:"red"
                             description: 'Online Payment',
                             handler: function (response) {
 

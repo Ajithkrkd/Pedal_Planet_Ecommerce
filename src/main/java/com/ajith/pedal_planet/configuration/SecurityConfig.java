@@ -20,7 +20,7 @@ import org.springframework.web.context.request.RequestContextListener;
 
 @Configuration
 @EnableWebSecurity
-public class  SecurityConfig extends WebSecurityConfigurerAdapter {
+public class    SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	 CustomSuccessHandler customSuccessHandler ;

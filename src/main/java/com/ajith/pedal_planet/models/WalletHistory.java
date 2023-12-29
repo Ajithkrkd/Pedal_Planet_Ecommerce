@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class WalletHistory {
+ public class WalletHistory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -32,5 +32,7 @@ public class WalletHistory {
     private Transaction transaction;
 
     private Wallet_Method walletMethod;
+
+
 
 }

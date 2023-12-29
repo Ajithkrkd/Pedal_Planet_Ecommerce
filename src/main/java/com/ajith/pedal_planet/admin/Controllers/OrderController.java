@@ -176,6 +176,7 @@ public class OrderController {
         try{
             System.out.println ("approveReturnRequest"  + orderId);
             walletService.refundTheamountToWallet(orderId);
+            System.out.println ("wallet amount adeded to wallet");
             orderService.changeStatusToReturned(orderId);
             return ResponseEntity.ok ( "success");
         }

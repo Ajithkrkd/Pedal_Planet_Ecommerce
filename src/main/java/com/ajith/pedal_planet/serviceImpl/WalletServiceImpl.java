@@ -67,6 +67,7 @@ public class WalletServiceImpl implements WalletService {
             float total = existingOrder.getTotal();
             walletHistoryService.saveWalletHistoryForRefund(existingWallet,customer, Wallet_Method.FROM_REFUND ,total);
             walletRepository.save(existingWallet);
+            System.out.println ("hai" );
         }
     }
 
