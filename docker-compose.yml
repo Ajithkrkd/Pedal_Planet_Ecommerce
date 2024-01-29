@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  app:
+    image: ajithkrkd/pedalplanet-jan:1.0.1
+    ports:
+      - 8000:8080
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/pedal?autoReconnect=true&allowPublicKeyRetrieval=true&useSSL=false
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: root
+    depends_on:
+      - db
+    volumes:
+      - pedal_image_data:/opt/src/main/resources/static/Images/product/
+  db:
+    image: mysql
+    ports:
+      - 3330:3306
+    environment:
+      DATABASE_HOST: docker-mysql
+      DATABASE_PORT: 3306
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: pedal
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: root
+    volumes:
+      - pedal_db_data:/var/lib/mysql
+volumes:
+  pedal_db_data:
+    external: true
+  pedal_image_data:
+      external: true
