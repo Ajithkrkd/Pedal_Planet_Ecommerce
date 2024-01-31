@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db
+  labels:
+    app: mysql
+data:
+  DATABASE_HOST: mysql
+  MYSQL_DATABASE: pedal2
+  MYSQL_ROOT_PASSWORD: root
+  MYSQL_USER: admin
+  MYSQL_PASSWORD: root

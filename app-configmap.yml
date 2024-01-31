@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ecom-configmap
+  labels:
+    app: ecommerce-app
+data:
+  spring_datasource_url: jdbc:mysql://mysql:3306/pedal2?autoReconnect=true&allowPublicKeyRetrieval=true&useSSL=false
